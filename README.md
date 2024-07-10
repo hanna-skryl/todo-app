@@ -50,8 +50,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [GitHub repo](https://github.com/hanna-skryl/todo-list)
-- Live Site URL: [GitHub Pages](https://hanna-skryl.github.io/todo-list/)
+- Solution URL: [GitHub repo](https://github.com/hanna-skryl/todo-app)
+- Live Site URL: [GitHub Pages](https://hanna-skryl.github.io/todo-app/)
 
 ## My process
 

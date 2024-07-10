@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'styles/fonts.scss';
+@import 'styles/variables.scss';
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  height: 100%;
+  font-size: 18px;
+  overflow-x: hidden;
+  font-family: 'Josefin Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+
+  &:has([data-theme='dark']) {
+    background-color: var(--very-dark-blue);
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+}

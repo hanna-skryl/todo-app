@@ -1,0 +1,119 @@
+<form class="form" [formGroup]="formGroup">
+  <div class="header">
+    <h1 class="title">{{ title }}</h1>
+    <label class="mode" for="mode-toggle">
+      <input
+        type="checkbox"
+        formControlName="modeControl"
+        id="mode-toggle"
+        [value]="store.isDarkMode()"
+      />
+      <img
+        (click)="store.toggleMode()"
+        [src]="
+          'assets/images/icon-' + (store.isDarkMode() ? 'sun' : 'moon') + '.svg'
+        "
+        alt="Mode toggle."
+        width="20"
+        height="20"
+        class="mode-icon"
+      />
+    </label>
+  </div>
+
+  <label class="new-item-label" for="addItemInput">
+    <span class="new-item-checkbox"></span>
+    <input
+      #newItem
+      type="text"
+      class="new-item"
+      placeholder="Create a new todo..."
+      (keyup.enter)="store.addItem(newItem.value); newItem.value = ''"
+      id="addItemInput"
+    />
+  </label>
+
+  <div cdkDropList (cdkDropListDropped)="drop($event)" class="todo-list">
+    @for (
+      item of store.filteredItems();
+      let i = $index;
+      track i + '-todo-item'
+    ) {
+      <div
+        cdkDrag
+        class="todo-item"
+        [attr.data-theme]="store.isDarkMode() ? 'dark' : 'light'"
+      >
+        <label [for]="i + '-todo'">
+          <span class="todo-item-checkbox"></span>
+          <input
+            type="checkbox"
+            [id]="i + '-todo'"
+            (change)="store.toggleItem(item.description)"
+            [value]="item.description"
+            [checked]="item.done"
+            formArrayName="selectControl"
+          />
+          {{ item.description }}
+        </label>
+        <span
+          class="remove-button"
+          (click)="store.removeItem(item.description)"
+        >
+          <img
+            src="assets/images/icon-cross.svg"
+            alt="Remove item."
+            width="12"
+            height="12"
+          />
+        </span>
+      </div>
+    }
+    <footer class="footer">
+      @if (store.undoneItems() !== 0) {
+        <div>{{ store.undoneItems() }} items left</div>
+      }
+
+      <div class="filters-lg">
+        <ng-container
+          [ngTemplateOutlet]="filtersTemplate"
+          [ngTemplateOutletContext]="{ $implicit: filters, form: formGroup }"
+        />
+      </div>
+
+      <button class="button" (click)="store.clearCompleted()">
+        Clear Completed
+      </button>
+    </footer>
+  </div>
+
+  <div class="filters-sm">
+    <ng-container
+      [ngTemplateOutlet]="filtersTemplate"
+      [ngTemplateOutletContext]="{ $implicit: filters, form: formGroup }"
+    />
+  </div>
+
+  <p class="info">Drag and drop to reorder list</p>
+</form>
+
+<ng-template #filtersTemplate let-filters let-form="form">
+  <div class="filters">
+    @for (filter of filters; track filter) {
+      <label
+        class="filter"
+        [class.selected-filter]="filter === store.selectedFilter()"
+        [for]="filter"
+        (click)="store.filterItems(filter)"
+      >
+        <input
+          type="radio"
+          [formControl]="form.get('filterControl')"
+          [value]="filter"
+          [id]="filter"
+        />
+        {{ filter }}
+      </label>
+    }
+  </div>
+</ng-template>

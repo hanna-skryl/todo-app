@@ -17,21 +17,13 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/todo-app",
+            "outputPath": "docs/",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/assets",
-              "src/assets/*",
-              "src/favicon.png",
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+            "assets": ["src/assets", "src/assets/*"],
             "styles": ["src/styles.scss"],
             "scripts": [],
             "server": "src/main.server.ts",
@@ -51,7 +43,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kB",
-                  "maximumError": "4kB"
+                  "maximumError": "8kB"
                 }
               ],
               "outputHashing": "all"

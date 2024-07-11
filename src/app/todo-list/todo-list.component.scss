@@ -269,7 +269,7 @@ input[type='text']::placeholder,
     &::after {
       content: '';
       position: absolute;
-      background: center / contain url('/assets/images/icon-check.svg')
+      background: center / contain url('../../assets/images/icon-check.svg')
         no-repeat;
       inset: 0;
       height: 10px;

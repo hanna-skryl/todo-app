@@ -17,10 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": {
-              "base": "docs/",
-              "media": "assets"
-            },
+            "outputPath": "docs/",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -37,6 +34,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/todo-app/",
               "budgets": [
                 {
                   "type": "initial",

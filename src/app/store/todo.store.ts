@@ -24,7 +24,7 @@ export const initialState: TodoState = {
     { description: 'Complete Todo App on Frontend Mentor', done: false },
   ],
   selectedFilter: 'All',
-  isDarkMode: false,
+  isDarkMode: true,
 };
 
 export const TodoStore = signalStore(

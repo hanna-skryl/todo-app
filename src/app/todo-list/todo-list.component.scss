@@ -2,20 +2,16 @@
   display: block;
   padding-top: 50px;
   width: 100%;
-  max-width: 660px;
+  max-width: 600px;
   margin-inline: auto;
 
   @media (min-width: 768px) {
-    padding-top: 100px;
+    padding-top: 80px;
   }
 }
 
 .form {
   margin-inline: 20px;
-
-  @media (min-width: 768px) {
-    padding-top: 30px;
-  }
 }
 
 .header {
@@ -24,7 +20,7 @@
   margin-bottom: 30px;
 
   @media (min-width: 768px) {
-    margin-bottom: 40px;
+    margin-bottom: 50px;
   }
 }
 
@@ -35,7 +31,7 @@
 
   @media (min-width: 768px) {
     letter-spacing: 0.5em;
-    font-size: 2em;
+    font-size: 40px;
   }
 }
 

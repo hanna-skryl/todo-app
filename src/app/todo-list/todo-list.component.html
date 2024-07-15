@@ -77,7 +77,11 @@
       <div class="filters-lg">
         <ng-container
           [ngTemplateOutlet]="filtersTemplate"
-          [ngTemplateOutletContext]="{ $implicit: filters, form: formGroup }"
+          [ngTemplateOutletContext]="{
+            $implicit: filters,
+            form: formGroup,
+            idPrefix: 'lg-',
+          }"
         />
       </div>
 
@@ -90,27 +94,36 @@
   <div class="filters-sm">
     <ng-container
       [ngTemplateOutlet]="filtersTemplate"
-      [ngTemplateOutletContext]="{ $implicit: filters, form: formGroup }"
+      [ngTemplateOutletContext]="{
+        $implicit: filters,
+        form: formGroup,
+        idPrefix: 'sm-',
+      }"
     />
   </div>
 
   <p class="info">Drag and drop to reorder list</p>
 </form>
 
-<ng-template #filtersTemplate let-filters let-form="form">
+<ng-template
+  #filtersTemplate
+  let-filters
+  let-form="form"
+  let-idPrefix="idPrefix"
+>
   <div class="filters">
     @for (filter of filters; track filter) {
       <label
         class="filter"
         [class.selected-filter]="filter === store.selectedFilter()"
-        [for]="filter"
+        [for]="idPrefix + filter"
         (click)="store.filterItems(filter)"
       >
         <input
           type="radio"
           [formControl]="form.get('filterControl')"
           [value]="filter"
-          [id]="filter"
+          [id]="idPrefix + filter"
         />
         {{ filter }}
       </label>

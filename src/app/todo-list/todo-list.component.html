@@ -34,40 +34,8 @@
   </label>
 
   <div cdkDropList (cdkDropListDropped)="drop($event)" class="todo-list">
-    @for (
-      item of store.filteredItems();
-      let i = $index;
-      track i + '-todo-item'
-    ) {
-      <div
-        cdkDrag
-        class="todo-item"
-        [attr.data-theme]="store.isDarkMode() ? 'dark' : 'light'"
-      >
-        <label [for]="i + '-todo'">
-          <span class="todo-item-checkbox"></span>
-          <input
-            type="checkbox"
-            [id]="i + '-todo'"
-            (change)="store.toggleItem(item.description)"
-            [value]="item.description"
-            [checked]="item.done"
-            formArrayName="selectControl"
-          />
-          {{ item.description }}
-        </label>
-        <span
-          class="remove-button"
-          (click)="store.removeItem(item.description)"
-        >
-          <img
-            src="assets/images/icon-cross.svg"
-            alt="Remove item."
-            width="12"
-            height="12"
-          />
-        </span>
-      </div>
+    @for (item of store.filteredItems(); track $index) {
+      <app-todo-item [item]="item" [id]="$index + '-todo-item'" />
     }
     <footer class="footer">
       @if (store.undoneItems() !== 0) {

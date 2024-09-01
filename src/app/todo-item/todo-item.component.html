@@ -1,0 +1,26 @@
+<div
+  cdkDrag
+  class="todo-item"
+  [attr.data-theme]="store.isDarkMode() ? 'dark' : 'light'"
+>
+  <label [for]="id()">
+    <span class="todo-item-checkbox"></span>
+    <input
+      type="checkbox"
+      [id]="id()"
+      (change)="store.toggleItem(item().description)"
+      [value]="item().description"
+      [checked]="item().done"
+      formArrayName="selectControl"
+    />
+    {{ item().description }}
+  </label>
+  <span class="remove-button" (click)="store.removeItem(item().description)">
+    <img
+      src="assets/images/icon-cross.svg"
+      alt="Remove item."
+      width="12"
+      height="12"
+    />
+  </span>
+</div>

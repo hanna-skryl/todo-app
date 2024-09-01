@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FilterOption, FILTERS, Item } from '../models';
 import { TodoStore } from '../store/todo.store';
 import { RouterLink } from '@angular/router';
@@ -9,12 +9,12 @@ import {
   FormArray,
 } from '@angular/forms';
 import {
-  CdkDrag,
   CdkDragDrop,
   CdkDropList,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { NgTemplateOutlet } from '@angular/common';
+import { TodoItemComponent } from '../todo-item/todo-item.component';
 
 @Component({
   selector: 'app-todo-list',
@@ -24,10 +24,11 @@ import { NgTemplateOutlet } from '@angular/common';
     ReactiveFormsModule,
     NgTemplateOutlet,
     CdkDropList,
-    CdkDrag,
+    TodoItemComponent,
   ],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoListComponent {
   readonly store = inject(TodoStore);

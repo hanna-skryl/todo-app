@@ -25,7 +25,7 @@
   }
 }
 
-.main[data-theme='dark'] .header {
+:host-context(.app-dark-mode) .header {
   background-image: url('../assets/images/bg-mobile-dark.jpg');
 
   @media (min-width: 768px) {
@@ -33,7 +33,7 @@
   }
 }
 
-.main[data-theme='light'] .header {
+:host-context(.app-light-mode) .header {
   background-image: url('../assets/images/bg-mobile-light.jpg');
 
   @media (min-width: 768px) {

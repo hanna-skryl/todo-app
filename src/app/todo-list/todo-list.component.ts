@@ -15,6 +15,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { NgTemplateOutlet } from '@angular/common';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
+import { ModeToggleComponent } from '../mode-toggle/mode-toggle.component';
 
 @Component({
   selector: 'app-todo-list',
@@ -25,6 +26,7 @@ import { TodoItemComponent } from '../todo-item/todo-item.component';
     NgTemplateOutlet,
     CdkDropList,
     TodoItemComponent,
+    ModeToggleComponent,
   ],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.scss',
@@ -41,9 +43,6 @@ export class TodoListComponent {
       new FormControl(false),
     ]),
     filterControl: new FormControl<FilterOption>(this.store.selectedFilter(), {
-      nonNullable: true,
-    }),
-    modeControl: new FormControl<boolean>(false, {
       nonNullable: true,
     }),
   });

@@ -1,0 +1,14 @@
+<button
+  type="button"
+  class="mode-button"
+  (click)="updateMode()"
+  aria-label="Toggle mode"
+>
+  <img
+    [ngSrc]="modeIcon()"
+    alt="Mode toggle icon"
+    width="20"
+    height="20"
+    class="mode-icon"
+  />
+</button>

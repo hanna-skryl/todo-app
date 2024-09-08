@@ -1,2 +1,6 @@
 node_modules
 .angular
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json

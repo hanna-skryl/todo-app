@@ -1,5 +1,5 @@
 import { computed } from '@angular/core';
-import { FilterOption, Item } from '../models';
+import { FilterOption, Item, Mode } from '../models';
 import {
   patchState,
   signalStore,
@@ -7,11 +7,12 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
+import { MODE_PREFERENCE_STORAGE_KEY } from '../constants';
 
 type TodoState = {
   todoItems: Item[];
   selectedFilter: FilterOption;
-  isDarkMode: boolean;
+  mode: Mode;
 };
 
 export const initialState: TodoState = {
@@ -24,7 +25,7 @@ export const initialState: TodoState = {
     { description: 'Complete Todo App on Frontend Mentor', done: false },
   ],
   selectedFilter: 'All',
-  isDarkMode: true,
+  mode: 'dark',
 };
 
 export const TodoStore = signalStore(
@@ -32,50 +33,68 @@ export const TodoStore = signalStore(
   withState(initialState),
   withComputed(({ todoItems, selectedFilter }) => ({
     undoneItems: computed(() => todoItems().filter(item => !item.done).length),
-    filteredItems: computed(() => {
-      return todoItems().filter(item =>
+    filteredItems: computed(() =>
+      todoItems().filter(item =>
         selectedFilter() === 'Active'
           ? !item.done
           : selectedFilter() === 'Completed'
             ? item.done
             : item,
-      );
-    }),
+      ),
+    ),
   })),
-  withMethods(state => {
-    return {
-      addItem(description: string): void {
-        patchState(state, ({ todoItems }) => ({
-          todoItems: [...todoItems, { description, done: false }],
-        }));
-      },
-      removeItem(description: string): void {
-        patchState(state, ({ todoItems }) => ({
-          todoItems: todoItems.filter(item => item.description !== description),
-        }));
-      },
-      toggleItem(description: string): void {
-        patchState(state, ({ todoItems }) => ({
-          todoItems: todoItems.map(item =>
-            description === item.description
-              ? { description, done: !item.done }
-              : item,
-          ),
-        }));
-      },
-      toggleMode(): void {
-        patchState(state, ({ isDarkMode }) => {
-          return { isDarkMode: !isDarkMode };
-        });
-      },
-      clearCompleted(): void {
-        patchState(state, ({ todoItems }) => ({
-          todoItems: todoItems.filter(item => !item.done),
-        }));
-      },
-      filterItems(option: FilterOption): void {
-        patchState(state, () => ({ selectedFilter: option }));
-      },
-    };
-  }),
+  withMethods(state => ({
+    addItem(description: string): void {
+      patchState(state, ({ todoItems }) => ({
+        todoItems: [...todoItems, { description, done: false }],
+      }));
+    },
+    removeItem(description: string): void {
+      patchState(state, ({ todoItems }) => ({
+        todoItems: todoItems.filter(item => item.description !== description),
+      }));
+    },
+    toggleItem(description: string): void {
+      patchState(state, ({ todoItems }) => ({
+        todoItems: todoItems.map(item =>
+          description === item.description
+            ? { description, done: !item.done }
+            : item,
+        ),
+      }));
+    },
+    clearCompleted(): void {
+      patchState(state, ({ todoItems }) => ({
+        todoItems: todoItems.filter(item => !item.done),
+      }));
+    },
+    filterItems(option: FilterOption): void {
+      patchState(state, () => ({ selectedFilter: option }));
+    },
+    toggleMode(): void {
+      patchState(state, ({ mode }) => ({
+        mode: mode === 'light' ? 'dark' : ('light' as Mode),
+      }));
+    },
+    updateMode(mode: Mode): void {
+      patchState(state, () => ({ mode }));
+    },
+    // User agents can block localStorage.
+    // Then it is treated as if no preference has previously been stored.
+    getModePreference(): Mode | null {
+      try {
+        return localStorage.getItem(MODE_PREFERENCE_STORAGE_KEY) as Mode | null;
+      } catch {
+        return null;
+      }
+    },
+    // User agents can block localStorage. Then nothing is persisted.
+    updateModePreference(): void {
+      try {
+        localStorage.setItem(MODE_PREFERENCE_STORAGE_KEY, String(state.mode()));
+      } catch {
+        /* empty */
+      }
+    },
+  })),
 );

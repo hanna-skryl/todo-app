@@ -1,24 +1,7 @@
 <form class="form" [formGroup]="formGroup">
   <div class="header">
     <h1 class="title">{{ title }}</h1>
-    <label class="mode" for="mode-toggle">
-      <input
-        type="checkbox"
-        formControlName="modeControl"
-        id="mode-toggle"
-        [value]="store.isDarkMode()"
-      />
-      <img
-        (click)="store.toggleMode()"
-        [src]="
-          'assets/images/icon-' + (store.isDarkMode() ? 'sun' : 'moon') + '.svg'
-        "
-        alt="Mode toggle."
-        width="20"
-        height="20"
-        class="mode-icon"
-      />
-    </label>
+    <app-mode-toggle />
   </div>
 
   <label class="new-item-label" for="addItemInput">

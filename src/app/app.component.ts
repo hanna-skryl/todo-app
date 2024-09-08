@@ -1,7 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TodoStore } from './store/todo.store';
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +8,7 @@ import { NgClass } from '@angular/common';
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   title = 'todo-app';

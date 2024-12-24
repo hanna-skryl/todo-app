@@ -17,7 +17,6 @@ import {
 
 @Component({
   selector: 'app-mode-toggle',
-  standalone: true,
   imports: [NgOptimizedImage],
   templateUrl: './mode-toggle.component.html',
   styleUrl: './mode-toggle.component.scss',

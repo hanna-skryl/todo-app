@@ -19,9 +19,7 @@ import { ModeToggleComponent } from '../mode-toggle/mode-toggle.component';
 
 @Component({
   selector: 'app-todo-list',
-  standalone: true,
   imports: [
-    RouterLink,
     ReactiveFormsModule,
     NgTemplateOutlet,
     CdkDropList,

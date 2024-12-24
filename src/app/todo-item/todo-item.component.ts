@@ -10,7 +10,6 @@ import { CdkDrag } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-todo-item',
-  standalone: true,
   imports: [CdkDrag],
   templateUrl: './todo-item.component.html',
   styleUrl: './todo-item.component.scss',

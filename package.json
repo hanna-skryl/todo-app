@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "npx eslint .",
-    "serve:ssr:todo-app": "node dist/todo-app/server/server.mjs"
+    "serve:ssr": "node docs/server/server.mjs"
   },
   "private": true,
   "dependencies": {
@@ -48,7 +48,6 @@
     "@typescript-eslint/utils": "8.18.2",
     "eslint": "^9.17.0",
     "eslint-import-resolver-typescript": "^3.7.0",
-    "eslint-plugin-deprecation": "^3.0.0",
     "eslint-plugin-functional": "^7.2.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jest": "^28.10.0",

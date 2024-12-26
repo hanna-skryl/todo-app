@@ -24,23 +24,15 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - name: Install dependencies
+      - name: Install client dependencies
         run: |
           cd client
           npm ci
-          cd ../server
-          npm ci
 
-      - name: Start API Server and Build Angular Project
+      - name: Build Angular project
         run: |
-          cd server
-          npm start &
-          cd ../client
-          sleep 5
+          cd client
           npm run build
-        env:
-          NODE_ENV: production
-          ATLAS_URI: ${{ secrets.ATLAS_URI }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -37,6 +37,7 @@ jobs:
           npm start &
         env:
           NODE_ENV: production
+          ATLAS_URI: ${{ secrets.ATLAS_URI }}
 
       - name: Build Angular project
         run: |

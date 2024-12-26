@@ -8,3 +8,9 @@ export type FilterOption = (typeof FILTERS)[number];
 
 export const MODE = ['light', 'dark'] as const;
 export type Mode = (typeof MODE)[number];
+
+export type Preset = {
+  _id?: string;
+  title: string;
+  items: string[];
+};

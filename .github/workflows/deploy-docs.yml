@@ -31,19 +31,16 @@ jobs:
           cd ../server
           npm ci
 
-      - name: Start API Server
+      - name: Start API Server and Build Angular Project
         run: |
           cd server
           npm start &
+          cd ../client
+          sleep 5
+          npm run build
         env:
           NODE_ENV: production
           ATLAS_URI: ${{ secrets.ATLAS_URI }}
-
-      - name: Build Angular project
-        run: |
-          cd client
-          sleep 5
-          npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

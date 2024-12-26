@@ -2,7 +2,7 @@ name: Deploy docs to GitHub Pages
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   workflow_dispatch:
 
 permissions:
@@ -17,14 +17,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - name: Install dependencies
-        run: npm ci
-      - name: Build Pages
-        run: npm run build
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install client dependencies
+        run: |
+          cd client
+          npm ci
+
+      - name: Build Angular project
+        run: |
+          cd client
+          npm run build
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

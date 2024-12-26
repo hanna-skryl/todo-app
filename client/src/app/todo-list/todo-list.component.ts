@@ -16,6 +16,7 @@ import {
 import { NgTemplateOutlet } from '@angular/common';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 import { ModeToggleComponent } from '../mode-toggle/mode-toggle.component';
+import { PresetsComponent } from '../presets/presets.component';
 
 @Component({
   selector: 'app-todo-list',
@@ -25,6 +26,7 @@ import { ModeToggleComponent } from '../mode-toggle/mode-toggle.component';
     CdkDropList,
     TodoItemComponent,
     ModeToggleComponent,
+    PresetsComponent,
   ],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.scss',

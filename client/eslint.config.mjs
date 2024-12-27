@@ -23,6 +23,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['/docs', '**/*.md', '**/*.scss', '**/assets', '**/*.yml'],
+    ignores: ['/dist', '**/*.md', '**/*.scss', '**/assets', '**/*.yml'],
   },
 );

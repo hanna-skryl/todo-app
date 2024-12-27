@@ -1,30 +1,31 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Preset } from '../models';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PresetService {
-  private readonly url = 'http://localhost:5200';
+  private readonly url = 'https://todo-app-mj4s.onrender.com';
   readonly presets = signal<Preset[]>([]);
   readonly preset = signal<Preset>({ title: '', items: [] });
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  private refreshPresets(): void {
-    this.httpClient.get<Preset[]>(`${this.url}/presets`).subscribe(presets => {
-      this.presets.set(presets);
-    });
+  fetchPresets(): void {
+    this.httpClient
+      .get<Preset[]>(`${this.url}/presets`)
+      .pipe(
+        catchError(error => {
+          console.error('Failed to fetch presets:', error);
+          return of([]);
+        }),
+      )
+      .subscribe(presets => this.presets.set(presets));
   }
 
-  getPresets(): Preset[] {
-    this.refreshPresets();
-    return this.presets();
-  }
-
-  getPreset(id: string): void {
+  fetchPreset(id: string): void {
     this.httpClient
       .get<Preset>(`${this.url}/presets/${id}`)
       .subscribe(preset => {

@@ -20,6 +20,10 @@ export class PresetsComponent implements OnInit {
   readonly presets = computed<Preset[]>(() => this.presetsService.presets());
 
   ngOnInit(): void {
-    this.presetsService.getPresets();
+    this.loadPresets();
+  }
+
+  private loadPresets(): void {
+    this.presetsService.fetchPresets();
   }
 }

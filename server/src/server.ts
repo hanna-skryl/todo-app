@@ -7,7 +7,7 @@ import { presetRouter } from './presets.routes';
 // Load environment variables from the .env file
 dotenv.config();
 
-const { ATLAS_URI } = process.env;
+const { ATLAS_URI, PORT } = process.env;
 
 if (!ATLAS_URI) {
   console.error(
@@ -22,9 +22,12 @@ connectToDatabase(ATLAS_URI)
     app.use(cors());
 
     app.use('/presets', presetRouter);
+
+    // dynamically use process.env.PORT or fallback to 5200 for local development
+    const port = parseInt(PORT || '5200', 10);
     // start the Express server
-    app.listen(5200, () => {
-      console.log(`Server running at http://localhost:5200...`);
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
     });
   })
   .catch(error => console.error(error));

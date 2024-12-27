@@ -4,11 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --output-path=../docs/browser",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "npx eslint .",
-    "serve:ssr": "node docs/server/server.mjs"
+    "lint": "npx eslint ."
   },
   "private": true,
   "dependencies": {

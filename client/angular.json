@@ -34,7 +34,7 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "/todo-app/",
+              "baseHref": "/",
               "budgets": [
                 {
                   "type": "initial",

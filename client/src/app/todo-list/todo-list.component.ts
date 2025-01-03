@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FilterOption, FILTERS, Item } from '../models';
 import { TodoStore } from '../store/todo.store';
-import { RouterLink } from '@angular/router';
 import {
   FormGroup,
   FormControl,
@@ -15,7 +14,6 @@ import {
 } from '@angular/cdk/drag-drop';
 import { NgTemplateOutlet } from '@angular/common';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
-import { ModeToggleComponent } from '../mode-toggle/mode-toggle.component';
 
 @Component({
   selector: 'app-todo-list',
@@ -24,7 +22,6 @@ import { ModeToggleComponent } from '../mode-toggle/mode-toggle.component';
     NgTemplateOutlet,
     CdkDropList,
     TodoItemComponent,
-    ModeToggleComponent,
   ],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.scss',

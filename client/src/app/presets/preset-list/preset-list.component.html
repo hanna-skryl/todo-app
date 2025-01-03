@@ -1,0 +1,7 @@
+<ul>
+  @for (item of items(); track item._id) {
+    <li>
+      <a [routerLink]="['/presets', item._id]">{{ item.title }}</a>
+    </li>
+  }
+</ul>

@@ -28,3 +28,17 @@ body {
   outline: none;
   box-sizing: border-box;
 }
+
+h1 {
+  color: var(--very-light-gray);
+  font-size: 28px;
+  letter-spacing: 0.35em;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+
+  @media (min-width: 768px) {
+    font-size: 40px;
+    letter-spacing: 0.5em;
+    margin-bottom: 50px;
+  }
+}

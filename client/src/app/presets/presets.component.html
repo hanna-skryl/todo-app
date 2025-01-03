@@ -1,5 +1,2 @@
-<!-- TODO: Add presentational code inside the loop -->
 <h1>Presets</h1>
-@for (preset of presets(); track preset._id) {
-  <h3>{{ preset.title }}</h3>
-}
+<app-preset-list [items]="presets()" />

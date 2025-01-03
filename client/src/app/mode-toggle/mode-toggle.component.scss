@@ -2,6 +2,11 @@
   .mode-icon {
     width: 26px;
     height: 26px;
+    filter: contrast(1);
+
+    &:hover {
+      filter: contrast(1.5);
+    }
   }
 }
 

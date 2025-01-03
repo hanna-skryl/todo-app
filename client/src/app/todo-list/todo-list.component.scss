@@ -1,38 +1,13 @@
 :host {
   display: block;
-  padding-top: 50px;
   width: 100%;
-  max-width: 600px;
+  max-width: 560px;
   margin-inline: auto;
-
-  @media (min-width: 768px) {
-    padding-top: 80px;
-  }
-}
-
-.form {
-  margin-inline: 20px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 30px;
-
-  @media (min-width: 768px) {
-    margin-bottom: 50px;
-  }
-}
-
-.title {
-  color: var(--very-light-gray);
-  letter-spacing: 0.35em;
-  font-size: 28px;
-
-  @media (min-width: 768px) {
-    letter-spacing: 0.5em;
-    font-size: 40px;
-  }
 }
 
 input[type='text'],

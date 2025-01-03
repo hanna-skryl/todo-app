@@ -7,10 +7,11 @@ import {
 } from '@angular/core';
 import { Preset } from '../models';
 import { PresetService } from './preset.service';
+import { PresetListComponent } from "./preset-list/preset-list.component";
 
 @Component({
   selector: 'app-presets',
-  imports: [],
+  imports: [PresetListComponent],
   templateUrl: './presets.component.html',
   styleUrl: './presets.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

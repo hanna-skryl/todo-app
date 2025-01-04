@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { Preset } from 'src/app/models';
 
 @Component({
   selector: 'app-preset-list',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './preset-list.component.html',
   styleUrl: './preset-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,7 +1,24 @@
-<ul>
+<ul class="presets">
   @for (item of items(); track item._id) {
-    <li>
-      <a [routerLink]="['/presets', item._id]">{{ item.title }}</a>
+    <li class="preset">
+      <details class="preset-details">
+        <summary class="preset-summary">
+          <div>{{ item.title }}</div>
+          <div class="actions">
+            <!-- TODO: Applies the selected preset to the current to-do list -->
+            <button type="button">Select</button>
+            <!-- TODO: Opens a form to modify preset details and associated tasks -->
+            <button type="button">Edit</button>
+            <!-- TODO: Removes the preset after user confirmation -->
+            <button type="button">Delete</button>
+          </div>
+        </summary>
+        <ul class="tasks">
+          @for (task of item.items; track $index) {
+            <li>{{ task }}</li>
+          }
+        </ul>
+      </details>
     </li>
   }
 </ul>

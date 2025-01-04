@@ -1,0 +1,32 @@
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 18px 16px 50px;
+
+  @media (min-width: 768px) {
+    padding: 22px 25px 22px 62px;
+  }
+}
+
+[type='button'] {
+  border: none;
+  background-color: transparent;
+  font-size: 12px;
+  font-weight: 700;
+
+  @media (min-width: 768px) {
+    font-size: 15px;
+  }
+}
+
+:host-context(.app-light-mode) {
+  [type='button'] {
+    color: var(--dark-grayish-blue-light);
+  }
+}
+
+:host-context(.app-dark-mode) {
+  [type='button'] {
+    color: var(--very-dark-grayish-blue-dark);
+  }
+}

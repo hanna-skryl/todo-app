@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FilterOption, FILTERS, Item } from '../models';
-import { TodoStore } from '../store/todo.store';
+
 import {
   FormGroup,
   FormControl,
@@ -13,7 +12,9 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { NgTemplateOutlet } from '@angular/common';
-import { TodoItemComponent } from '../todo-item/todo-item.component';
+import { TodoItemComponent } from 'src/app/todo-item/todo-item.component';
+import { TodoStore } from 'src/app/store/todo.store';
+import { FilterOption, FILTERS, Item } from 'src/app/models';
 
 @Component({
   selector: 'app-todo-list',

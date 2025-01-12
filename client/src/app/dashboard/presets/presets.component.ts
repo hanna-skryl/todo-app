@@ -5,9 +5,9 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { Preset } from '../models';
+import { Preset } from '../../models';
 import { PresetService } from './preset.service';
-import { PresetListComponent } from "./preset-list/preset-list.component";
+import { PresetListComponent } from './preset-list/preset-list.component';
 
 @Component({
   selector: 'app-presets',

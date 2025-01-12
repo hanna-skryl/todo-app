@@ -1,15 +1,42 @@
-<nav class="navbar">
-  <ul class="nav-list">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
-        To-Do List
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/presets" routerLinkActive="active">
-        Presets
-      </a>
-    </li>
-  </ul>
-  <app-mode-toggle />
+<nav
+  class="navbar"
+  [style.justify-content]="isLoggedIn() ? 'space-between' : 'flex-end'"
+>
+  @if (isLoggedIn()) {
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/dashboard/active-list"
+          routerLinkActive="active"
+        >
+          To-Do List
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="dashboard/presets"
+          routerLinkActive="active"
+        >
+          Presets
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-extra">
+      @if (isLoggedIn()) {
+        <button
+          type="button"
+          class="logout-button"
+          (click)="authService.logout()"
+        >
+          Logout
+        </button>
+      }
+      <app-mode-toggle />
+    </div>
+  } @else {
+    <app-mode-toggle />
+  }
 </nav>

@@ -15,7 +15,9 @@
   column-gap: 10px;
   font-size: 12px;
   font-weight: 700;
-  border-bottom: 1px solid;
+  color: var(--content-primary);
+  background-color: var(--background-secondary);
+  border-bottom: var(--border);
 
   @media (min-width: 768px) {
     padding: 22px 25px 22px 62px;
@@ -32,6 +34,10 @@
     .remove-button {
       display: flex;
     }
+  }
+
+  &:has(input:checked) {
+    color: var(--content-disabled);
   }
 
   &:not(:has(input:checked)) {
@@ -78,7 +84,7 @@
   height: 20px;
   position: absolute;
   border-radius: 50%;
-  border: 1px solid;
+  border: var(--border);
   left: 16px;
   z-index: 1;
   top: calc(50% - 10px);
@@ -106,36 +112,5 @@
       width: 18px;
       height: 18px;
     }
-  }
-}
-
-:host-context(.app-light-mode) {
-  .todo-item {
-    background-color: var(--very-light-gray);
-    border-color: var(--very-light-grayish-blue);
-
-    &:has(input:checked) {
-      color: var(--light-grayish-blue-light);
-    }
-  }
-
-  .todo-item-checkbox {
-    border-color: var(--very-light-grayish-blue);
-  }
-}
-
-:host-context(.app-dark-mode) {
-  .todo-item {
-    background-color: var(--very-dark-desaturated-blue);
-    border-color: var(--very-dark-grayish-blue);
-    color: var(--light-grayish-blue-dark);
-
-    &:has(input:checked) {
-      color: var(--very-dark-grayish-blue-dark);
-    }
-  }
-
-  .todo-item-checkbox {
-    border-color: var(--very-dark-grayish-blue);
   }
 }

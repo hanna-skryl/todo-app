@@ -1,8 +1,4 @@
-<div
-  cdkDrag
-  class="todo-item"
-  [attr.data-mode]="store.mode() === 'dark' ? 'dark' : 'light'"
->
+<div cdkDrag class="todo-item">
   <label [for]="id()">
     <span class="todo-item-checkbox"></span>
     <input

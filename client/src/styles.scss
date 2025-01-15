@@ -4,14 +4,6 @@
 
 html {
   scroll-behavior: smooth;
-
-  &.app-dark-mode body {
-    background-color: var(--very-dark-blue);
-  }
-
-  &.app-light-mode body {
-    background-color: #fff;
-  }
 }
 
 body {
@@ -20,6 +12,7 @@ body {
   overflow-x: hidden;
   font-family: 'Josefin Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
+  background-color: var(--background-primary);
 }
 
 * {

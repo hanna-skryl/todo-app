@@ -10,23 +10,12 @@
 
 [type='button'] {
   border: none;
+  color: var(--content-muted);
   background-color: transparent;
   font-size: 12px;
   font-weight: 700;
 
   @media (min-width: 768px) {
     font-size: 15px;
-  }
-}
-
-:host-context(.app-light-mode) {
-  [type='button'] {
-    color: var(--dark-grayish-blue-light);
-  }
-}
-
-:host-context(.app-dark-mode) {
-  [type='button'] {
-    color: var(--very-dark-grayish-blue-dark);
   }
 }

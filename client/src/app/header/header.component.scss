@@ -2,6 +2,7 @@
   display: flex;
   position: fixed;
   width: 100%;
+  background-color: var(--background-secondary);
 }
 
 .navbar {
@@ -35,6 +36,7 @@
 
 .nav-link {
   position: relative;
+  color: var(--content-primary);
 
   @media (min-width: 768px) {
     font-size: 15px;
@@ -43,6 +45,7 @@
   &:after {
     content: '';
     background: none repeat scroll 0 0 transparent;
+    background-color: var(--content-primary);
     bottom: -0.15em;
     display: block;
     height: 1px;
@@ -62,36 +65,10 @@
 }
 
 .logout-button {
-  padding: 8px;
   display: flex;
-}
-
-:host-context(.app-dark-mode) {
-  .logout-button,
-  .nav-link {
-    color: var(--light-grayish-blue-dark);
-
-    &::after {
-      background-color: var(--light-grayish-blue-dark);
-    }
-  }
-
-  :host {
-    background-color: var(--very-dark-blue);
-  }
-}
-
-:host-context(.app-light-mode) {
-  .logout-button,
-  .nav-link {
-    color: var(--very-dark-grayish-blue-light);
-
-    &::after {
-      background-color: var(--very-dark-grayish-blue-light);
-    }
-  }
-
-  :host {
-    background-color: #fff;
-  }
+  color: var(--content-primary);
+  background-color: var(--background-secondary);
+  border: var(--border);
+  border-radius: 4px;
+  padding: 8px;
 }

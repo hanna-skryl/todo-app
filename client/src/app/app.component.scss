@@ -19,30 +19,31 @@
   display: block;
   position: fixed;
   width: 100%;
-  height: 200px;
+  height: 250px;
   inset: 0;
   z-index: -2;
   background-repeat: no-repeat;
-  background-position: top;
+  background-position: center;
   background-size: cover;
+  filter: brightness(0.75);
 
   @media (min-width: 768px) {
-    height: 320px;
+    height: 350px;
   }
 }
 
 :host-context(.app-dark-mode) .banner {
-  background-image: url('../assets/images/bg-mobile-dark.jpg');
+  background-image: url('../assets/images/banner-mobile-dark.jpg');
 
   @media (min-width: 768px) {
-    background-image: url('../assets/images/bg-desktop-dark.jpg');
+    background-image: url('../assets/images/banner-desktop-dark.jpg');
   }
 }
 
 :host-context(.app-light-mode) .banner {
-  background-image: url('../assets/images/bg-mobile-light.jpg');
+  background-image: url('../assets/images/banner-mobile-light.jpg');
 
   @media (min-width: 768px) {
-    background-image: url('../assets/images/bg-desktop-light.jpg');
+    background-image: url('../assets/images/banner-desktop-light.jpg');
   }
 }

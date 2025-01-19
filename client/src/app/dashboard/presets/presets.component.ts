@@ -7,11 +7,11 @@ import {
 } from '@angular/core';
 import { Preset } from '../../models';
 import { PresetService } from './preset.service';
-import { PresetListComponent } from './preset-list/preset-list.component';
+import { PresetCardComponent } from './preset-card/preset-card.component';
 
 @Component({
   selector: 'app-presets',
-  imports: [PresetListComponent],
+  imports: [PresetCardComponent],
   templateUrl: './presets.component.html',
   styleUrl: './presets.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

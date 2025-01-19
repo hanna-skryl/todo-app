@@ -1,0 +1,52 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  color: var(--content-primary);
+  background-color: var(--background-secondary);
+  padding: 1rem;
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-md);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  grid-template-areas:
+    'activate edit'
+    'delete delete';
+  gap: 0.5rem;
+}
+
+.tasks {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+[type='button'] {
+  display: flex;
+  align-items: center;
+  column-gap: 0.25rem;
+}
+
+.activate-btn {
+  grid-area: activate;
+}
+
+.edit-btn {
+  grid-area: edit;
+}
+
+.delete-btn {
+  grid-area: delete;
+}
+
+.icon {
+  width: 1rem;
+  height: auto;
+
+  @media (min-width: 768px) {
+    width: 1.25rem;
+  }
+}

@@ -24,19 +24,92 @@ body {
 
 h1 {
   color: var(--very-light-gray);
-  font-size: 28px;
+  font-size: 1.75rem;
+  font-weight: 700;
   letter-spacing: 0.35em;
-  margin-bottom: 30px;
+  margin-bottom: 1.875rem;
   text-transform: uppercase;
 
   @media (min-width: 768px) {
-    font-size: 40px;
+    font-size: 2.5rem;
     letter-spacing: 0.5em;
-    margin-bottom: 50px;
+    margin-bottom: 3.125rem;
+  }
+}
+
+h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+
+  @media (min-width: 768px) {
+    font-size: 1.125rem;
   }
 }
 
 button {
   font-family: 'Josefin Sans', sans-serif;
   cursor: pointer;
+}
+
+.app-container {
+  width: min(100% - 2.5rem, 47.5rem);
+  margin-inline: auto;
+}
+
+.app-btn-txt {
+  border: none;
+  color: var(--content-muted);
+  background-color: transparent;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+
+  @media (min-width: 768px) {
+    font-size: 0.9375rem;
+  }
+
+  &:hover {
+    color: var(--content-primary);
+  }
+}
+
+.app-btn-ghost {
+  border: var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem;
+  color: var(--content-muted);
+  background-color: transparent;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+
+  @media (min-width: 768px) {
+    font-size: 0.9375rem;
+    border-radius: var(--radius-md);
+  }
+
+  &:hover {
+    background-color: var(--border-color);
+  }
+}
+
+.app-btn-destructive {
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.55rem;
+  color: var(--content-destructive);
+  background-color: var(--background-destructive);
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+
+  @media (min-width: 768px) {
+    font-size: 0.9375rem;
+    border-radius: var(--radius-md);
+  }
+
+  &:hover {
+    background-color: var(--background-destructive-hover);
+  }
 }

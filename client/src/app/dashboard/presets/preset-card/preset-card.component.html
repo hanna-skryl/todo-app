@@ -1,0 +1,25 @@
+<h3>{{ item().title }}</h3>
+<div class="tasks">{{ tasks() }}</div>
+<div class="actions">
+  <!-- TODO: Applies the selected preset to the current to-do list -->
+  <button class="activate-btn app-btn-ghost" type="button">
+    <img
+      class="icon"
+      ngSrc="assets/images/toggle_on.svg"
+      width="20"
+      height="20"
+    />
+    Activate
+  </button>
+
+  <!-- TODO: Opens a form to modify preset details and associated tasks -->
+  <button class="edit-btn app-btn-ghost" type="button">
+    <img class="icon" ngSrc="assets/images/edit.svg" width="20" height="20" />
+    Edit
+  </button>
+  <!-- TODO: Removes the preset after user confirmation -->
+  <button class="delete-btn app-btn-destructive" type="button">
+    <img class="icon" ngSrc="assets/images/delete.svg" width="20" height="20" />
+    Delete
+  </button>
+</div>

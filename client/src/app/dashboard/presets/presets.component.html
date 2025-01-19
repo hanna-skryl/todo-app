@@ -1,6 +1,18 @@
 <h1>Presets</h1>
-<app-preset-list [items]="presets()" />
+
 <!-- TODO: Opens a form to create a new preset -->
-<div class="footer">
-  <button type="button">Add Preset</button>
+<label class="new-preset-label" for="addPresetInput">
+  <input
+    #newItem
+    type="text"
+    class="new-preset"
+    placeholder="New preset name"
+    id="addPresetInput"
+  />
+</label>
+
+<div class="preset-list">
+  @for (preset of presets(); track preset._id) {
+    <app-preset-card [item]="preset" />
+  }
 </div>

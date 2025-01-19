@@ -1,5 +1,5 @@
 <nav
-  class="navbar"
+  class="navbar app-container"
   [style.justify-content]="isLoggedIn() ? 'space-between' : 'flex-end'"
 >
   @if (isLoggedIn()) {
@@ -25,6 +25,7 @@
     </ul>
 
     <div class="nav-extra">
+      <app-mode-toggle />
       @if (isLoggedIn()) {
         <button
           type="button"
@@ -34,7 +35,6 @@
           Logout
         </button>
       }
-      <app-mode-toggle />
     </div>
   } @else {
     <app-mode-toggle />

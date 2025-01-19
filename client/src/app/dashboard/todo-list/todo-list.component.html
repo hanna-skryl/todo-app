@@ -1,7 +1,5 @@
 <form class="form" [formGroup]="formGroup">
-  <div class="header">
-    <h1 class="title">{{ title }}</h1>
-  </div>
+  <h1 class="title">{{ title }}</h1>
 
   <label class="new-item-label" for="addItemInput">
     <span class="new-item-checkbox"></span>
@@ -35,7 +33,11 @@
         />
       </div>
 
-      <button type="button" class="button" (click)="store.clearCompleted()">
+      <button
+        type="button"
+        class="app-btn-txt"
+        (click)="store.clearCompleted()"
+      >
         Clear Completed
       </button>
     </footer>

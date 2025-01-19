@@ -5,12 +5,10 @@
 
 .main {
   min-height: 100vh;
-  width: min(100% - 40px, 560px);
-  margin-inline: auto;
-  padding-top: 96px;
+  padding-top: 6rem;
 
   @media (min-width: 768px) {
-    padding-top: 120px;
+    padding-top: 7.5rem;
   }
 }
 
@@ -19,7 +17,7 @@
   display: block;
   position: fixed;
   width: 100%;
-  height: 250px;
+  height: 15.625rem;
   inset: 0;
   z-index: -2;
   background-repeat: no-repeat;
@@ -28,7 +26,7 @@
   filter: brightness(0.75);
 
   @media (min-width: 768px) {
-    height: 350px;
+    height: 21.875rem;
   }
 }
 

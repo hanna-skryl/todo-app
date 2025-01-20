@@ -21,7 +21,6 @@
   }
 }
 
-.logout-button,
 .nav-link {
   font-size: 0.8125rem;
   font-weight: 700;
@@ -66,23 +65,5 @@
   &:hover:after {
     width: 100%;
     left: 0;
-  }
-}
-
-.logout-button {
-  color: var(--content-primary);
-  background-color: var(--background-secondary);
-  border: var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0.5rem;
-  transition: all 0.3s ease;
-
-  @media (min-width: 768px) {
-    border-radius: var(--radius-md);
-  }
-
-  &:hover {
-    color: var(--content-hover);
-    background-color: var(--border-color);
   }
 }

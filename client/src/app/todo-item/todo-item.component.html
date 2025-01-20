@@ -2,6 +2,7 @@
   <label [for]="id()">
     <span class="todo-item-checkbox"></span>
     <input
+      class="app-input"
       type="checkbox"
       [id]="id()"
       (change)="store.toggleItem(item().description)"

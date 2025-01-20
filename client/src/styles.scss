@@ -37,6 +37,17 @@ h1 {
   }
 }
 
+h2 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+
+  @media (min-width: 768px) {
+    font-size: 1.35rem;
+  }
+}
+
 h3 {
   font-size: 1rem;
   font-weight: 600;
@@ -50,6 +61,36 @@ h3 {
 button {
   font-family: 'Josefin Sans', sans-serif;
   cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.app-input::placeholder {
+  color: var(--content-muted);
+  background-color: var(--background-secondary);
+}
+
+.app-input {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--content-primary);
+  background-color: var(--background-secondary);
+  width: 100%;
+  border: none;
+  display: flex;
+  border-radius: var(--radius-xs);
+  padding: 0.75rem;
+
+  @media (min-width: 768px) {
+    font-size: 18px;
+    font-weight: 400;
+    padding: 1rem;
+  }
 }
 
 .app-container {
@@ -71,6 +112,30 @@ button {
 
   &:hover {
     color: var(--content-primary);
+  }
+}
+
+.app-btn-primary {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  color: var(--content-primary);
+  background-color: var(--background-secondary);
+  border: var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+
+  @media (min-width: 768px) {
+    font-size: 0.875rem;
+    border-radius: var(--radius-md);
+  }
+
+  &:hover {
+    color: var(--content-hover);
+    background-color: var(--border-color);
   }
 }
 

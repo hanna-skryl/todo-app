@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { NgOptimizedImage } from '@angular/common';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-landing',
-  imports: [],
+  imports: [NgOptimizedImage, ClipboardModule],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,7 +17,7 @@ export class LandingComponent {
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
 
-  async onLogin(event: Event) {
+  async onLogin(event: Event): Promise<void> {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
     const username = (form.elements.namedItem('username') as HTMLInputElement)

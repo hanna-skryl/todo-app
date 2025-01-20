@@ -1,8 +1,60 @@
 <form (submit)="onLogin($event)">
-  <input type="text" name="username" placeholder="Username" required />
-  <input type="password" name="password" placeholder="Password" required />
-  <button type="submit">Login</button>
+  <input
+    type="text"
+    name="username"
+    placeholder="Username"
+    required
+    class="app-input"
+  />
+  <input
+    type="password"
+    name="password"
+    placeholder="Password"
+    required
+    class="app-input"
+  />
+  <button class="app-btn-primary login-button" type="submit">
+    <img
+      class="login-icon"
+      ngSrc="assets/images/login.svg"
+      width="20"
+      height="20"
+    />
+    Login
+  </button>
 </form>
 @if (errorMessage) {
-  <p>{{ errorMessage }}</p>
+  <p class="error">{{ errorMessage }}</p>
 }
+
+<div class="demo-credentials">
+  <h2 class="info">
+    <img
+      class="info-icon"
+      ngSrc="assets/images/info.svg"
+      width="24"
+      height="24"
+    />
+    Demo Credentials
+  </h2>
+  <p>
+    <strong>Username:</strong> demo_user
+    <img
+      class="copy-icon"
+      ngSrc="assets/images/copy.svg"
+      width="20"
+      height="20"
+      cdkCopyToClipboard="demo_user"
+    />
+  </p>
+  <p>
+    <strong>Password:</strong> password123
+    <img
+      class="copy-icon"
+      ngSrc="assets/images/copy.svg"
+      width="20"
+      height="20"
+      cdkCopyToClipboard="password123"
+    />
+  </p>
+</div>

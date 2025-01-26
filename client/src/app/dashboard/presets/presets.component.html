@@ -1,15 +1,20 @@
 <h1>Presets</h1>
 
-<!-- TODO: Opens a form to create a new preset -->
-<label class="new-preset-label" for="addPresetInput">
-  <input
-    #newItem
-    type="text"
-    class="new-preset app-input"
-    placeholder="New preset name"
-    id="addPresetInput"
-  />
-</label>
+<div class="new-preset">
+  <label class="new-preset-label" for="newPreset">
+    <input
+      #newItem
+      type="text"
+      class="new-preset-input app-input"
+      placeholder="New preset name"
+      id="newPreset"
+      [formControl]="newPreset"
+    />
+  </label>
+  <button (click)="createPreset()" class="new-preset-btn app-btn-primary" type="button">
+    Create preset
+  </button>
+</div>
 
 <div class="preset-list">
   @for (preset of presets(); track preset._id) {

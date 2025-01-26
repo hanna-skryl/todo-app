@@ -35,7 +35,7 @@ export function createPresetsRouter(presetsClient: PresetsClient) {
     try {
       const insertedId = await presetsClient.createPreset(req.body);
       if (insertedId) {
-        res.status(201).send(`Created a new preset: ID ${insertedId}.`);
+        res.status(201).json({ insertedId });
       } else {
         res.status(500).send('Failed to create a new preset.');
       }

@@ -32,7 +32,7 @@ export class PresetService {
       .get<Preset>(`${this.url}/presets/${id}`)
       .pipe(
         catchError(error => {
-          console.error('Failed to create todo:', error);
+          console.error('Failed to fetch a preset:', error);
           return of(null);
         }),
       )
@@ -66,7 +66,7 @@ export class PresetService {
       .put<Preset>(`${this.url}/presets/${id}`, preset)
       .pipe(
         catchError(error => {
-          console.error(`Failed to update preset with id ${id}:`, error);
+          console.error(`Failed to update a preset with ID ${id}:`, error);
           return of(null);
         }),
       )
@@ -79,10 +79,10 @@ export class PresetService {
 
   deletePreset(id: string): void {
     this.httpClient
-      .delete<void>(`${this.url}/presets/${id}`)
+      .delete(`${this.url}/presets/${id}`, { responseType: 'text' })
       .pipe(
         catchError(error => {
-          console.error(`Failed to delete preset with id ${id}:`, error);
+          console.error(`Failed to delete a preset with ID ${id}:`, error);
           return of(false);
         }),
         map(() => true),

@@ -1,0 +1,65 @@
+:host {
+  display: block;
+}
+
+.delete-btn {
+  width: 100%;
+  text-align: center;
+}
+
+.modal-form {
+  width: min(90%, 32rem);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: var(--radius-xs);
+  background: var(--background-secondary);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  color: inherit;
+  border: none;
+
+  @media (min-width: 768px) {
+    padding: 2rem;
+  }
+
+  &::backdrop {
+    background: linear-gradient(
+      180deg,
+      rgba(3, 0, 7, 0.8) 0%,
+      rgba(14, 0, 55, 0.8) 100%
+    );
+    opacity: 0.75;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.5rem;
+
+  .close-icon {
+    filter: contrast(1);
+    width: 1.25rem;
+
+    @media (min-width: 768px) {
+      width: 1.5rem;
+    }
+  }
+
+  &:hover .close-icon {
+    filter: contrast(0.5);
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 0.5rem;
+  margin-top: 0.5rem;
+
+  button {
+    padding: 0.5rem 1rem;
+  }
+}

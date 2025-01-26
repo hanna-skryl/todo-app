@@ -1,0 +1,52 @@
+<button
+  class="delete-btn app-btn-destructive"
+  type="button"
+  (click)="$event.stopPropagation(); openModal()"
+>
+  <img
+    class="icon"
+    ngSrc="assets/images/delete.svg"
+    width="20"
+    height="20"
+    alt="Delete icon."
+  />
+  Delete
+</button>
+
+@defer (on idle) {
+  <dialog #dialog class="modal-form" clickOutside (clickOutside)="closeModal()">
+    <h3>Are you sure?</h3>
+    <p>
+      This action cannot be undone. This will permanently delete the preset.
+    </p>
+    <form method="dialog">
+      <div class="actions">
+        <button type="button" class="app-btn-ghost" (click)="closeModal()">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="app-btn-destructive"
+          (click)="deletePreset()"
+        >
+          Delete
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="modal-close app-btn-txt"
+        (click)="closeModal()"
+      >
+        <img
+          ngSrc="assets/images/close.svg"
+          width="20"
+          height="20"
+          alt="Close icon."
+          aria-label="Close"
+          class="close-icon"
+        />
+      </button>
+    </form>
+  </dialog>
+}

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Preset } from '../../models';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
+import type { CreatePresetResponse } from '../../../../src/app/models';
 
 @Injectable({
   providedIn: 'root',
@@ -43,18 +44,19 @@ export class PresetService {
       });
   }
 
-  createPreset(preset: Preset): void {
+  createPreset(preset: Omit<Preset, '_id'>): void {
     this.httpClient
-      .post(`${this.url}/presets`, preset)
+      .post<CreatePresetResponse>(`${this.url}/presets`, preset)
       .pipe(
         catchError(error => {
-          console.error('Failed to create todo:', error);
+          console.error('Failed to create a preset:', error);
           return of(null);
         }),
       )
-      .subscribe(preset => {
-        if (preset) {
-          this.presets.update(items => ({ ...items, preset }));
+      .subscribe(res => {
+        if (res) {
+          const newPreset: Preset = { ...preset, _id: res.insertedId };
+          this.presets.update(items => [...items, newPreset]);
         }
       });
   }

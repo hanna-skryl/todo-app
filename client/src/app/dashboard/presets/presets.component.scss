@@ -11,31 +11,26 @@
 }
 
 .new-preset {
-  font-family: inherit;
-  font-size: 0.75rem;
-  font-weight: 700;
-  width: 100%;
-  padding: 16px 18px 16px 50px;
-  border: none;
-  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--content-primary);
-  background-color: var(--background-secondary);
-  border-radius: var(--radius-xs);
+  column-gap: 0.5rem;
+}
+
+.new-preset-input {
+  padding: 16px 18px;
 
   @media (min-width: 768px) {
-    padding: 22px 25px 22px 62px;
+    padding: 22px 25px;
     font-size: 1.125rem;
     font-weight: 400;
   }
 }
 
 .new-preset-label {
-  position: relative;
+  flex: 1;
 }
 
-.new-preset::placeholder {
-  color: var(--content-muted);
+.new-preset-btn {
+  align-self: stretch;
 }

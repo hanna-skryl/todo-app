@@ -14,3 +14,7 @@ export type Preset = {
   title: string;
   items: string[];
 };
+
+export type CreatePresetResponse = {
+  insertedId: string;
+};

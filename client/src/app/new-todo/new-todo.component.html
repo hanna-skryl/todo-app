@@ -1,0 +1,11 @@
+<label class="new-todo-label" for="newTodo">
+  <span class="new-todo-checkbox"></span>
+  <input
+    type="text"
+    class="new-todo-input app-input"
+    placeholder="Create a new todo..."
+    id="newTodo"
+    [formControl]="newTodoControl"
+    (keyup.enter)="emitNewTodo()"
+  />
+</label>

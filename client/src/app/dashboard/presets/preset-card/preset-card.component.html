@@ -1,31 +1,30 @@
 <h3>{{ item().title }}</h3>
 <div class="tasks">{{ tasks() }}</div>
-<div class="actions">
-  <!-- TODO: Applies the selected preset to the current to-do list -->
-  <button class="activate-btn app-btn-ghost" type="button">
-    <img
-      class="icon"
-      ngSrc="assets/images/toggle_on.svg"
-      width="20"
-      height="20"
-      alt="Toggle icon."
-    />
-    Activate
-  </button>
+@if (item()._id; as itemId) {
+  <div class="actions">
+    <!-- TODO: Applies the selected preset to the current to-do list -->
+    <button class="activate-btn app-btn-ghost" type="button">
+      <img
+        class="icon"
+        ngSrc="assets/images/toggle_on.svg"
+        width="20"
+        height="20"
+        alt="Toggle icon."
+      />
+      Activate
+    </button>
 
-  <!-- TODO: Opens a form to modify preset details and associated tasks -->
-  <button class="edit-btn app-btn-ghost" type="button">
-    <img
-      class="icon"
-      ngSrc="assets/images/edit.svg"
-      width="20"
-      height="20"
-      alt="Edit icon."
-    />
-    Edit
-  </button>
+    <a class="edit-btn app-btn-ghost" type="button" [routerLink]="[itemId]">
+      <img
+        class="icon"
+        ngSrc="assets/images/edit.svg"
+        width="20"
+        height="20"
+        alt="Edit icon."
+      />
+      Edit
+    </a>
 
-  @if (item()._id; as itemId) {
     <app-modal class="delete-btn" [itemId]="itemId" />
-  }
-</div>
+  </div>
+}

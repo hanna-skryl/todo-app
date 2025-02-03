@@ -38,6 +38,7 @@ h1 {
 }
 
 h2 {
+  color: var(--content-primary);
   font-size: 1.25rem;
   line-height: 1.75rem;
   font-weight: 600;
@@ -52,7 +53,7 @@ h3 {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  
+
   @media (min-width: 768px) {
     font-size: 1.125rem;
   }

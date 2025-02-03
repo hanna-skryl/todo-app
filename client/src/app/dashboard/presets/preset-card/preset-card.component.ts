@@ -8,10 +8,11 @@ import {
 } from '@angular/core';
 import type { Preset } from 'src/app/models';
 import { ModalComponent } from '../modal/modal.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-preset-card',
-  imports: [NgOptimizedImage, ModalComponent],
+  imports: [NgOptimizedImage, RouterLink, ModalComponent],
   templateUrl: './preset-card.component.html',
   styleUrl: './preset-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -63,6 +63,9 @@ export const TodoStore = signalStore(
         ),
       }));
     },
+    reorderItems(updatedItems: Item[]): void {
+      patchState(state, { todoItems: updatedItems });
+    },
     clearCompleted(): void {
       patchState(state, ({ todoItems }) => ({
         todoItems: todoItems.filter(item => !item.done),

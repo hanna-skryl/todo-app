@@ -1,20 +1,22 @@
-<div cdkDrag class="todo-item">
+<div cdkDrag class="todo-item" [class.has-checkbox]="isInteractive">
   <label [for]="id()">
-    <span class="todo-item-checkbox"></span>
-    <input
-      class="app-input"
-      type="checkbox"
-      [id]="id()"
-      (change)="store.toggleItem(item().description)"
-      [value]="item().description"
-      [checked]="item().done"
-      formArrayName="selectControl"
-    />
+    @if (isInteractive) {
+      <span class="todo-item-checkbox"></span>
+      <input
+        class="app-input"
+        type="checkbox"
+        [id]="id()"
+        (change)="toggleDone()"
+        [formControl]="todoControl"
+      />
+    }
+
     {{ item().description }}
   </label>
-  <span class="remove-button" (click)="store.removeItem(item().description)">
+
+  <span class="remove-button" (click)="deleteTodo()">
     <img
-      src="assets/images/icon-cross.svg"
+      ngSrc="assets/images/icon-cross.svg"
       alt="Remove item."
       width="12"
       height="12"

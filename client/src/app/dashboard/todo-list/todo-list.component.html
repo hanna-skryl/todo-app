@@ -1,21 +1,23 @@
-<form class="form" [formGroup]="formGroup">
+<form class="form">
   <h1 class="title">{{ title }}</h1>
 
-  <label class="new-item-label" for="addItemInput">
-    <span class="new-item-checkbox"></span>
-    <input
-      #newItem
-      type="text"
-      class="new-item app-input"
-      placeholder="Create a new todo..."
-      (keyup.enter)="store.addItem(newItem.value); newItem.value = ''"
-      id="addItemInput"
-    />
-  </label>
+  <app-new-todo
+    (newTodo)="addNewTodo(newTodoControl.value)"
+    [formControl]="newTodoControl"
+  />
 
-  <div cdkDropList (cdkDropListDropped)="drop($event)" class="todo-list">
+  <div
+    cdkDropList
+    (cdkDropListDropped)="reorderTodos($event)"
+    class="todo-list"
+  >
     @for (item of store.filteredItems(); track $index) {
-      <app-todo-item [item]="item" [id]="$index + '-todo-item'" />
+      <app-todo-item
+        (todo)="handleTodoUpdate($event)"
+        [formControl]="todoStatusMap.get(item.description)!"
+        [item]="item"
+        [id]="$index + '-todo-item'"
+      />
     }
     <footer class="footer">
       @if (store.undoneItems() !== 0) {
@@ -27,7 +29,6 @@
           [ngTemplateOutlet]="filtersTemplate"
           [ngTemplateOutletContext]="{
             $implicit: filters,
-            form: formGroup,
             idPrefix: 'lg-',
           }"
         />
@@ -48,7 +49,6 @@
       [ngTemplateOutlet]="filtersTemplate"
       [ngTemplateOutletContext]="{
         $implicit: filters,
-        form: formGroup,
         idPrefix: 'sm-',
       }"
     />
@@ -57,12 +57,7 @@
   <p class="info">Drag and drop to reorder list</p>
 </form>
 
-<ng-template
-  #filtersTemplate
-  let-filters
-  let-form="form"
-  let-idPrefix="idPrefix"
->
+<ng-template #filtersTemplate let-filters let-idPrefix="idPrefix">
   <div class="filters">
     @for (filter of filters; track filter) {
       <label
@@ -73,7 +68,7 @@
       >
         <input
           type="radio"
-          [formControl]="form.get('filterControl')"
+          [formControl]="filterControl"
           [value]="filter"
           [id]="idPrefix + filter"
         />

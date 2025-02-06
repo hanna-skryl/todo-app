@@ -11,7 +11,7 @@ import type { CreatePresetResponse } from '../../../../src/app/models';
 export class PresetService {
   private readonly url = environment.apiUrl;
   readonly presets = signal<Preset[]>([]);
-  readonly preset = signal<Preset>({ title: '', items: [] });
+  readonly activePreset = signal<Preset | null>(null);
 
   constructor(private readonly httpClient: HttpClient) {}
 
@@ -38,9 +38,9 @@ export class PresetService {
       )
       .subscribe(preset => {
         if (preset) {
-          this.preset.set(preset);
+          this.activePreset.set(preset);
         }
-        return this.preset();
+        return this.activePreset();
       });
   }
 
@@ -63,16 +63,23 @@ export class PresetService {
 
   updatePreset(id: string, preset: Preset): void {
     this.httpClient
-      .put<Preset>(`${this.url}/presets/${id}`, preset)
+      .put(`${this.url}/presets/${id}`, preset, {
+        responseType: 'text',
+      })
       .pipe(
         catchError(error => {
           console.error(`Failed to update a preset with ID ${id}:`, error);
           return of(null);
         }),
       )
-      .subscribe(preset => {
-        if (preset) {
-          this.presets.update(items => ({ ...items, preset }));
+      .subscribe(isUpdated => {
+        if (preset && isUpdated) {
+          this.activePreset.set(preset);
+          this.presets.update(items =>
+            items.map(item =>
+              item._id === id ? { ...item, ...preset } : item,
+            ),
+          );
         }
       });
   }

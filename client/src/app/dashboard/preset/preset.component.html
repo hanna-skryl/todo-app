@@ -1,1 +1,40 @@
-<p>preset works!</p>
+<form class="preset-form">
+  <h1>Edit preset</h1>
+
+  <div class="preset-name">
+    <label class="preset-label" for="presetName">
+      <h2>Preset Name</h2>
+    </label>
+    <input
+      #presetName
+      type="text"
+      class="preset-input app-input"
+      id="presetName"
+      [formControl]="titleControl"
+    />
+  </div>
+
+  <h2>Tasks</h2>
+  <div cdkDropList (cdkDropListDropped)="reorderTodos($event)" class="tasks">
+    @for (item of tasksControl.controls; track $index) {
+      <app-todo-item
+        (todo)="handleTodoUpdate($event)"
+        [item]="{ description: item.value, done: false }"
+        [id]="$index + '-task'"
+      />
+    }
+  </div>
+
+  <app-new-todo (newTodo)="addNewTodo($event)" [formControl]="newTodoControl" />
+
+  <button type="button" class="app-btn-ghost save-btn" (click)="savePreset()">
+    <img
+      ngSrc="assets/images/save.svg"
+      width="20"
+      height="20"
+      alt="Save icon."
+      class="save-icon"
+    />
+    Save Preset
+  </button>
+</form>

@@ -6,7 +6,7 @@
 
 .todo-item {
   width: 100%;
-  padding: 16px 18px 16px 50px;
+  padding: 16px 18px;
   border: none;
   position: relative;
   display: flex;
@@ -20,7 +20,7 @@
   border-bottom: var(--border);
 
   @media (min-width: 768px) {
-    padding: 22px 25px 22px 62px;
+    padding: 22px 25px;
     font-size: 18px;
     font-weight: 400;
   }
@@ -28,6 +28,14 @@
   input[type='checkbox'] {
     position: absolute;
     left: -9999px;
+  }
+
+  &.has-checkbox {
+    padding: 16px 18px 16px 50px;
+
+    @media (min-width: 768px) {
+      padding: 22px 25px 22px 62px;
+    }
   }
 
   &:hover {

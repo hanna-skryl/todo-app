@@ -1,5 +1,3 @@
-.new-item::placeholder,
-.new-item,
 .footer {
   font-size: 12px;
   font-weight: 700;
@@ -8,15 +6,6 @@
     font-size: 18px;
     font-weight: 400;
   }
-}
-
-.new-item {
-  font-family: inherit;
-  color: var(--content-primary);
-}
-
-.new-item::placeholder {
-  color: var(--content-muted);
 }
 
 .filter {
@@ -71,7 +60,6 @@
   }
 }
 
-.new-item,
 .footer {
   width: 100%;
   padding: 1rem 1.125rem 1rem 3.125rem;
@@ -118,32 +106,8 @@
   }
 }
 
-.new-item,
 .todo-list {
   border-radius: var(--radius-xs);
-}
-
-.new-item-label {
-  position: relative;
-}
-
-.new-item-checkbox {
-  width: 20px;
-  display: block;
-  height: 20px;
-  position: absolute;
-  border-radius: 50%;
-  border: var(--border);
-  left: 16px;
-  z-index: 1;
-  top: calc(50% - 10px);
-
-  @media (min-width: 768px) {
-    width: 1.5625rem;
-    height: 1.5625rem;
-    left: 20px;
-    top: calc(50% - 12.5px);
-  }
 }
 
 .todo-list {

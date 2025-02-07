@@ -56,6 +56,11 @@ input {
   }
 }
 
+.success {
+  margin-left: 0.3125rem;
+  color: var(--very-dark-grayish-blue-light);
+}
+
 .error {
   color: var(--background-destructive);
   text-align: center;

@@ -39,22 +39,33 @@
   </h2>
   <p>
     <strong>Username:</strong> demo_user
-    <img
-      class="copy-icon"
-      ngSrc="assets/images/copy.svg"
-      width="20"
-      height="20"
-      cdkCopyToClipboard="demo_user"
-    />
+    <button type="button" class="app-btn-txt" (click)="copyText('username')">
+      <img
+        class="copy-icon"
+        ngSrc="assets/images/copy.svg"
+        width="20"
+        height="20"
+        cdkCopyToClipboard="demo_user"
+      />
+    </button>
+
+    @if (showSuccessMessage().username) {
+      <span class="success">Copied!</span>
+    }
   </p>
   <p>
     <strong>Password:</strong> password123
-    <img
-      class="copy-icon"
-      ngSrc="assets/images/copy.svg"
-      width="20"
-      height="20"
-      cdkCopyToClipboard="password123"
-    />
+    <button type="button" class="app-btn-txt" (click)="copyText('password')">
+      <img
+        class="copy-icon"
+        ngSrc="assets/images/copy.svg"
+        width="20"
+        height="20"
+        cdkCopyToClipboard="password123"
+      />
+    </button>
+    @if (showSuccessMessage().password) {
+      <span class="success">Copied!</span>
+    }
   </p>
 </div>

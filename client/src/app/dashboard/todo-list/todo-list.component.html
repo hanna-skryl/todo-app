@@ -13,7 +13,7 @@
   >
     @for (item of store.filteredItems(); track $index) {
       <app-todo-item
-        (todo)="handleTodoUpdate($event)"
+        (todoUpdate)="handleTodoUpdate($event)"
         [formControl]="todoStatusMap.get(item.description)!"
         [item]="item"
         [id]="$index + '-todo-item'"

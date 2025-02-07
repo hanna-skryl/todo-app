@@ -41,7 +41,7 @@ export type TodoItemEvent = {
 export class TodoItemComponent implements ControlValueAccessor {
   readonly store = inject(TodoStore);
 
-  readonly todo = output<TodoItemEvent>();
+  readonly todoUpdate = output<TodoItemEvent>();
 
   readonly item = input.required<Item>();
   readonly id = input.required<string>();
@@ -68,14 +68,14 @@ export class TodoItemComponent implements ControlValueAccessor {
   }
 
   deleteTodo(): void {
-    this.todo.emit({
+    this.todoUpdate.emit({
       item: { ...this.item(), done: this.todoControl.value },
       event: 'delete',
     });
   }
 
   toggleDone(): void {
-    this.todo.emit({
+    this.todoUpdate.emit({
       item: { ...this.item(), done: this.todoControl.value },
       event: 'update',
     });

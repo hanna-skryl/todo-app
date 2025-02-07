@@ -21,8 +21,16 @@
   }
 }
 
+.nav-extra {
+  column-gap: 1.25rem;
+
+  @media (min-width: 768px) {
+    column-gap: 1.5rem;
+  }
+}
+
 .nav-link {
-  font-size: 0.8125rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   text-decoration: none;

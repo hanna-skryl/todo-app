@@ -3,6 +3,7 @@
 
   <app-new-todo
     (newTodo)="addNewTodo(newTodoControl.value)"
+    [hasCheckbox]="true"
     [formControl]="newTodoControl"
   />
 

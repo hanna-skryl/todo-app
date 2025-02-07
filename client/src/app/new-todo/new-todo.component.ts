@@ -3,6 +3,7 @@ import {
   Component,
   forwardRef,
   inject,
+  input,
   output,
 } from '@angular/core';
 import {
@@ -30,6 +31,7 @@ import { TodoStore } from '../store/todo.store';
 export class NewTodoComponent implements ControlValueAccessor {
   readonly store = inject(TodoStore);
 
+  readonly hasCheckbox = input.required<boolean>();
   readonly newTodo = output<string>();
 
   readonly newTodoControl = new FormControl<string>('', {

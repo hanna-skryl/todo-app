@@ -18,7 +18,7 @@
   <div cdkDropList (cdkDropListDropped)="reorderTodos($event)" class="tasks">
     @for (item of tasksControl.controls; track $index) {
       <app-todo-item
-        (todo)="handleTodoUpdate($event)"
+        (todoUpdate)="handleTodoUpdate($event)"
         [item]="{ description: item.value, done: false }"
         [id]="$index + '-task'"
       />

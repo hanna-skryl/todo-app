@@ -17,16 +17,6 @@
   column-gap: 0.5rem;
 }
 
-.new-preset-input {
-  padding: 16px 18px;
-
-  @media (min-width: 768px) {
-    padding: 22px 25px;
-    font-size: 1.125rem;
-    font-weight: 400;
-  }
-}
-
 .new-preset-label {
   flex: 1;
 }

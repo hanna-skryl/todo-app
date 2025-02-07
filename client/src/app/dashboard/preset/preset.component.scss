@@ -16,14 +16,6 @@
   color: var(--content-primary);
 }
 
-.preset-input {
-  padding: 16px 18px;
-
-  @media (min-width: 768px) {
-    padding: 22px 25px;
-  }
-}
-
 .save-btn {
   display: flex;
   justify-content: center;

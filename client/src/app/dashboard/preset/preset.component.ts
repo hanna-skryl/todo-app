@@ -21,7 +21,7 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { PresetService } from '../presets/preset.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
@@ -40,6 +40,7 @@ import { NgOptimizedImage } from '@angular/common';
 export class PresetComponent implements OnInit {
   private readonly presetsService = inject(PresetService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
 
   private readonly preset = computed(() => this.presetsService.activePreset());
@@ -107,6 +108,7 @@ export class PresetComponent implements OnInit {
       title: this.titleControl.value,
       items: this.tasksControl.value,
     });
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   reorderTodos(event: CdkDragDrop<Item[]>): void {

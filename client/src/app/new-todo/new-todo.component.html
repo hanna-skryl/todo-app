@@ -1,5 +1,7 @@
 <label class="new-todo-label" for="newTodo">
-  <span class="new-todo-checkbox"></span>
+  @if (hasCheckbox()) {
+    <span class="new-todo-checkbox"></span>
+  }
   <input
     type="text"
     class="new-todo-input app-input"
@@ -7,5 +9,6 @@
     id="newTodo"
     [formControl]="newTodoControl"
     (keyup.enter)="emitNewTodo()"
+    [class.has-checkbox]="hasCheckbox()"
   />
 </label>

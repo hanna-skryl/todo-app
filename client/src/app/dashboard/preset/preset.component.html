@@ -3,7 +3,7 @@
 
   <div class="preset-name">
     <label class="preset-label" for="presetName">
-      <h2>Preset Name</h2>
+      <h2 class="preset-title">Preset Name</h2>
     </label>
     <input
       #presetName
@@ -14,7 +14,7 @@
     />
   </div>
 
-  <h2>Tasks</h2>
+  <h2 class="tasks-title">Tasks</h2>
   <div cdkDropList (cdkDropListDropped)="reorderTodos($event)" class="tasks">
     @for (item of tasksControl.controls; track $index) {
       <app-todo-item
@@ -25,7 +25,12 @@
     }
   </div>
 
-  <app-new-todo (newTodo)="addNewTodo($event)" [formControl]="newTodoControl" />
+  <app-new-todo
+    class="new-todo"
+    (newTodo)="addNewTodo($event)"
+    [hasCheckbox]="false"
+    [formControl]="newTodoControl"
+  />
 
   <button type="button" class="app-btn-ghost save-btn" (click)="savePreset()">
     <img

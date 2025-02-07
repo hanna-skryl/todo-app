@@ -24,9 +24,24 @@
   margin-top: 4rem;
 }
 
-.tasks {
+.preset-title,
+.tasks-title {
+  backdrop-filter: contrast(01) brightness(0.75) blur(15px);
+  z-index: -1;
+  position: relative;
+  display: flex;
+  width: fit-content;
+  padding: 8px;
   border-radius: var(--radius-xs);
   overflow: hidden;
+  color: var(--content-destructive);
+}
+
+.tasks {
+  overflow: hidden;
+  background-color: var(--background-secondary);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-xs);
 }
 
 .preset-name,
@@ -36,4 +51,9 @@
   @media (min-width: 768px) {
     margin-bottom: 2rem;
   }
+}
+
+.new-todo {
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-xs);
 }

@@ -8,7 +8,7 @@
   color: var(--content-primary);
   border-radius: var(--radius-xs);
   width: 100%;
-  padding: 1rem 1.125rem 1rem 3.125rem;
+  padding: 1rem 1.125rem;
   border: none;
   display: flex;
   justify-content: space-between;
@@ -16,7 +16,15 @@
   background-color: var(--background-secondary);
 
   @media (min-width: 768px) {
-    padding: 1.375rem 1.5625rem 1.375rem 3.875rem;
+    padding: 1.375rem 1.5625rem;
+  }
+
+  &.has-checkbox {
+    padding: 1rem 1.125rem 1rem 3.125rem;
+
+    @media (min-width: 768px) {
+      padding: 1.375rem 1.5625rem 1.375rem 3.875rem;
+    }
   }
 }
 

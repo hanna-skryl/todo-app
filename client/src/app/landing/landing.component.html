@@ -13,17 +13,25 @@
     required
     class="app-input"
   />
-  <button class="app-btn-primary login-button" type="submit">
-    <img
-      class="login-icon"
-      ngSrc="assets/images/login.svg"
-      width="20"
-      height="20"
-    />
-    Login
+  <button
+    class="app-btn-primary login-button"
+    type="submit"
+    [disabled]="loading()"
+  >
+    @if (showSpinner()) {
+      <span class="spinner"></span>
+    } @else {
+      <img
+        class="login-icon"
+        ngSrc="assets/images/login.svg"
+        width="20"
+        height="20"
+      />
+    }
+    <span>Login</span>
   </button>
 </form>
-@if (errorMessage) {
+@if (errorMessage(); as errorMessage) {
   <p class="error">{{ errorMessage }}</p>
 }
 

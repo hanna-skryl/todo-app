@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -17,8 +18,9 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LandingComponent {
-  errorMessage: string | null = null;
-
+  readonly loading = signal(false);
+  readonly showSpinner = signal(false);
+  readonly errorMessage = signal<string | null>(null);
   readonly showSuccessMessage = signal<
     Record<'username' | 'password', boolean>
   >({
@@ -29,8 +31,22 @@ export class LandingComponent {
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
 
+  constructor() {
+    effect(() => {
+      if (this.loading()) {
+        const timerId = setTimeout(() => this.showSpinner.set(true), 500);
+        return () => clearTimeout(timerId);
+      } else {
+        this.showSpinner.set(false);
+        return () => {};
+      }
+    });
+  }
+
   async onLogin(event: Event): Promise<void> {
     event.preventDefault();
+    this.loading.set(true);
+
     const form = event.target as HTMLFormElement;
     const username = (form.elements.namedItem('username') as HTMLInputElement)
       .value;
@@ -38,10 +54,11 @@ export class LandingComponent {
       .value;
 
     const success = await this.authService.login(username, password);
+    this.loading.set(false);
     if (success) {
       this.router.navigate(['/dashboard']);
     } else {
-      this.errorMessage = 'Invalid username or password';
+      this.errorMessage.set('Invalid username or password');
     }
   }
 

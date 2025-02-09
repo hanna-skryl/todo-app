@@ -138,8 +138,10 @@ select:-webkit-autofill:focus {
     font-size: 0.9375rem;
   }
 
-  &:hover {
-    color: var(--content-primary);
+  @media (hover: hover) {
+    &:hover:enabled {
+      color: var(--content-primary);
+    }
   }
 }
 
@@ -161,9 +163,11 @@ select:-webkit-autofill:focus {
     border-radius: var(--radius-md);
   }
 
-  &:hover {
-    color: var(--content-hover);
-    background-color: var(--border-color);
+  @media (hover: hover) {
+    &:hover:enabled {
+      color: var(--content-hover);
+      background-color: var(--border-color);
+    }
   }
 }
 
@@ -182,8 +186,10 @@ select:-webkit-autofill:focus {
     border-radius: var(--radius-md);
   }
 
-  &:hover {
-    background-color: var(--border-color);
+  @media (hover: hover) {
+    &:hover:enabled {
+      background-color: var(--border-color);
+    }
   }
 }
 
@@ -202,7 +208,9 @@ select:-webkit-autofill:focus {
     border-radius: var(--radius-md);
   }
 
-  &:hover {
-    background-color: var(--background-destructive-hover);
+  @media (hover: hover) {
+    &:hover:enabled {
+      background-color: var(--background-destructive-hover);
+    }
   }
 }

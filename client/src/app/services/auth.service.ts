@@ -1,6 +1,13 @@
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import {
+  computed,
+  effect,
+  inject,
+  Injectable,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
@@ -13,16 +20,29 @@ export class AuthService {
 
   private readonly loggedIn = signal(false);
 
+  isLoggedIn = computed(
+    () =>
+      this.loggedIn() ||
+      (isPlatformBrowser(this.platformId) &&
+        localStorage.getItem('isLoggedIn') === 'true'),
+  );
+
   private readonly platformId = inject(PLATFORM_ID);
   private readonly httpClient = inject(HttpClient);
   private readonly router = inject(Router);
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
-      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      this.loggedIn.set(isLoggedIn);
-    } else {
-      this.loggedIn.set(false);
+      this.loggedIn.set(localStorage.getItem('isLoggedIn') === 'true');
+
+      effect(() => {
+        if (this.loggedIn()) {
+          localStorage.setItem('isLoggedIn', 'true');
+        } else {
+          localStorage.removeItem('isLoggedIn');
+          this.router.navigate(['/login']);
+        }
+      });
     }
   }
 
@@ -34,15 +54,9 @@ export class AuthService {
           password,
         }),
       );
-      if (response && response.message === 'Login successful') {
-        this.loggedIn.set(true);
-        if (isPlatformBrowser(this.platformId)) {
-          localStorage.setItem('isLoggedIn', 'true');
-        }
-        return true;
-      } else {
-        return false;
-      }
+      const success = response.message === 'Login successful';
+      this.loggedIn.set(success);
+      return success;
     } catch (error) {
       console.error('Login failed:', error);
       return false;
@@ -51,17 +65,5 @@ export class AuthService {
 
   logout(): void {
     this.loggedIn.set(false);
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('isLoggedIn');
-    }
-    this.router.navigate(['/login']);
-  }
-
-  isLoggedIn(): boolean {
-    return (
-      this.loggedIn() ||
-      (isPlatformBrowser(this.platformId) &&
-        localStorage.getItem('isLoggedIn') === 'true')
-    );
   }
 }

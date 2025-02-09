@@ -2,6 +2,7 @@ import * as mongodb from 'mongodb';
 import { Collection } from './collections';
 import { createUsersClient } from './users-client';
 import { createPresetsClient } from './presets-client';
+import { createActiveListClient } from './active-list-client';
 
 export async function createDbClient(uri: string) {
   const mongoClient = new mongodb.MongoClient(uri);
@@ -30,10 +31,20 @@ export async function createDbClient(uri: string) {
       password: { bsonType: 'string', description: "'password' is required" },
     },
   });
+  await applySchemaValidation(db, 'active_list', {
+    bsonType: 'object',
+    required: ['tasks'],
+    additionalProperties: false,
+    properties: {
+      _id: {},
+      tasks: { bsonType: 'array', description: "'tasks' is required" },
+    },
+  });
 
   return {
     ...createPresetsClient(db),
     ...createUsersClient(db),
+    ...createActiveListClient(db),
   };
 }
 

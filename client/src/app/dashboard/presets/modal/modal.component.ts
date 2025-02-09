@@ -20,7 +20,7 @@ import { ClickOutsideDirective } from './click-outside.directive';
 export class ModalComponent {
   private readonly presetsService = inject(PresetService);
 
-  readonly itemId = input.required<string>();
+  readonly presetId = input.required<string>();
   readonly dialog = viewChild<ElementRef>('dialog');
 
   closeModal(): void {
@@ -28,7 +28,7 @@ export class ModalComponent {
   }
 
   deletePreset(): void {
-    this.presetsService.deletePreset(this.itemId());
+    this.presetsService.deletePreset(this.presetId());
   }
 
   openModal(): void {

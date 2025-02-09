@@ -1,28 +1,24 @@
 <form class="form">
   <h1 class="title">{{ title }}</h1>
 
-  <app-new-todo
-    (newTodo)="addNewTodo(newTodoControl.value)"
+  <app-new-task
+    (newTask)="addNewTask(newTaskControl.value)"
     [hasCheckbox]="true"
-    [formControl]="newTodoControl"
+    [formControl]="newTaskControl"
   />
 
-  <div
-    cdkDropList
-    (cdkDropListDropped)="reorderTodos($event)"
-    class="todo-list"
-  >
-    @for (item of store.filteredItems(); track $index) {
-      <app-todo-item
-        (todoUpdate)="handleTodoUpdate($event)"
-        [formControl]="todoStatusMap.get(item.description)!"
-        [item]="item"
-        [id]="$index + '-todo-item'"
+  <div cdkDropList (cdkDropListDropped)="reorderTasks($event)" class="list">
+    @for (task of store.filteredTasks(); track $index) {
+      <app-task
+        (taskUpdate)="handleTaskUpdate($event)"
+        [formControl]="taskStatusMap.get(task.description)!"
+        [task]="task"
+        [id]="'task-' + $index"
       />
     }
     <footer class="footer">
-      @if (store.undoneItems() !== 0) {
-        <div>{{ store.undoneItems() }} items left</div>
+      @if (store.undoneTasks() !== 0) {
+        <div>{{ store.undoneTasks() }} tasks left</div>
       }
 
       <div class="filters-lg">
@@ -65,7 +61,7 @@
         class="filter"
         [class.selected-filter]="filter === store.selectedFilter()"
         [for]="idPrefix + filter"
-        (click)="store.filterItems(filter)"
+        (click)="store.filterTasks(filter)"
       >
         <input
           type="radio"

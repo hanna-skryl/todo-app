@@ -15,26 +15,26 @@ import {
 import { TodoStore } from '../store/todo.store';
 
 @Component({
-  selector: 'app-new-todo',
+  selector: 'app-new-task',
   imports: [ReactiveFormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => NewTodoComponent),
+      useExisting: forwardRef(() => NewTaskComponent),
       multi: true,
     },
   ],
-  templateUrl: './new-todo.component.html',
-  styleUrl: './new-todo.component.scss',
+  templateUrl: './new-task.component.html',
+  styleUrl: './new-task.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewTodoComponent implements ControlValueAccessor {
+export class NewTaskComponent implements ControlValueAccessor {
   readonly store = inject(TodoStore);
 
   readonly hasCheckbox = input.required<boolean>();
-  readonly newTodo = output<string>();
+  readonly newTask = output<string>();
 
-  readonly newTodoControl = new FormControl<string>('', {
+  readonly newTaskControl = new FormControl<string>('', {
     nonNullable: true,
   });
 
@@ -42,7 +42,7 @@ export class NewTodoComponent implements ControlValueAccessor {
   private onTouched: (() => void) | undefined;
 
   writeValue(value: string): void {
-    this.newTodoControl.setValue(value, { emitEvent: false });
+    this.newTaskControl.setValue(value, { emitEvent: false });
   }
   registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
@@ -51,13 +51,13 @@ export class NewTodoComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  emitNewTodo(): void {
-    const todo = this.newTodoControl.value.trim();
-    if (todo) {
-      this.onChange?.(todo);
+  emitNewTask(): void {
+    const task = this.newTaskControl.value.trim();
+    if (task) {
+      this.onChange?.(task);
       this.onTouched?.();
-      this.newTodo.emit(todo);
-      this.newTodoControl.reset();
+      this.newTask.emit(task);
+      this.newTaskControl.reset();
     }
   }
 }

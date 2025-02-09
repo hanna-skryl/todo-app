@@ -1,0 +1,14 @@
+<label class="new-task-label" for="newTask">
+  @if (hasCheckbox()) {
+    <span class="new-task-checkbox"></span>
+  }
+  <input
+    type="text"
+    class="new-task-input app-input"
+    placeholder="Create a new task..."
+    id="newTask"
+    [formControl]="newTaskControl"
+    (keyup.enter)="emitNewTask()"
+    [class.has-checkbox]="hasCheckbox()"
+  />
+</label>

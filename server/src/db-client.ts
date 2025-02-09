@@ -11,12 +11,12 @@ export async function createDbClient(uri: string) {
 
   await applySchemaValidation(db, Collection.Presets, {
     bsonType: 'object',
-    required: ['title', 'items'],
+    required: ['title', 'tasks'],
     additionalProperties: false,
     properties: {
       _id: {},
       title: { bsonType: 'string', description: "'title' is required" },
-      items: { bsonType: 'array', description: "'items' is required" },
+      tasks: { bsonType: 'array', description: "'tasks' is required" },
     },
   });
 

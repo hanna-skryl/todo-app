@@ -8,12 +8,9 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { Item, Preset } from 'src/app/models';
-import {
-  TodoItemComponent,
-  TodoItemEvent,
-} from '../../todo-item/todo-item.component';
-import { NewTodoComponent } from '../../new-todo/new-todo.component';
+import { Preset, Task } from 'src/app/models';
+import { TaskEvent, TaskComponent } from '../../task/task.component';
+import { NewTaskComponent } from '../../new-task/new-task.component';
 import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   CdkDragDrop,
@@ -27,11 +24,12 @@ import { NgOptimizedImage } from '@angular/common';
 @Component({
   selector: 'app-preset',
   imports: [
-    TodoItemComponent,
-    NewTodoComponent,
+    TaskComponent,
+    NewTaskComponent,
     CdkDropList,
     NgOptimizedImage,
     ReactiveFormsModule,
+    TaskComponent,
   ],
   templateUrl: './preset.component.html',
   styleUrl: './preset.component.scss',
@@ -46,7 +44,7 @@ export class PresetComponent implements OnInit {
   private readonly preset = computed(() => this.presetsService.activePreset());
   private readonly presetId = signal<string>('');
 
-  readonly newTodoControl = new FormControl<string>('', { nonNullable: true });
+  readonly newTaskControl = new FormControl<string>('', { nonNullable: true });
   readonly tasksControl = new FormArray<FormControl<string>>([]);
   readonly titleControl = new FormControl<Preset['title']>('', {
     nonNullable: true,
@@ -61,15 +59,15 @@ export class PresetComponent implements OnInit {
       const preset = this.preset();
       if (preset) {
         this.titleControl.setValue(preset.title);
-        this.initializeTasks(preset.items);
+        this.initializeTasks(preset.tasks);
       }
       this.cdr.markForCheck();
     });
   }
 
-  private initializeTasks(items: string[]): void {
+  private initializeTasks(tasks: string[]): void {
     this.tasksControl.clear();
-    items.forEach(description => {
+    tasks.forEach(description => {
       this.tasksControl.push(
         new FormControl(description, { nonNullable: true }),
       );
@@ -84,18 +82,18 @@ export class PresetComponent implements OnInit {
     }
   }
 
-  addNewTodo(task: string): void {
+  addNewTask(task: string): void {
     if (!task.trim()) {
       return;
     }
     this.tasksControl.push(new FormControl(task, { nonNullable: true }));
-    this.newTodoControl.setValue('');
+    this.newTaskControl.setValue('');
   }
 
-  handleTodoUpdate({ item, event }: TodoItemEvent): void {
+  handleTaskUpdate({ task, event }: TaskEvent): void {
     if (event === 'delete') {
       const index = this.tasksControl.controls.findIndex(
-        control => control.value === item.description,
+        control => control.value === task.description,
       );
       if (index !== -1) {
         this.tasksControl.removeAt(index);
@@ -106,12 +104,12 @@ export class PresetComponent implements OnInit {
   savePreset(): void {
     this.presetsService.updatePreset(this.presetId(), {
       title: this.titleControl.value,
-      items: this.tasksControl.value,
+      tasks: this.tasksControl.value,
     });
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
-  reorderTodos(event: CdkDragDrop<Item[]>): void {
+  reorderTasks(event: CdkDragDrop<Task[]>): void {
     moveItemInArray(
       this.tasksControl.controls,
       event.previousIndex,

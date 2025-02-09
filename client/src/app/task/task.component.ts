@@ -1,15 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   forwardRef,
   inject,
   input,
-  OnInit,
   output,
 } from '@angular/core';
 import { TodoStore } from '../store/todo.store';
-import { Item } from '../models';
+import { Task } from '../models';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import {
   ControlValueAccessor,
@@ -19,34 +17,34 @@ import {
 } from '@angular/forms';
 import { NgOptimizedImage } from '@angular/common';
 
-export type TodoItemEvent = {
-  item: Item;
+export type TaskEvent = {
+  task: Task;
   event: 'delete' | 'update';
 };
 
 @Component({
-  selector: 'app-todo-item',
+  selector: 'app-task',
   imports: [CdkDrag, NgOptimizedImage, ReactiveFormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TodoItemComponent),
+      useExisting: forwardRef(() => TaskComponent),
       multi: true,
     },
   ],
-  templateUrl: './todo-item.component.html',
-  styleUrl: './todo-item.component.scss',
+  templateUrl: './task.component.html',
+  styleUrl: './task.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodoItemComponent implements ControlValueAccessor {
+export class TaskComponent implements ControlValueAccessor {
   readonly store = inject(TodoStore);
 
-  readonly todoUpdate = output<TodoItemEvent>();
+  readonly taskUpdate = output<TaskEvent>();
 
-  readonly item = input.required<Item>();
+  readonly task = input.required<Task>();
   readonly id = input.required<string>();
 
-  readonly todoControl = new FormControl<boolean>(false, { nonNullable: true });
+  readonly taskControl = new FormControl<boolean>(false, { nonNullable: true });
 
   private onChange: ((value: boolean) => void) | undefined;
   private onTouched: (() => void) | undefined;
@@ -57,7 +55,7 @@ export class TodoItemComponent implements ControlValueAccessor {
 
   writeValue(value: boolean | null): void {
     if (value !== null) {
-      this.todoControl.setValue(value, { emitEvent: false });
+      this.taskControl.setValue(value, { emitEvent: false });
     }
   }
   registerOnChange(fn: (value: boolean) => void): void {
@@ -67,16 +65,16 @@ export class TodoItemComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  deleteTodo(): void {
-    this.todoUpdate.emit({
-      item: { ...this.item(), done: this.todoControl.value },
+  deleteTask(): void {
+    this.taskUpdate.emit({
+      task: { ...this.task(), done: this.taskControl.value },
       event: 'delete',
     });
   }
 
   toggleDone(): void {
-    this.todoUpdate.emit({
-      item: { ...this.item(), done: this.todoControl.value },
+    this.taskUpdate.emit({
+      task: { ...this.task(), done: this.taskControl.value },
       event: 'update',
     });
   }

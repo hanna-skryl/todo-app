@@ -15,21 +15,21 @@
   </div>
 
   <h2 class="tasks-title">Tasks</h2>
-  <div cdkDropList (cdkDropListDropped)="reorderTodos($event)" class="tasks">
-    @for (item of tasksControl.controls; track $index) {
-      <app-todo-item
-        (todoUpdate)="handleTodoUpdate($event)"
-        [item]="{ description: item.value, done: false }"
-        [id]="$index + '-task'"
+  <div cdkDropList (cdkDropListDropped)="reorderTasks($event)" class="tasks">
+    @for (task of tasksControl.controls; track $index) {
+      <app-task
+        (taskUpdate)="handleTaskUpdate($event)"
+        [task]="{ description: task.value, done: false }"
+        [id]="'task-' + $index"
       />
     }
   </div>
 
-  <app-new-todo
-    class="new-todo"
-    (newTodo)="addNewTodo($event)"
+  <app-new-task
+    class="new-task"
+    (newTask)="addNewTask($event)"
     [hasCheckbox]="false"
-    [formControl]="newTodoControl"
+    [formControl]="newTaskControl"
   />
 
   <button type="button" class="app-btn-ghost save-btn" (click)="savePreset()">

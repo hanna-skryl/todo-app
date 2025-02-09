@@ -1,4 +1,4 @@
-export type Item = {
+export type Task = {
   description: string;
   done: boolean;
 };
@@ -12,9 +12,14 @@ export type Mode = (typeof MODE)[number];
 export type Preset = {
   _id?: string;
   title: string;
-  items: string[];
+  tasks: string[];
 };
 
 export type CreatePresetResponse = {
   insertedId: string;
+};
+
+export type ActiveList = {
+  _id?: string;
+  tasks: Task[];
 };

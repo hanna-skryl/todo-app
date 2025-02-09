@@ -1,6 +1,6 @@
-<h3>{{ item().title }}</h3>
+<h3>{{ preset().title }}</h3>
 <div class="tasks">{{ tasks() }}</div>
-@if (item()._id; as itemId) {
+@if (preset()._id; as presetId) {
   <div class="actions">
     <!-- TODO: Applies the selected preset to the current to-do list -->
     <button class="activate-btn app-btn-ghost" type="button">
@@ -14,7 +14,7 @@
       Activate
     </button>
 
-    <a class="edit-btn app-btn-ghost" type="button" [routerLink]="[itemId]">
+    <a class="edit-btn app-btn-ghost" type="button" [routerLink]="[presetId]">
       <img
         class="icon"
         ngSrc="assets/images/edit.svg"
@@ -25,6 +25,6 @@
       Edit
     </a>
 
-    <app-modal class="delete-btn" [itemId]="itemId" />
+    <app-modal class="delete-btn" [presetId]="presetId" />
   </div>
 }

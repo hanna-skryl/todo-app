@@ -34,7 +34,7 @@ export class PresetsComponent implements OnInit {
   createPreset(): void {
     const title = this.newPreset.value.trim();
     if (title) {
-      this.presetsService.createPreset({ title, items: [] });
+      this.presetsService.createPreset({ title, tasks: [] });
       this.newPreset.reset();
     }
   }

@@ -3,7 +3,7 @@
   position: relative;
 }
 
-.new-todo-input {
+.new-task-input {
   font-family: inherit;
   color: var(--content-primary);
   border-radius: var(--radius-xs);
@@ -28,12 +28,12 @@
   }
 }
 
-.new-todo-input::placeholder {
+.new-task-input::placeholder {
   color: var(--content-muted);
 }
 
-.new-todo-input::placeholder,
-.new-todo-input {
+.new-task-input::placeholder,
+.new-task-input {
   font-size: 0.75rem;
   font-weight: 700;
 
@@ -43,11 +43,11 @@
   }
 }
 
-.new-todo-label {
+.new-task-label {
   width: 100%;
 }
 
-.new-todo-checkbox {
+.new-task-checkbox {
   width: 1.25rem;
   display: block;
   height: 1.25rem;

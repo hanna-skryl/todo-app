@@ -1,5 +1,5 @@
 import { computed } from '@angular/core';
-import { FilterOption, Item, Mode } from '../models';
+import { FilterOption, Task, Mode } from '../models';
 import {
   patchState,
   signalStore,
@@ -9,21 +9,14 @@ import {
 } from '@ngrx/signals';
 import { MODE_PREFERENCE_STORAGE_KEY } from '../constants';
 
-type TodoState = {
-  todoItems: Item[];
+export type TodoState = {
+  tasks: Task[];
   selectedFilter: FilterOption;
   mode: Mode;
 };
 
 export const initialState: TodoState = {
-  todoItems: [
-    { description: 'Complete online JavaScript course', done: true },
-    { description: 'Jog around the park 3x', done: false },
-    { description: '10 minutes meditation', done: false },
-    { description: 'Read for 1 hour', done: false },
-    { description: 'Pick up groceries', done: false },
-    { description: 'Complete Todo App on Frontend Mentor', done: false },
-  ],
+  tasks: [],
   selectedFilter: 'All',
   mode: 'dark',
 };
@@ -31,56 +24,56 @@ export const initialState: TodoState = {
 export const TodoStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withComputed(({ todoItems, selectedFilter }) => ({
-    undoneItems: computed(() => todoItems().filter(item => !item.done).length),
-    filteredItems: computed(() =>
-      todoItems().filter(item =>
+  withComputed(({ tasks, selectedFilter }) => ({
+    undoneTasks: computed(() => tasks().filter(task => !task.done).length),
+    filteredTasks: computed(() =>
+      tasks().filter(task =>
         selectedFilter() === 'Active'
-          ? !item.done
+          ? !task.done
           : selectedFilter() === 'Completed'
-            ? item.done
-            : item,
+            ? task.done
+            : task,
       ),
     ),
   })),
-  withMethods(state => ({
-    addItem(description: string): void {
-      patchState(state, ({ todoItems }) => ({
-        todoItems: [...todoItems, { description, done: false }],
+  withMethods(store => ({
+    addTask(description: string): void {
+      patchState(store, ({ tasks }) => ({
+        tasks: [...tasks, { description, done: false }],
       }));
     },
-    removeItem(description: string): void {
-      patchState(state, ({ todoItems }) => ({
-        todoItems: todoItems.filter(item => item.description !== description),
+    removeTask(description: string): void {
+      patchState(store, ({ tasks }) => ({
+        tasks: tasks.filter(task => task.description !== description),
       }));
     },
-    toggleItem(description: string): void {
-      patchState(state, ({ todoItems }) => ({
-        todoItems: todoItems.map(item =>
-          description === item.description
-            ? { description, done: !item.done }
-            : item,
+    toggleTask(description: string): void {
+      patchState(store, ({ tasks }) => ({
+        tasks: tasks.map(task =>
+          description === task.description
+            ? { description, done: !task.done }
+            : task,
         ),
       }));
     },
-    reorderItems(updatedItems: Item[]): void {
-      patchState(state, { todoItems: updatedItems });
+    reorderTasks(updatedTasks: Task[]): void {
+      patchState(store, { tasks: updatedTasks });
     },
     clearCompleted(): void {
-      patchState(state, ({ todoItems }) => ({
-        todoItems: todoItems.filter(item => !item.done),
+      patchState(store, ({ tasks }) => ({
+        tasks: tasks.filter(task => !task.done),
       }));
     },
-    filterItems(option: FilterOption): void {
-      patchState(state, () => ({ selectedFilter: option }));
+    filterTasks(option: FilterOption): void {
+      patchState(store, () => ({ selectedFilter: option }));
     },
     toggleMode(): void {
-      patchState(state, ({ mode }) => ({
+      patchState(store, ({ mode }) => ({
         mode: mode === 'light' ? 'dark' : ('light' as Mode),
       }));
     },
     updateMode(mode: Mode): void {
-      patchState(state, () => ({ mode }));
+      patchState(store, () => ({ mode }));
     },
     // User agents can block localStorage.
     // Then it is treated as if no preference has previously been stored.
@@ -94,7 +87,7 @@ export const TodoStore = signalStore(
     // User agents can block localStorage. Then nothing is persisted.
     updateModePreference(): void {
       try {
-        localStorage.setItem(MODE_PREFERENCE_STORAGE_KEY, String(state.mode()));
+        localStorage.setItem(MODE_PREFERENCE_STORAGE_KEY, String(store.mode()));
       } catch {
         /* empty */
       }

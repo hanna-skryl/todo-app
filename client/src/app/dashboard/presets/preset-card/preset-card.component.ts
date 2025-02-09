@@ -18,10 +18,10 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PresetCardComponent {
-  readonly item = input.required<Preset>();
+  readonly preset = input.required<Preset>();
 
   readonly tasks = computed(() => {
-    const number = this.item().items.length;
+    const number = this.preset().tasks.length;
     return number > 0
       ? number === 1
         ? '1 task'

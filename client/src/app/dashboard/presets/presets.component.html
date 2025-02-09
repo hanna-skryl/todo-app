@@ -11,13 +11,17 @@
       [formControl]="newPreset"
     />
   </label>
-  <button (click)="createPreset()" class="new-preset-btn app-btn-primary" type="button">
+  <button
+    (click)="createPreset()"
+    class="new-preset-btn app-btn-primary"
+    type="button"
+  >
     Create preset
   </button>
 </div>
 
 <div class="preset-list">
   @for (preset of presets(); track preset._id) {
-    <app-preset-card [item]="preset" />
+    <app-preset-card [preset]="preset" />
   }
 </div>

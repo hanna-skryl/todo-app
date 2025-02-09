@@ -9,8 +9,8 @@ const DASHBOARD_ROUTES: Routes = [
       {
         path: 'active-list',
         loadComponent: () =>
-          import('./todo-list/todo-list.component').then(
-            c => c.TodoListComponent,
+          import('./active-list/active-list.component').then(
+            c => c.ActiveListComponent,
           ),
       },
       {

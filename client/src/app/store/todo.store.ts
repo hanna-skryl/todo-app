@@ -1,4 +1,4 @@
-import { computed } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { FilterOption, Task, Mode } from '../models';
 import {
   patchState,
@@ -7,7 +7,11 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { tapResponse } from '@ngrx/operators';
 import { MODE_PREFERENCE_STORAGE_KEY } from '../constants';
+import { switchMap } from 'rxjs';
+import { ActiveListService } from '../dashboard/active-list/active-list.service';
 
 export type TodoState = {
   tasks: Task[];
@@ -36,7 +40,17 @@ export const TodoStore = signalStore(
       ),
     ),
   })),
-  withMethods(store => ({
+  withMethods((store, activeListService = inject(ActiveListService)) => ({
+    loadData: rxMethod<void>(
+      switchMap(() => {
+        return activeListService.fetchActiveList().pipe(
+          tapResponse({
+            next: list => patchState(store, { tasks: list?.tasks ?? [] }),
+            error: console.error,
+          }),
+        );
+      }),
+    ),
     addTask(description: string): void {
       patchState(store, ({ tasks }) => ({
         tasks: [...tasks, { description, done: false }],

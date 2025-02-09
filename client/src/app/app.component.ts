@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TodoStore } from './store/todo.store';
 import { HeaderComponent } from './header/header.component';
@@ -10,6 +15,10 @@ import { HeaderComponent } from './header/header.component';
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   readonly store = inject(TodoStore);
+
+  ngOnInit(): void {
+    this.store.loadData();
+  }
 }

@@ -11,3 +11,8 @@ export type UserModel = {
   username: string;
   password: string;
 };
+
+export type ActiveListModel = {
+  _id?: mongodb.ObjectId;
+  tasks: string[];
+};

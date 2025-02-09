@@ -4,6 +4,7 @@ import { createDbClient } from './db-client';
 import express from 'express';
 import { createPresetsRouter } from './presets.routes';
 import { createUsersRouter } from './users.routes';
+import { createActiveListRouter } from './active-list.routes';
 
 // Load environment variables from the .env file
 dotenv.config();
@@ -24,6 +25,7 @@ createDbClient(ATLAS_URI)
 
     app.use('/presets', createPresetsRouter(dbClient));
     app.use('/users', createUsersRouter(dbClient));
+    app.use('/active-list', createActiveListRouter(dbClient));
 
     // dynamically use process.env.PORT or fallback to 5200 for local development
     const port = parseInt(PORT || '5200', 10);

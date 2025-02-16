@@ -3,12 +3,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   input,
-  signal,
 } from '@angular/core';
 import type { Preset } from 'src/app/models';
 import { ModalComponent } from '../modal/modal.component';
 import { RouterLink } from '@angular/router';
+import { TodoStore } from 'src/app/store/todo.store';
 
 @Component({
   selector: 'app-preset-card',
@@ -18,6 +19,8 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PresetCardComponent {
+  private readonly store = inject(TodoStore);
+
   readonly preset = input.required<Preset>();
 
   readonly tasks = computed(() => {
@@ -28,4 +31,9 @@ export class PresetCardComponent {
         : `${number} tasks`
       : 'No tasks';
   });
+
+  activatePreset(): void {
+    const tasks = this.preset().tasks;
+    this.store.activatePreset(tasks);
+  }
 }

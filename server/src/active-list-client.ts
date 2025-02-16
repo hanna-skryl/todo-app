@@ -10,13 +10,15 @@ export function createActiveListClient(db: mongodb.Db) {
       return collection.findOne();
     },
 
-    async updateActiveList(tasks: ActiveListModel['tasks']): Promise<boolean> {
-      const result = await collection.updateOne(
+    async updateActiveList(
+      tasks: ActiveListModel['tasks'],
+    ): Promise<ActiveListModel | null> {
+      const result = await collection.findOneAndUpdate(
         {},
         { $set: { tasks } },
-        { upsert: true },
+        { upsert: true, returnDocument: 'after' },
       );
-      return result.matchedCount > 0 || result.upsertedCount > 0;
+      return result;
     },
   };
 }

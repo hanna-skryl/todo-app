@@ -18,15 +18,14 @@ export class ActiveListService {
       .pipe(catchError(() => of(null)));
   }
 
-  saveActiveList(tasks: Task[]): void {
-    this.httpClient
-      .put(`${this.url}/active-list`, { tasks }, { responseType: 'text' })
+  updateActiveList(tasks: Task[]): Observable<ActiveList | null> {
+    return this.httpClient
+      .put<ActiveList>(`${this.url}/active-list`, { tasks })
       .pipe(
         catchError(error => {
           console.error(`Failed to update an active list:`, error);
           return of(null);
         }),
-      )
-      .subscribe();
+      );
   }
 }

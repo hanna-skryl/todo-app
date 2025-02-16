@@ -51,6 +51,20 @@ export const TodoStore = signalStore(
         );
       }),
     ),
+    activatePreset: rxMethod(
+      switchMap((tasks: string[]) => {
+        const statefulTasks = tasks.map(description => ({
+          description,
+          done: false,
+        }));
+        return activeListService.updateActiveList(statefulTasks).pipe(
+          tapResponse({
+            next: list => patchState(store, { tasks: list?.tasks ?? [] }),
+            error: console.error,
+          }),
+        );
+      }),
+    ),
     addTask(description: string): void {
       patchState(store, ({ tasks }) => ({
         tasks: [...tasks, { description, done: false }],

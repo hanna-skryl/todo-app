@@ -19,9 +19,9 @@ export function createActiveListRouter(activeListClient: ActiveListClient) {
   router.put('/', async (req, res) => {
     try {
       const { tasks } = req.body;
-      const isUpdated = await activeListClient.updateActiveList(tasks);
-      if (isUpdated) {
-        res.status(200).send('Active list updated');
+      const updatedList = await activeListClient.updateActiveList(tasks);
+      if (updatedList) {
+        res.status(200).send(updatedList);
       } else {
         res.status(404).send('Failed to update an active list');
       }

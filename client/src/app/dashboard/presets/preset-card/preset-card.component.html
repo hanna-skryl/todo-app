@@ -2,8 +2,11 @@
 <div class="tasks">{{ tasks() }}</div>
 @if (preset()._id; as presetId) {
   <div class="actions">
-    <!-- TODO: Applies the selected preset to the current to-do list -->
-    <button class="activate-btn app-btn-ghost" type="button">
+    <button
+      class="activate-btn app-btn-ghost"
+      type="button"
+      (click)="activatePreset()"
+    >
       <img
         class="icon"
         ngSrc="assets/images/toggle_on.svg"

@@ -14,5 +14,11 @@ export type UserModel = {
 
 export type ActiveListModel = {
   _id?: mongodb.ObjectId;
-  tasks: string[];
+  tasks: TaskModel[];
+};
+
+export type TaskModel = {
+  _id?: mongodb.ObjectId;
+  description: string;
+  done: boolean;
 };

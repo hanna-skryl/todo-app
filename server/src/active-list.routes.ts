@@ -16,6 +16,30 @@ export function createActiveListRouter(activeListClient: ActiveListClient) {
     }
   });
 
+  router.post('/', async (req, res) => {
+    try {
+      const { description } = req.body;
+      const updatedList = await activeListClient.addTask(description);
+      res.status(201).send(updatedList);
+    } catch (error) {
+      res
+        .status(400)
+        .send(error instanceof Error ? error.message : 'Unknown error');
+    }
+  });
+
+  router.delete('/:id', async (req, res) => {
+    try {
+      const taskId = req.params.id;
+      const updatedList = await activeListClient.removeTask(taskId);
+      res.status(200).send(updatedList);
+    } catch (error) {
+      res
+        .status(400)
+        .send(error instanceof Error ? error.message : 'Unknown error');
+    }
+  });
+
   router.put('/', async (req, res) => {
     try {
       const { tasks } = req.body;

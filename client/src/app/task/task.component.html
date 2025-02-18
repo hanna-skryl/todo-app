@@ -1,19 +1,14 @@
-<div cdkDrag class="task app-input" [class.has-checkbox]="isInteractive">
-  @if (isInteractive) {
-    <label [for]="id()">
-      <span class="task-checkbox"></span>
-      <input
-        type="checkbox"
-        [id]="id()"
-        (change)="toggleDone()"
-        [formControl]="taskControl"
-      />
-
-      {{ task().description }}
-    </label>
-  } @else {
+<div cdkDrag class="task app-input has-checkbox">
+  <label [for]="task()._id">
+    <span class="task-checkbox"></span>
+    <input
+      type="checkbox"
+      [id]="task()._id"
+      (change)="toggleTask()"
+      [formControl]="taskControl"
+    />
     {{ task().description }}
-  }
+  </label>
 
   <span class="remove-button" (click)="deleteTask()">
     <img

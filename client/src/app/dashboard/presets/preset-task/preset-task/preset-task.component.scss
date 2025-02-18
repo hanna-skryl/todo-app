@@ -1,0 +1,42 @@
+:host:last-of-type .task {
+  border: none;
+}
+
+.remove-button,
+.task:hover {
+  cursor: pointer;
+}
+
+.task {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 0.625rem;
+  border-radius: 0;
+  border-bottom: var(--border);
+
+  &:hover {
+    .remove-button {
+      display: flex;
+    }
+  }
+}
+
+.remove-button {
+  display: inline-flex;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+
+  img {
+    width: 0.75rem;
+    height: 0.75rem;
+
+    @media (min-width: 768px) {
+      width: 1.125rem;
+      height: 1.125rem;
+    }
+  }
+}

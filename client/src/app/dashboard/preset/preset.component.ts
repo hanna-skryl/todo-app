@@ -8,8 +8,7 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { Preset, Task } from 'src/app/models';
-import { TaskEvent, TaskComponent } from '../../task/task.component';
+import type { Preset, Task } from 'src/app/models';
 import { NewTaskComponent } from '../../new-task/new-task.component';
 import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -20,16 +19,16 @@ import {
 import { PresetService } from '../presets/preset.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
+import { PresetTaskComponent } from '../presets/preset-task/preset-task/preset-task.component';
 
 @Component({
   selector: 'app-preset',
   imports: [
-    TaskComponent,
     NewTaskComponent,
     CdkDropList,
     NgOptimizedImage,
     ReactiveFormsModule,
-    TaskComponent,
+    PresetTaskComponent,
   ],
   templateUrl: './preset.component.html',
   styleUrl: './preset.component.scss',
@@ -44,8 +43,8 @@ export class PresetComponent implements OnInit {
   private readonly preset = computed(() => this.presetsService.activePreset());
   private readonly presetId = signal<string>('');
 
+  readonly tasksForm = new FormArray<FormControl<string>>([]);
   readonly newTaskControl = new FormControl<string>('', { nonNullable: true });
-  readonly tasksControl = new FormArray<FormControl<string>>([]);
   readonly titleControl = new FormControl<Preset['title']>('', {
     nonNullable: true,
   });
@@ -66,11 +65,9 @@ export class PresetComponent implements OnInit {
   }
 
   private initializeTasks(tasks: string[]): void {
-    this.tasksControl.clear();
+    this.tasksForm.clear();
     tasks.forEach(description => {
-      this.tasksControl.push(
-        new FormControl(description, { nonNullable: true }),
-      );
+      this.tasksForm.push(new FormControl(description, { nonNullable: true }));
     });
   }
 
@@ -86,34 +83,33 @@ export class PresetComponent implements OnInit {
     if (!task.trim()) {
       return;
     }
-    this.tasksControl.push(new FormControl(task, { nonNullable: true }));
+    this.tasksForm.push(new FormControl(task, { nonNullable: true }));
     this.newTaskControl.setValue('');
   }
 
-  handleTaskUpdate({ task, event }: TaskEvent): void {
-    if (event === 'delete') {
-      const index = this.tasksControl.controls.findIndex(
-        control => control.value === task.description,
-      );
-      if (index !== -1) {
-        this.tasksControl.removeAt(index);
-      }
+  deleteTask(task: string): void {
+    const index = this.tasksForm.controls.findIndex(
+      control => control.value === task,
+    );
+    if (index !== -1) {
+      this.tasksForm.removeAt(index);
     }
   }
 
   savePreset(): void {
     this.presetsService.updatePreset(this.presetId(), {
       title: this.titleControl.value,
-      tasks: this.tasksControl.value,
+      tasks: this.tasksForm.value,
     });
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   reorderTasks(event: CdkDragDrop<Task[]>): void {
     moveItemInArray(
-      this.tasksControl.controls,
+      this.tasksForm.controls,
       event.previousIndex,
       event.currentIndex,
     );
+    this.tasksForm.setValue(this.tasksForm.controls.map(c => c.value));
   }
 }

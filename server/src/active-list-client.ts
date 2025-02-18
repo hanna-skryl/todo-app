@@ -1,8 +1,8 @@
-import * as mongodb from 'mongodb';
-import { ActiveListModel } from './models';
+import { type Db, ObjectId, UpdateFilter } from 'mongodb';
+import { ActiveListModel, TaskModel } from './models';
 import { Collection } from './collections';
 
-export function createActiveListClient(db: mongodb.Db) {
+export function createActiveListClient(db: Db) {
   const collection = db.collection<ActiveListModel>(Collection.ActiveList);
 
   return {
@@ -10,12 +10,35 @@ export function createActiveListClient(db: mongodb.Db) {
       return collection.findOne();
     },
 
+    async addTask(description: string): Promise<ActiveListModel | null> {
+      const newTask = { description, done: false };
+      const result = await collection.findOneAndUpdate(
+        {},
+        { $push: { tasks: newTask } },
+        { upsert: true, returnDocument: 'after' },
+      );
+      return result;
+    },
+
+    async removeTask(id: string): Promise<ActiveListModel | null> {
+      const result = await collection.findOneAndUpdate(
+        {},
+        { $pull: { tasks: { _id: new ObjectId(id) } } },
+        { returnDocument: 'after' },
+      );
+      return result;
+    },
+
     async updateActiveList(
       tasks: ActiveListModel['tasks'],
     ): Promise<ActiveListModel | null> {
+      const updatedTasks = tasks.map(t => ({
+        ...t,
+        _id: t._id ? new ObjectId(t._id) : new ObjectId(),
+      }));
       const result = await collection.findOneAndUpdate(
         {},
-        { $set: { tasks } },
+        { $set: { tasks: updatedTasks } },
         { upsert: true, returnDocument: 'after' },
       );
       return result;

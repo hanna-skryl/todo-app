@@ -15,7 +15,7 @@ export async function createDbClient(uri: string) {
     required: ['title', 'tasks'],
     additionalProperties: false,
     properties: {
-      _id: {},
+      _id: { bsonType: 'objectId' },
       title: { bsonType: 'string', description: "'title' is required" },
       tasks: { bsonType: 'array', description: "'tasks' is required" },
     },
@@ -26,7 +26,7 @@ export async function createDbClient(uri: string) {
     required: ['username', 'password'],
     additionalProperties: false,
     properties: {
-      _id: {},
+      _id: { bsonType: 'objectId' },
       username: { bsonType: 'string', description: "'username' is required" },
       password: { bsonType: 'string', description: "'password' is required" },
     },
@@ -36,8 +36,20 @@ export async function createDbClient(uri: string) {
     required: ['tasks'],
     additionalProperties: false,
     properties: {
-      _id: {},
-      tasks: { bsonType: 'array', description: "'tasks' is required" },
+      _id: { bsonType: 'objectId' },
+      tasks: {
+        bsonType: 'array',
+        description: "'tasks' is required",
+        items: {
+          bsonType: 'object',
+          required: ['description', 'done'],
+          properties: {
+            _id: { bsonType: 'objectId' },
+            description: { bsonType: 'string' },
+            done: { bsonType: 'bool' },
+          },
+        },
+      },
     },
   });
 

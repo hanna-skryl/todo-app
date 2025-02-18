@@ -42,16 +42,11 @@ export class TaskComponent implements ControlValueAccessor {
   readonly taskUpdate = output<TaskEvent>();
 
   readonly task = input.required<Task>();
-  readonly id = input.required<string>();
 
   readonly taskControl = new FormControl<boolean>(false, { nonNullable: true });
 
   private onChange: ((value: boolean) => void) | undefined;
   private onTouched: (() => void) | undefined;
-
-  get isInteractive(): boolean {
-    return this.onChange !== undefined;
-  }
 
   writeValue(value: boolean | null): void {
     if (value !== null) {
@@ -72,7 +67,7 @@ export class TaskComponent implements ControlValueAccessor {
     });
   }
 
-  toggleDone(): void {
+  toggleTask(): void {
     this.taskUpdate.emit({
       task: { ...this.task(), done: this.taskControl.value },
       event: 'update',

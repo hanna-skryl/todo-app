@@ -97,6 +97,13 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+button:not(:disabled),
+[type='button']:not(:disabled),
+[type='reset']:not(:disabled),
+[type='submit']:not(:disabled) {
+  cursor: pointer;
+}
+
 .app-input::placeholder {
   color: var(--content-muted);
   background-color: var(--background-secondary);

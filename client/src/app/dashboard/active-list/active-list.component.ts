@@ -1,16 +1,31 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+} from '@angular/core';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import {
   CdkDragDrop,
   CdkDropList,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { NgTemplateOutlet } from '@angular/common';
-import { TaskEvent, TaskComponent } from 'src/app/task/task.component';
+import { type TaskEvent, TaskComponent } from 'src/app/task/task.component';
 import { TodoStore } from 'src/app/store/todo.store';
-import { FilterOption, FILTERS, Task } from 'src/app/models';
+import { type FilterOption, FILTERS, type Task } from 'src/app/models';
 import { NewTaskComponent } from '../../new-task/new-task.component';
+
+type TaskFormGroup = FormGroup<{
+  _id: FormControl<string | undefined>;
+  description: FormControl<string>;
+  done: FormControl<boolean>;
+}>;
 
 @Component({
   selector: 'app-active-list',
@@ -27,58 +42,70 @@ import { NewTaskComponent } from '../../new-task/new-task.component';
 })
 export class ActiveListComponent {
   readonly store = inject(TodoStore);
+
   readonly title = 'TODO';
   readonly filters = FILTERS;
 
+  readonly tasksForm = new FormArray<TaskFormGroup>([]);
   readonly newTaskControl = new FormControl<string>('', { nonNullable: true });
-  readonly taskStatusMap = new Map<string, FormControl<boolean>>();
   readonly filterControl = new FormControl<FilterOption>(
     this.store.selectedFilter(),
-    {
-      nonNullable: true,
-    },
+    { nonNullable: true },
   );
 
   constructor() {
-    this.initializeTaskStatusMap();
+    effect(() => this.syncFormWithStore());
   }
 
-  private initializeTaskStatusMap(): void {
-    this.taskStatusMap.clear();
-    this.store.tasks().forEach(({ description, done }) => {
-      this.taskStatusMap.set(
-        description,
-        new FormControl(done, { nonNullable: true }),
-      );
+  private syncFormWithStore(): void {
+    const filteredTasks = this.store.filteredTasks();
+    const newControls = filteredTasks.map(task =>
+      this.createTaskFormGroup(task),
+    );
+    this.tasksForm.clear();
+    newControls.forEach(control => this.tasksForm.push(control));
+  }
+
+  private createTaskFormGroup(task: Task): TaskFormGroup {
+    return new FormGroup({
+      _id: new FormControl(task._id ?? undefined, { nonNullable: true }),
+      description: new FormControl(task.description, { nonNullable: true }),
+      done: new FormControl(task.done, { nonNullable: true }),
     });
   }
 
-  addNewTask(task: string): void {
-    this.store.addTask(task);
-    this.taskStatusMap.set(task, new FormControl(false, { nonNullable: true }));
+  addTask(description: string): void {
+    if (!description.trim()) {
+      return;
+    }
+    this.tasksForm.push(this.createTaskFormGroup({ description, done: false }));
+    this.store.addTask(description);
   }
 
-  handleTaskUpdate({ task, event }: TaskEvent): void {
-    switch (event) {
-      case 'delete':
-        this.taskStatusMap.delete(task.description);
-        this.store.removeTask(task.description);
-        break;
+  handleTaskUpdate({ task, event }: TaskEvent, index: number): void {
+    if (task._id) {
+      switch (event) {
+        case 'delete':
+          this.tasksForm.removeAt(index);
+          this.store.removeTask(task._id);
+          break;
 
-      case 'update':
-        const control = this.taskStatusMap.get(task.description);
-        if (control) {
-          control.setValue(task.done, { emitEvent: false });
-        }
-        this.store.toggleTask(task.description);
-        break;
+        case 'update':
+          this.store.toggleTask(task._id);
+          break;
+      }
     }
   }
 
   reorderTasks(event: CdkDragDrop<Task[]>): void {
-    const tasks = [...this.store.tasks()];
-    moveItemInArray(tasks, event.previousIndex, event.currentIndex);
-    this.store.reorderTasks(tasks);
-    this.initializeTaskStatusMap();
+    moveItemInArray(
+      this.tasksForm.controls,
+      event.previousIndex,
+      event.currentIndex,
+    );
+    const updatedTasks = this.tasksForm.controls.map(control =>
+      control.getRawValue(),
+    );
+    this.store.reorderTasks(updatedTasks);
   }
 }

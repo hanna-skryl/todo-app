@@ -29,7 +29,7 @@ export const TodoStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withComputed(({ tasks, selectedFilter }) => ({
-    undoneTasks: computed(() => tasks().filter(task => !task.done).length),
+    tasksLeft: computed(() => tasks().filter(task => !task.done)),
     filteredTasks: computed(() =>
       tasks().filter(task =>
         selectedFilter() === 'Active'
@@ -45,55 +45,86 @@ export const TodoStore = signalStore(
       switchMap(() => {
         return activeListService.fetchActiveList().pipe(
           tapResponse({
-            next: list => patchState(store, { tasks: list?.tasks ?? [] }),
+            next: list => patchState(store, { tasks: list.tasks }),
             error: console.error,
           }),
         );
       }),
+    ),
+    addTask: rxMethod(
+      switchMap((description: string) =>
+        activeListService.addTask(description).pipe(
+          tapResponse({
+            next: list => patchState(store, { tasks: list.tasks }),
+            error: console.error,
+          }),
+        ),
+      ),
+    ),
+    removeTask: rxMethod(
+      switchMap((id: string) =>
+        activeListService.removeTask(id).pipe(
+          tapResponse({
+            next: list => patchState(store, { tasks: list.tasks }),
+            error: console.error,
+          }),
+        ),
+      ),
+    ),
+    toggleTask: rxMethod(
+      switchMap((id: string) =>
+        activeListService
+          .updateActiveList(
+            store
+              .tasks()
+              .map(task =>
+                task._id === id ? { ...task, done: !task.done } : task,
+              ),
+          )
+          .pipe(
+            tapResponse({
+              next: list => patchState(store, { tasks: list.tasks }),
+              error: console.error,
+            }),
+          ),
+      ),
+    ),
+    reorderTasks: rxMethod(
+      switchMap((updatedTasks: Task[]) =>
+        activeListService.updateActiveList(updatedTasks).pipe(
+          tapResponse({
+            next: list => patchState(store, { tasks: list.tasks }),
+            error: console.error,
+          }),
+        ),
+      ),
     ),
     activatePreset: rxMethod(
-      switchMap((tasks: string[]) => {
-        const statefulTasks = tasks.map(description => ({
-          description,
-          done: false,
-        }));
-        return activeListService.updateActiveList(statefulTasks).pipe(
+      switchMap((tasks: string[]) =>
+        activeListService
+          .updateActiveList(
+            tasks.map(description => ({ _id: '', description, done: false })),
+          )
+          .pipe(
+            tapResponse({
+              next: list => patchState(store, { tasks: list.tasks }),
+              error: console.error,
+            }),
+          ),
+      ),
+    ),
+    clearCompleted: rxMethod<void>(
+      switchMap(() =>
+        activeListService.updateActiveList(store.tasksLeft()).pipe(
           tapResponse({
-            next: list => patchState(store, { tasks: list?.tasks ?? [] }),
+            next: list => patchState(store, { tasks: list.tasks }),
             error: console.error,
           }),
-        );
-      }),
-    ),
-    addTask(description: string): void {
-      patchState(store, ({ tasks }) => ({
-        tasks: [...tasks, { description, done: false }],
-      }));
-    },
-    removeTask(description: string): void {
-      patchState(store, ({ tasks }) => ({
-        tasks: tasks.filter(task => task.description !== description),
-      }));
-    },
-    toggleTask(description: string): void {
-      patchState(store, ({ tasks }) => ({
-        tasks: tasks.map(task =>
-          description === task.description
-            ? { description, done: !task.done }
-            : task,
         ),
-      }));
-    },
-    reorderTasks(updatedTasks: Task[]): void {
-      patchState(store, { tasks: updatedTasks });
-    },
-    clearCompleted(): void {
-      patchState(store, ({ tasks }) => ({
-        tasks: tasks.filter(task => !task.done),
-      }));
-    },
+      ),
+    ),
     filterTasks(option: FilterOption): void {
-      patchState(store, () => ({ selectedFilter: option }));
+      patchState(store, { selectedFilter: option });
     },
     toggleMode(): void {
       patchState(store, ({ mode }) => ({

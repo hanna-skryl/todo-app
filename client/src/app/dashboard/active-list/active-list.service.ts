@@ -1,31 +1,32 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
-import { ActiveList, Task } from 'src/app/models';
+import type { Task } from 'src/app/models';
+import type { TodoState } from 'src/app/store/todo.store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ActiveListService {
   private readonly url = environment.apiUrl;
+  private readonly httpClient = inject(HttpClient);
 
-  constructor(private readonly httpClient: HttpClient) {}
-
-  fetchActiveList(): Observable<ActiveList | null> {
-    return this.httpClient
-      .get<ActiveList>(`${this.url}/active-list`)
-      .pipe(catchError(() => of(null)));
+  fetchActiveList(): Observable<TodoState> {
+    return this.httpClient.get<TodoState>(`${this.url}/active-list`);
   }
 
-  updateActiveList(tasks: Task[]): Observable<ActiveList | null> {
-    return this.httpClient
-      .put<ActiveList>(`${this.url}/active-list`, { tasks })
-      .pipe(
-        catchError(error => {
-          console.error(`Failed to update an active list:`, error);
-          return of(null);
-        }),
-      );
+  addTask(description: string): Observable<TodoState> {
+    return this.httpClient.post<TodoState>(`${this.url}/active-list`, {
+      description,
+    });
+  }
+
+  removeTask(id: string): Observable<TodoState> {
+    return this.httpClient.delete<TodoState>(`${this.url}/active-list/${id}`);
+  }
+
+  updateActiveList(tasks: Task[]): Observable<TodoState> {
+    return this.httpClient.put<TodoState>(`${this.url}/active-list`, { tasks });
   }
 }

@@ -16,12 +16,8 @@
 
   <h2 class="tasks-title">Tasks</h2>
   <div cdkDropList (cdkDropListDropped)="reorderTasks($event)" class="tasks">
-    @for (task of tasksControl.controls; track $index) {
-      <app-task
-        (taskUpdate)="handleTaskUpdate($event)"
-        [task]="{ description: task.value, done: false }"
-        [id]="'task-' + $index"
-      />
+    @for (task of tasksForm.controls; track $index) {
+      <app-preset-task (taskDelete)="deleteTask($event)" [task]="task.value" />
     }
   </div>
 

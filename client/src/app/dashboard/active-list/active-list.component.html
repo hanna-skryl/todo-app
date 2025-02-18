@@ -1,25 +1,22 @@
-<form class="form">
+<form class="form" (submit)="$event.preventDefault()">
   <h1 class="title">{{ title }}</h1>
 
   <app-new-task
-    (newTask)="addNewTask(newTaskControl.value)"
+    (newTask)="addTask(newTaskControl.value)"
     [hasCheckbox]="true"
     [formControl]="newTaskControl"
   />
 
   <div cdkDropList (cdkDropListDropped)="reorderTasks($event)" class="list">
-    @for (task of store.filteredTasks(); track $index) {
+    @for (taskForm of tasksForm.controls; track $index) {
       <app-task
-        (taskUpdate)="handleTaskUpdate($event)"
-        [formControl]="taskStatusMap.get(task.description)!"
-        [task]="task"
-        [id]="'task-' + $index"
+        (taskUpdate)="handleTaskUpdate($event, $index)"
+        [formControl]="taskForm.controls.done"
+        [task]="taskForm.getRawValue()"
       />
     }
     <footer class="footer">
-      @if (store.undoneTasks() !== 0) {
-        <div>{{ store.undoneTasks() }} tasks left</div>
-      }
+      <div>{{ store.tasksLeft().length }} tasks left</div>
 
       <div class="filters-lg">
         <ng-container

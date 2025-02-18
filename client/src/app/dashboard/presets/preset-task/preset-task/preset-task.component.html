@@ -1,0 +1,11 @@
+<div cdkDrag class="task app-input">
+  <span class="task-text">{{ task() }}</span>
+  <span class="remove-button" (click)="deleteTask()">
+    <img
+      ngSrc="assets/images/icon-cross.svg"
+      alt="Remove task."
+      width="12"
+      height="12"
+    />
+  </span>
+</div>

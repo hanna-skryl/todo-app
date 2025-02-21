@@ -3,6 +3,7 @@
   position: fixed;
   width: 100%;
   background-color: var(--background-secondary);
+  z-index: 1;
 }
 
 .navbar {
@@ -64,8 +65,8 @@
     left: 50%;
     position: absolute;
     transition:
-      width 0.3s ease 0s,
-      left 0.3s ease 0s;
+      width 0.25s,
+      left 0.25s;
     width: 0;
   }
 

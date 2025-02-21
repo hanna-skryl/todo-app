@@ -139,7 +139,7 @@ button:not(:disabled),
   background-color: transparent;
   font-size: 0.75rem;
   font-weight: 700;
-  transition: all 0.3s ease;
+  transition: color 0.25s;
 
   @media (min-width: 768px) {
     font-size: 0.9375rem;
@@ -163,7 +163,9 @@ button:not(:disabled),
   border: var(--border);
   border-radius: var(--radius-sm);
   padding: 0.5rem;
-  transition: all 0.3s ease;
+  transition:
+    color 0.25s,
+    background-color 0.25s;
 
   @media (min-width: 768px) {
     font-size: 0.875rem;
@@ -186,7 +188,7 @@ button:not(:disabled),
   background-color: transparent;
   font-size: 0.75rem;
   font-weight: 700;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s;
 
   @media (min-width: 768px) {
     font-size: 0.9375rem;
@@ -208,7 +210,7 @@ button:not(:disabled),
   background-color: var(--background-destructive);
   font-size: 0.75rem;
   font-weight: 700;
-  transition: all 0.3s ease;
+  transition: background-color 0.25s;
 
   @media (min-width: 768px) {
     font-size: 0.9375rem;
@@ -219,5 +221,21 @@ button:not(:disabled),
     &:hover:enabled {
       background-color: var(--background-destructive-hover);
     }
+  }
+}
+
+@media (hover: hover) {
+  a.app-btn-txt:hover {
+    color: var(--content-primary);
+  }
+  a.app-btn-primary:hover {
+    color: var(--content-hover);
+    background-color: var(--border-color);
+  }
+  a.app-btn-ghost:hover {
+    background-color: var(--border-color);
+  }
+  a.app-btn-destructive:hover {
+    background-color: var(--background-destructive-hover);
   }
 }

@@ -56,7 +56,7 @@ export class LandingComponent {
     const success = await this.authService.login(username, password);
     this.loading.set(false);
     if (success) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard/active-list']);
     } else {
       this.errorMessage.set('Invalid username or password');
     }

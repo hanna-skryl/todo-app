@@ -1,41 +1,46 @@
 <form class="preset-form">
   <h1>Edit preset</h1>
 
-  <div class="preset-name">
-    <label class="preset-label" for="presetName">
-      <h2 class="preset-title">Preset Name</h2>
-    </label>
-    <input
-      #presetName
-      type="text"
-      class="preset-input app-input"
-      id="presetName"
-      [formControl]="titleControl"
+  @if (!store.loading()) {
+    <div class="preset-name">
+      <label class="preset-label" for="presetName">
+        <h2 class="preset-title">Preset Name</h2>
+      </label>
+      <input
+        #presetName
+        type="text"
+        class="preset-input app-input"
+        id="presetName"
+        [formControl]="titleControl"
+      />
+    </div>
+
+    <h2 class="tasks-title">Tasks</h2>
+    <div cdkDropList (cdkDropListDropped)="reorderTasks($event)" class="tasks">
+      @for (task of tasksForm.controls; track $index) {
+        <app-preset-task
+          (taskDelete)="deleteTask($event)"
+          [task]="task.value"
+        />
+      }
+    </div>
+
+    <app-new-task
+      class="new-task"
+      (newTask)="addNewTask($event)"
+      [hasCheckbox]="false"
+      [formControl]="newTaskControl"
     />
-  </div>
 
-  <h2 class="tasks-title">Tasks</h2>
-  <div cdkDropList (cdkDropListDropped)="reorderTasks($event)" class="tasks">
-    @for (task of tasksForm.controls; track $index) {
-      <app-preset-task (taskDelete)="deleteTask($event)" [task]="task.value" />
-    }
-  </div>
-
-  <app-new-task
-    class="new-task"
-    (newTask)="addNewTask($event)"
-    [hasCheckbox]="false"
-    [formControl]="newTaskControl"
-  />
-
-  <button type="button" class="app-btn-ghost save-btn" (click)="savePreset()">
-    <img
-      ngSrc="assets/images/save.svg"
-      width="20"
-      height="20"
-      alt="Save icon."
-      class="save-icon"
-    />
-    Save Preset
-  </button>
+    <button type="button" class="app-btn-ghost save-btn" (click)="savePreset()">
+      <img
+        ngSrc="assets/images/save.svg"
+        width="20"
+        height="20"
+        alt="Save icon."
+        class="save-icon"
+      />
+      Save Preset
+    </button>
+  }
 </form>

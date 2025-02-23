@@ -47,16 +47,12 @@ export function createPresetsRouter(presetsClient: PresetsClient) {
   });
 
   router.put('/:id', async (req, res) => {
-    const id = req?.params?.id;
     try {
-      const isUpdated = await presetsClient.updatePreset(
-        new ObjectId(id),
-        req.body,
-      );
-      if (isUpdated) {
-        res.status(200).send(`Updated a preset: ID ${id}.`);
+      const updatedPreset = await presetsClient.updatePreset(req.body);
+      if (updatedPreset) {
+        res.status(200).json(updatedPreset);
       } else {
-        res.status(404).send(`Failed to find a preset: ID ${id}`);
+        res.status(404).send(`Failed to find a preset: ID ${req.body._id}`);
       }
     } catch (error) {
       res
@@ -66,7 +62,7 @@ export function createPresetsRouter(presetsClient: PresetsClient) {
   });
 
   router.delete('/:id', async (req, res) => {
-    const id = req?.params?.id;
+    const id = req.params.id;
     try {
       const isDeleted = await presetsClient.deletePreset(new ObjectId(id));
       if (isDeleted) {

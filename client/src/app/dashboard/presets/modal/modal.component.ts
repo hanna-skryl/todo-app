@@ -6,9 +6,9 @@ import {
   input,
   viewChild,
 } from '@angular/core';
-import { PresetService } from '../preset.service';
 import { NgOptimizedImage } from '@angular/common';
 import { ClickOutsideDirective } from './click-outside.directive';
+import { PresetsStore } from 'src/app/store/presets.store';
 
 @Component({
   selector: 'app-modal',
@@ -18,7 +18,7 @@ import { ClickOutsideDirective } from './click-outside.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalComponent {
-  private readonly presetsService = inject(PresetService);
+  private readonly store = inject(PresetsStore);
 
   readonly presetId = input.required<string>();
   readonly dialog = viewChild<ElementRef>('dialog');
@@ -28,7 +28,7 @@ export class ModalComponent {
   }
 
   deletePreset(): void {
-    this.presetsService.deletePreset(this.presetId());
+    this.store.deletePreset(this.presetId());
   }
 
   openModal(): void {

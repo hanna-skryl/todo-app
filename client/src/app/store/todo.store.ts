@@ -1,5 +1,5 @@
 import { computed, inject } from '@angular/core';
-import { FilterOption, Task, Mode } from '../models';
+import type { FilterOption, Task, Mode } from '../models';
 import {
   patchState,
   signalStore,
@@ -19,7 +19,7 @@ export type TodoState = {
   mode: Mode;
 };
 
-export const initialState: TodoState = {
+const initialState: TodoState = {
   tasks: [],
   selectedFilter: 'All',
   mode: 'dark',

@@ -20,8 +20,10 @@
   </button>
 </div>
 
-<div class="preset-list">
-  @for (preset of presets(); track preset._id) {
-    <app-preset-card [preset]="preset" />
-  }
-</div>
+@if (!store.loading()) {
+  <div class="preset-list">
+    @for (preset of store.presets(); track preset._id) {
+      <app-preset-card [preset]="preset" />
+    }
+  </div>
+}

@@ -1,14 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   inject,
   OnInit,
 } from '@angular/core';
-import { Preset } from '../../models';
-import { PresetService } from './preset.service';
 import { PresetCardComponent } from './preset-card/preset-card.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { PresetsStore } from 'src/app/store/presets.store';
 
 @Component({
   selector: 'app-presets',
@@ -18,23 +16,19 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PresetsComponent implements OnInit {
-  private readonly presetsService = inject(PresetService);
-  readonly presets = computed<Preset[]>(() => this.presetsService.presets());
+  readonly store = inject(PresetsStore);
 
   readonly newPreset = new FormControl('', { nonNullable: true });
 
   ngOnInit(): void {
-    this.loadPresets();
-  }
-
-  private loadPresets(): void {
-    this.presetsService.fetchPresets();
+    this.store.setLoading(true);
+    this.store.fetchPresets();
   }
 
   createPreset(): void {
     const title = this.newPreset.value.trim();
     if (title) {
-      this.presetsService.createPreset({ title, tasks: [] });
+      this.store.createPreset({ title, tasks: [] });
       this.newPreset.reset();
     }
   }

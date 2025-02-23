@@ -1,5 +1,5 @@
-import { type Db, ObjectId, UpdateFilter } from 'mongodb';
-import { ActiveListModel, TaskModel } from './models';
+import { type Db, ObjectId } from 'mongodb';
+import type { ActiveListModel } from './models';
 import { Collection } from './collections';
 
 export function createActiveListClient(db: Db) {
@@ -11,7 +11,7 @@ export function createActiveListClient(db: Db) {
     },
 
     async addTask(description: string): Promise<ActiveListModel | null> {
-      const newTask = { description, done: false };
+      const newTask = { _id: new ObjectId(), description, done: false };
       const result = await collection.findOneAndUpdate(
         {},
         { $push: { tasks: newTask } },

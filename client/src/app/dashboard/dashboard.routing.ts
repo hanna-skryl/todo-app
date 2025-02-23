@@ -7,6 +7,11 @@ const DASHBOARD_ROUTES: Routes = [
     component: DashboardComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'active-list',
+        pathMatch: 'full',
+      },
+      {
         path: 'active-list',
         loadComponent: () =>
           import('./active-list/active-list.component').then(
@@ -25,7 +30,6 @@ const DASHBOARD_ROUTES: Routes = [
       },
     ],
   },
-  { path: '', redirectTo: 'active-list', pathMatch: 'full' },
 ];
 
 export default DASHBOARD_ROUTES;

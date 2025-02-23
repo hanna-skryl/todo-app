@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { ActiveListClient } from './active-list-client';
+import type { ActiveListClient } from './active-list-client';
 
 export function createActiveListRouter(activeListClient: ActiveListClient) {
   const router = express.Router();

@@ -68,7 +68,7 @@ export class ActiveListComponent {
 
   private createTaskFormGroup(task: Task): TaskFormGroup {
     return new FormGroup({
-      _id: new FormControl(task._id ?? undefined, { nonNullable: true }),
+      _id: new FormControl(task._id, { nonNullable: true }),
       description: new FormControl(task.description, { nonNullable: true }),
       done: new FormControl(task.done, { nonNullable: true }),
     });

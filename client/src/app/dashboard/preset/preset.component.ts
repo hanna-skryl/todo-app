@@ -5,6 +5,7 @@ import {
   computed,
   effect,
   inject,
+  OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
@@ -16,10 +17,10 @@ import {
   CdkDropList,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
-import { PresetService } from '../presets/preset.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { PresetTaskComponent } from '../presets/preset-task/preset-task/preset-task.component';
+import { PresetsStore } from 'src/app/store/presets.store';
 
 @Component({
   selector: 'app-preset',
@@ -34,14 +35,11 @@ import { PresetTaskComponent } from '../presets/preset-task/preset-task/preset-t
   styleUrl: './preset.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PresetComponent implements OnInit {
-  private readonly presetsService = inject(PresetService);
+export class PresetComponent implements OnInit, OnDestroy {
+  readonly store = inject(PresetsStore);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
-
-  private readonly preset = computed(() => this.presetsService.activePreset());
-  private readonly presetId = signal<string>('');
 
   readonly tasksForm = new FormArray<FormControl<string>>([]);
   readonly newTaskControl = new FormControl<string>('', { nonNullable: true });
@@ -53,29 +51,33 @@ export class PresetComponent implements OnInit {
     this.loadPreset();
   }
 
-  constructor() {
-    effect(() => {
-      const preset = this.preset();
-      if (preset) {
-        this.titleControl.setValue(preset.title);
-        this.initializeTasks(preset.tasks);
-      }
-      this.cdr.markForCheck();
-    });
+  ngOnDestroy(): void {
+    this.store.resetActivePreset();
   }
 
-  private initializeTasks(tasks: string[]): void {
-    this.tasksForm.clear();
-    tasks.forEach(description => {
-      this.tasksForm.push(new FormControl(description, { nonNullable: true }));
-    });
+  constructor() {
+    effect(() => this.syncFormWithStore());
+  }
+
+  private syncFormWithStore(): void {
+    const preset = this.store.activePreset();
+    if (preset) {
+      this.titleControl.setValue(preset.title);
+      this.tasksForm.clear();
+      preset.tasks.forEach(description => {
+        this.tasksForm.push(
+          new FormControl(description, { nonNullable: true }),
+        );
+      });
+      this.cdr.markForCheck();
+    }
   }
 
   private loadPreset(): void {
     const presetId = this.route.snapshot.paramMap.get('id');
     if (presetId) {
-      this.presetId.set(presetId);
-      this.presetsService.fetchPreset(presetId);
+      this.store.setLoading(true);
+      this.store.loadPreset(presetId);
     }
   }
 
@@ -97,7 +99,7 @@ export class PresetComponent implements OnInit {
   }
 
   savePreset(): void {
-    this.presetsService.updatePreset(this.presetId(), {
+    this.store.updatePreset({
       title: this.titleControl.value,
       tasks: this.tasksForm.value,
     });
@@ -110,6 +112,10 @@ export class PresetComponent implements OnInit {
       event.previousIndex,
       event.currentIndex,
     );
-    this.tasksForm.setValue(this.tasksForm.controls.map(c => c.value));
+    const updatedTasks = this.tasksForm.controls.map(control => control.value);
+    this.store.updatePreset({
+      title: this.titleControl.value,
+      tasks: updatedTasks,
+    });
   }
 }

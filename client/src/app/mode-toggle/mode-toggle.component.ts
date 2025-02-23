@@ -5,7 +5,6 @@ import {
   inject,
   PLATFORM_ID,
 } from '@angular/core';
-import { TodoStore } from '../store/todo.store';
 import { DOCUMENT, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { Subject } from 'rxjs';
 import type { Mode } from '../models';
@@ -14,6 +13,7 @@ import {
   LIGHT_MODE_CLASS_NAME,
   PREFERS_COLOR_SCHEME_DARK,
 } from '../constants';
+import { ModeStore } from '../store/mode.store';
 
 @Component({
   selector: 'app-mode-toggle',
@@ -23,7 +23,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModeToggleComponent {
-  private readonly store = inject(TodoStore);
+  private readonly store = inject(ModeStore);
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
 

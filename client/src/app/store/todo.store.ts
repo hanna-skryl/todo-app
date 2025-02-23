@@ -1,5 +1,5 @@
 import { computed, inject } from '@angular/core';
-import type { FilterOption, Task, Mode } from '../models';
+import type { FilterOption, Task } from '../models';
 import {
   patchState,
   signalStore,
@@ -9,20 +9,17 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import { MODE_PREFERENCE_STORAGE_KEY } from '../constants';
 import { switchMap } from 'rxjs';
 import { ActiveListService } from '../dashboard/active-list/active-list.service';
 
 export type TodoState = {
   tasks: Task[];
   selectedFilter: FilterOption;
-  mode: Mode;
 };
 
 const initialState: TodoState = {
   tasks: [],
   selectedFilter: 'All',
-  mode: 'dark',
 };
 
 export const TodoStore = signalStore(
@@ -125,31 +122,6 @@ export const TodoStore = signalStore(
     ),
     filterTasks(option: FilterOption): void {
       patchState(store, { selectedFilter: option });
-    },
-    toggleMode(): void {
-      patchState(store, ({ mode }) => ({
-        mode: mode === 'light' ? 'dark' : ('light' as Mode),
-      }));
-    },
-    updateMode(mode: Mode): void {
-      patchState(store, () => ({ mode }));
-    },
-    // User agents can block localStorage.
-    // Then it is treated as if no preference has previously been stored.
-    getModePreference(): Mode | null {
-      try {
-        return localStorage.getItem(MODE_PREFERENCE_STORAGE_KEY) as Mode | null;
-      } catch {
-        return null;
-      }
-    },
-    // User agents can block localStorage. Then nothing is persisted.
-    updateModePreference(): void {
-      try {
-        localStorage.setItem(MODE_PREFERENCE_STORAGE_KEY, String(store.mode()));
-      } catch {
-        /* empty */
-      }
     },
   })),
 );

@@ -1,54 +1,56 @@
 <form class="form" (submit)="$event.preventDefault()">
   <h1 class="title">{{ title }}</h1>
 
-  <app-new-task
-    (newTask)="addTask(newTaskControl.value)"
-    [hasCheckbox]="true"
-    [formControl]="newTaskControl"
-  />
-
-  <div cdkDropList (cdkDropListDropped)="reorderTasks($event)" class="list">
-    @for (taskForm of tasksForm.controls; track $index) {
-      <app-task
-        (taskUpdate)="handleTaskUpdate($event, $index)"
-        [formControl]="taskForm.controls.done"
-        [task]="taskForm.getRawValue()"
-      />
-    }
-    <footer class="footer">
-      <div>{{ store.tasksLeft().length }} tasks left</div>
-
-      <div class="filters-lg">
-        <ng-container
-          [ngTemplateOutlet]="filtersTemplate"
-          [ngTemplateOutletContext]="{
-            $implicit: filters,
-            idPrefix: 'lg-',
-          }"
-        />
-      </div>
-
-      <button
-        type="button"
-        class="app-btn-txt"
-        (click)="store.clearCompleted()"
-      >
-        Clear Completed
-      </button>
-    </footer>
-  </div>
-
-  <div class="filters-sm">
-    <ng-container
-      [ngTemplateOutlet]="filtersTemplate"
-      [ngTemplateOutletContext]="{
-        $implicit: filters,
-        idPrefix: 'sm-',
-      }"
+  @if (!store.loading()) {
+    <app-new-task
+      (newTask)="addTask(newTaskControl.value)"
+      [hasCheckbox]="true"
+      [formControl]="newTaskControl"
     />
-  </div>
 
-  <p class="info">Drag and drop to reorder list</p>
+    <div cdkDropList (cdkDropListDropped)="reorderTasks($event)" class="list">
+      @for (taskForm of tasksForm.controls; track $index) {
+        <app-task
+          (taskUpdate)="handleTaskUpdate($event, $index)"
+          [formControl]="taskForm.controls.done"
+          [task]="taskForm.getRawValue()"
+        />
+      }
+      <footer class="footer">
+        <div>{{ store.tasksLeft().length }} tasks left</div>
+
+        <div class="filters-lg">
+          <ng-container
+            [ngTemplateOutlet]="filtersTemplate"
+            [ngTemplateOutletContext]="{
+              $implicit: filters,
+              idPrefix: 'lg-',
+            }"
+          />
+        </div>
+
+        <button
+          type="button"
+          class="app-btn-txt"
+          (click)="store.clearCompleted()"
+        >
+          Clear Completed
+        </button>
+      </footer>
+    </div>
+
+    <div class="filters-sm">
+      <ng-container
+        [ngTemplateOutlet]="filtersTemplate"
+        [ngTemplateOutletContext]="{
+          $implicit: filters,
+          idPrefix: 'sm-',
+        }"
+      />
+    </div>
+
+    <p class="info">Drag and drop to reorder list</p>
+  }
 </form>
 
 <ng-template #filtersTemplate let-filters let-idPrefix="idPrefix">

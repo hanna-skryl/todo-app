@@ -15,11 +15,13 @@ import { ActiveListService } from '../dashboard/active-list/active-list.service'
 export type TodoState = {
   tasks: Task[];
   selectedFilter: FilterOption;
+  loading: boolean;
 };
 
 const initialState: TodoState = {
   tasks: [],
   selectedFilter: 'All',
+  loading: false,
 };
 
 export const TodoStore = signalStore(
@@ -42,8 +44,12 @@ export const TodoStore = signalStore(
       switchMap(() => {
         return activeListService.fetchActiveList().pipe(
           tapResponse({
-            next: list => patchState(store, { tasks: list.tasks }),
-            error: console.error,
+            next: list =>
+              patchState(store, { tasks: list.tasks, loading: false }),
+            error: error => {
+              patchState(store, { tasks: [], loading: false });
+              console.error('Failed to fetch an active list', error);
+            },
           }),
         );
       }),
@@ -122,6 +128,9 @@ export const TodoStore = signalStore(
     ),
     filterTasks(option: FilterOption): void {
       patchState(store, { selectedFilter: option });
+    },
+    setLoading(isLoading: boolean): void {
+      patchState(store, { loading: isLoading });
     },
   })),
 );

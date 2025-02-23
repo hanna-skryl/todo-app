@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   readonly store = inject(TodoStore);
 
   ngOnInit(): void {
+    this.store.setLoading(true);
     this.store.loadData();
   }
 }

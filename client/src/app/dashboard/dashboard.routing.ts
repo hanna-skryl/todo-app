@@ -25,6 +25,7 @@ const DASHBOARD_ROUTES: Routes = [
       },
     ],
   },
+  { path: '', redirectTo: 'active-list', pathMatch: 'full' },
 ];
 
 export default DASHBOARD_ROUTES;

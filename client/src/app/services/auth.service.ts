@@ -19,13 +19,14 @@ export class AuthService {
   private readonly url = environment.apiUrl;
 
   private readonly loggedIn = signal(false);
+  readonly isInitialized = signal(false);
 
-  isLoggedIn = computed(
-    () =>
-      this.loggedIn() ||
-      (isPlatformBrowser(this.platformId) &&
-        localStorage.getItem('isLoggedIn') === 'true'),
-  );
+  readonly isLoggedIn = computed(() => {
+    if (isPlatformBrowser(this.platformId)) {
+      return this.loggedIn() || localStorage.getItem('isLoggedIn') === 'true';
+    }
+    return this.loggedIn();
+  });
 
   private readonly platformId = inject(PLATFORM_ID);
   private readonly httpClient = inject(HttpClient);
@@ -34,6 +35,7 @@ export class AuthService {
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
       this.loggedIn.set(localStorage.getItem('isLoggedIn') === 'true');
+      this.isInitialized.set(true);
 
       effect(() => {
         if (this.loggedIn()) {

@@ -17,8 +17,7 @@ import {
   CdkDropList,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgOptimizedImage } from '@angular/common';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PresetTaskComponent } from '../presets/preset-task/preset-task/preset-task.component';
 import { PresetsStore } from 'src/app/store/presets.store';
 
@@ -27,9 +26,9 @@ import { PresetsStore } from 'src/app/store/presets.store';
   imports: [
     NewTaskComponent,
     CdkDropList,
-    NgOptimizedImage,
     ReactiveFormsModule,
     PresetTaskComponent,
+    RouterLink,
   ],
   templateUrl: './preset.component.html',
   styleUrl: './preset.component.scss',

@@ -32,15 +32,11 @@
       [formControl]="newTaskControl"
     />
 
-    <button type="button" class="app-btn-ghost save-btn" (click)="savePreset()">
-      <img
-        ngSrc="assets/images/save.svg"
-        width="20"
-        height="20"
-        alt="Save icon."
-        class="save-icon"
-      />
-      Save Preset
-    </button>
+    <div class="actions">
+      <a class="app-btn-destructive cancel" routerLink=".."> Cancel </a>
+      <button type="button" class="app-btn-ghost" (click)="savePreset()">
+        Save Preset
+      </button>
+    </div>
   }
 </form>

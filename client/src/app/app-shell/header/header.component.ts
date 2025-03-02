@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { ModeToggleComponent } from '../mode-toggle/mode-toggle.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from 'src/app/landing/auth.service';
 
 @Component({
   selector: 'app-header',

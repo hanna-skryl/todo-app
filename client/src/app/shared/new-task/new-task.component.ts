@@ -12,7 +12,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { TodoStore } from '../store/todo.store';
+import { TodoStore } from '../../store/todo.store';
 
 @Component({
   selector: 'app-new-task',

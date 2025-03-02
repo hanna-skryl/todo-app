@@ -6,8 +6,8 @@ import {
   input,
   output,
 } from '@angular/core';
-import { TodoStore } from '../store/todo.store';
-import { Task } from '../models';
+import { TodoStore } from '../../../store/todo.store';
+import { Task } from '../../../models';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import {
   ControlValueAccessor,

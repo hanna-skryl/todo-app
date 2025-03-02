@@ -8,8 +8,8 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import type { Preset, Task } from 'src/app/models';
-import { NewTaskComponent } from '../../new-task/new-task.component';
+import type { Preset, Task } from '../../models';
+import { NewTaskComponent } from '../../shared/new-task/new-task.component';
 import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   CdkDragDrop,
@@ -17,8 +17,8 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { PresetTaskComponent } from '../presets/preset-task/preset-task/preset-task.component';
-import { PresetsStore } from 'src/app/store/presets.store';
+import { PresetTaskComponent } from '../presets/preset-task/preset-task.component';
+import { PresetsStore } from '../../store/presets.store';
 
 @Component({
   selector: 'app-preset',

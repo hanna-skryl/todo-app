@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TodoStore } from './store/todo.store';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './app-shell/header/header.component';
 
 @Component({
   selector: 'app-root',

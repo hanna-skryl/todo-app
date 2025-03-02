@@ -17,10 +17,10 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { NgTemplateOutlet } from '@angular/common';
-import { type TaskEvent, TaskComponent } from 'src/app/task/task.component';
-import { TodoStore } from 'src/app/store/todo.store';
-import { type FilterOption, FILTERS, type Task } from 'src/app/models';
-import { NewTaskComponent } from '../../new-task/new-task.component';
+import { type TaskEvent, TaskComponent } from './task/task.component';
+import { TodoStore } from '../../store/todo.store';
+import { type FilterOption, FILTERS, type Task } from '../../models';
+import { NewTaskComponent } from '../../shared/new-task/new-task.component';
 
 type TaskFormGroup = FormGroup<{
   _id: FormControl<string | undefined>;

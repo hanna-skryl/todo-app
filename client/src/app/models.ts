@@ -16,10 +16,6 @@ export type Preset = {
   tasks: string[];
 };
 
-export type CreatePresetResponse = {
-  insertedId: string;
-};
-
 export type ActiveList = {
   _id?: string;
   tasks: Task[];

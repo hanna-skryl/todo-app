@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
 } from '@angular/core';
@@ -41,7 +42,11 @@ type TaskFormGroup = FormGroup<{
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActiveListComponent {
-  readonly store = inject(TodoStore);
+  private readonly store = inject(TodoStore);
+
+  readonly loading = computed(() => this.store.loading());
+  readonly tasksLeft = computed(() => this.store.tasksLeft().length);
+  readonly selectedFilter = computed(() => this.store.selectedFilter());
 
   readonly title = 'TODO';
   readonly filters = FILTERS;
@@ -107,5 +112,13 @@ export class ActiveListComponent {
       control.getRawValue(),
     );
     this.store.reorderTasks(updatedTasks);
+  }
+
+  clearCompleted(): void {
+    this.store.clearCompleted();
+  }
+
+  filterTasks(filter: FilterOption): void {
+    this.store.filterTasks(filter);
   }
 }

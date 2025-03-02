@@ -106,7 +106,7 @@ export const TodoStore = signalStore(
       switchMap((tasks: string[]) =>
         activeListService
           .updateActiveList(
-            tasks.map(description => ({ _id: '', description, done: false })),
+            tasks.map(description => ({ description, done: false })),
           )
           .pipe(
             tapResponse({

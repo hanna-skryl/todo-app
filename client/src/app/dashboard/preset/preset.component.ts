@@ -7,7 +7,6 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  signal,
 } from '@angular/core';
 import type { Preset, Task } from 'src/app/models';
 import { NewTaskComponent } from '../../new-task/new-task.component';
@@ -35,10 +34,12 @@ import { PresetsStore } from 'src/app/store/presets.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PresetComponent implements OnInit, OnDestroy {
-  readonly store = inject(PresetsStore);
+  private readonly store = inject(PresetsStore);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
+
+  readonly loading = computed(() => this.store.loading());
 
   readonly tasksForm = new FormArray<FormControl<string>>([]);
   readonly newTaskControl = new FormControl<string>('', { nonNullable: true });

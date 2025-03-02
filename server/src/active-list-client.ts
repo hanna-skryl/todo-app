@@ -32,9 +32,9 @@ export function createActiveListClient(db: Db) {
     async updateActiveList(
       tasks: ActiveListModel['tasks'],
     ): Promise<ActiveListModel | null> {
-      const updatedTasks = tasks.map(t => ({
-        ...t,
-        _id: t._id ? new ObjectId(t._id) : new ObjectId(),
+      const updatedTasks = tasks.map(task => ({
+        _id: task._id ? new ObjectId(task._id) : new ObjectId(),
+        ...task,
       }));
       const result = await collection.findOneAndUpdate(
         {},

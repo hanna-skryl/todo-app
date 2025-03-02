@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnInit,
 } from '@angular/core';
@@ -16,9 +17,12 @@ import { PresetsStore } from 'src/app/store/presets.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PresetsComponent implements OnInit {
-  readonly store = inject(PresetsStore);
+  private readonly store = inject(PresetsStore);
 
   readonly newPreset = new FormControl('', { nonNullable: true });
+
+  readonly presets = computed(() => this.store.presets());
+  readonly loading = computed(() => this.store.loading());
 
   ngOnInit(): void {
     this.store.setLoading(true);

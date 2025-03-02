@@ -1,4 +1,8 @@
-<div cdkDrag class="task app-input has-checkbox">
+<div
+  cdkDrag
+  [cdkDragStartDelay]="100"
+  class="task app-input has-checkbox prevent-select"
+>
   <label [for]="task()._id">
     <span class="task-checkbox"></span>
     <input

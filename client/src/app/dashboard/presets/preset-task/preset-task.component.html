@@ -1,4 +1,4 @@
-<div cdkDrag class="task app-input">
+<div cdkDrag [cdkDragStartDelay]="100" class="task app-input prevent-select">
   <span class="task-text">{{ task() }}</span>
   <span class="remove-button" (click)="deleteTask()">
     <img

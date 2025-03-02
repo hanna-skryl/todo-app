@@ -31,21 +31,22 @@ export class LandingComponent {
   readonly authService = inject(AuthService);
   readonly router = inject(Router);
 
+  private spinnerTimeout?: NodeJS.Timeout;
+
   constructor() {
     effect(() => {
       if (this.loading()) {
-        const timerId = setTimeout(() => this.showSpinner.set(true), 500);
-        return () => clearTimeout(timerId);
+        this.spinnerTimeout = setTimeout(() => this.showSpinner.set(true), 500);
       } else {
+        clearTimeout(this.spinnerTimeout);
         this.showSpinner.set(false);
-        return () => {};
       }
     });
   }
 
-  async onLogin(event: Event): Promise<void> {
-    event.preventDefault();
+  async handleLogin(event: Event): Promise<void> {
     this.loading.set(true);
+    this.errorMessage.set(null);
 
     const form = event.target as HTMLFormElement;
     const username = (form.elements.namedItem('username') as HTMLInputElement)
@@ -53,13 +54,17 @@ export class LandingComponent {
     const password = (form.elements.namedItem('password') as HTMLInputElement)
       .value;
 
-    const success = await this.authService.login(username, password);
-    this.loading.set(false);
-    if (success) {
+    const result = await this.authService.login(username, password);
+
+    if (result.success) {
       this.router.navigate(['/dashboard/active-list']);
     } else {
-      this.errorMessage.set('Invalid username or password');
+      this.errorMessage.set(result.error || 'Invalid username or password');
     }
+
+    this.loading.set(false);
+    clearTimeout(this.spinnerTimeout);
+    this.showSpinner.set(false);
   }
 
   copyText(type: 'username' | 'password'): void {

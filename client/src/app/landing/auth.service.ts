@@ -9,8 +9,13 @@ import {
   signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom, map, of } from 'rxjs';
 import { environment } from '../environments/environment';
+
+type LoginResult = {
+  success: boolean;
+  error?: string;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -48,21 +53,25 @@ export class AuthService {
     }
   }
 
-  async login(username: string, password: string): Promise<boolean> {
-    try {
-      const response = await firstValueFrom(
-        this.httpClient.post<{ message: string }>(`${this.url}/users/login`, {
+  async login(username: string, password: string): Promise<LoginResult> {
+    return firstValueFrom(
+      this.httpClient
+        .post<{ message: string }>(`${this.url}/users/login`, {
           username,
           password,
-        }),
-      );
-      const success = response.message === 'Login successful';
-      this.loggedIn.set(success);
-      return success;
-    } catch (error) {
-      console.error('Login failed:', error);
-      return false;
-    }
+        })
+        .pipe(
+          map(response => {
+            const success = response.message === 'Login successful';
+            this.loggedIn.set(success);
+            return { success };
+          }),
+          catchError(error => {
+            console.error('Login failed:', error);
+            return of({ success: false, error: 'Login request failed' });
+          }),
+        ),
+    );
   }
 
   logout(): void {

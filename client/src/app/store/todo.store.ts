@@ -11,6 +11,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { switchMap } from 'rxjs';
 import { ActiveListService } from '../dashboard/active-list/active-list.service';
+import { ToastService } from '../shared/toast/toast.service';
 
 export type TodoState = {
   tasks: Task[];
@@ -39,98 +40,107 @@ export const TodoStore = signalStore(
       ),
     ),
   })),
-  withMethods((store, activeListService = inject(ActiveListService)) => ({
-    loadData: rxMethod<void>(
-      switchMap(() => {
-        return activeListService.fetchActiveList().pipe(
-          tapResponse({
-            next: list =>
-              patchState(store, { tasks: list.tasks, loading: false }),
-            error: error => {
-              patchState(store, { tasks: [], loading: false });
-              console.error('Failed to fetch an active list', error);
-            },
-          }),
-        );
-      }),
-    ),
-    addTask: rxMethod(
-      switchMap((description: string) =>
-        activeListService.addTask(description).pipe(
-          tapResponse({
-            next: list => patchState(store, { tasks: list.tasks }),
-            error: console.error,
-          }),
-        ),
+  withMethods(
+    (
+      store,
+      activeListService = inject(ActiveListService),
+      toastService = inject(ToastService),
+    ) => ({
+      loadData: rxMethod<void>(
+        switchMap(() => {
+          return activeListService.fetchActiveList().pipe(
+            tapResponse({
+              next: list =>
+                patchState(store, { tasks: list.tasks, loading: false }),
+              error: error => {
+                patchState(store, { tasks: [], loading: false });
+                console.error('Failed to fetch an active list', error);
+              },
+            }),
+          );
+        }),
       ),
-    ),
-    removeTask: rxMethod(
-      switchMap((id: string) =>
-        activeListService.removeTask(id).pipe(
-          tapResponse({
-            next: list => patchState(store, { tasks: list.tasks }),
-            error: console.error,
-          }),
-        ),
-      ),
-    ),
-    toggleTask: rxMethod(
-      switchMap((id: string) =>
-        activeListService
-          .updateActiveList(
-            store
-              .tasks()
-              .map(task =>
-                task._id === id ? { ...task, done: !task.done } : task,
-              ),
-          )
-          .pipe(
+      addTask: rxMethod(
+        switchMap((description: string) =>
+          activeListService.addTask(description).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
               error: console.error,
             }),
           ),
-      ),
-    ),
-    reorderTasks: rxMethod(
-      switchMap((updatedTasks: Task[]) =>
-        activeListService.updateActiveList(updatedTasks).pipe(
-          tapResponse({
-            next: list => patchState(store, { tasks: list.tasks }),
-            error: console.error,
-          }),
         ),
       ),
-    ),
-    activatePreset: rxMethod(
-      switchMap((tasks: string[]) =>
-        activeListService
-          .updateActiveList(
-            tasks.map(description => ({ description, done: false })),
-          )
-          .pipe(
+      removeTask: rxMethod(
+        switchMap((id: string) =>
+          activeListService.removeTask(id).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
               error: console.error,
             }),
           ),
-      ),
-    ),
-    clearCompleted: rxMethod<void>(
-      switchMap(() =>
-        activeListService.updateActiveList(store.tasksLeft()).pipe(
-          tapResponse({
-            next: list => patchState(store, { tasks: list.tasks }),
-            error: console.error,
-          }),
         ),
       ),
-    ),
-    filterTasks(option: FilterOption): void {
-      patchState(store, { selectedFilter: option });
-    },
-    setLoading(isLoading: boolean): void {
-      patchState(store, { loading: isLoading });
-    },
-  })),
+      toggleTask: rxMethod(
+        switchMap((id: string) =>
+          activeListService
+            .updateActiveList(
+              store
+                .tasks()
+                .map(task =>
+                  task._id === id ? { ...task, done: !task.done } : task,
+                ),
+            )
+            .pipe(
+              tapResponse({
+                next: list => patchState(store, { tasks: list.tasks }),
+                error: console.error,
+              }),
+            ),
+        ),
+      ),
+      reorderTasks: rxMethod(
+        switchMap((updatedTasks: Task[]) =>
+          activeListService.updateActiveList(updatedTasks).pipe(
+            tapResponse({
+              next: list => patchState(store, { tasks: list.tasks }),
+              error: console.error,
+            }),
+          ),
+        ),
+      ),
+      activatePreset: rxMethod(
+        switchMap((tasks: string[]) =>
+          activeListService
+            .updateActiveList(
+              tasks.map(description => ({ description, done: false })),
+            )
+            .pipe(
+              tapResponse({
+                next: list => {
+                  patchState(store, { tasks: list.tasks });
+                  toastService.showMessage('Preset activated successfully!');
+                },
+                error: console.error,
+              }),
+            ),
+        ),
+      ),
+      clearCompleted: rxMethod<void>(
+        switchMap(() =>
+          activeListService.updateActiveList(store.tasksLeft()).pipe(
+            tapResponse({
+              next: list => patchState(store, { tasks: list.tasks }),
+              error: console.error,
+            }),
+          ),
+        ),
+      ),
+      filterTasks(option: FilterOption): void {
+        patchState(store, { selectedFilter: option });
+      },
+      setLoading(isLoading: boolean): void {
+        patchState(store, { loading: isLoading });
+      },
+    }),
+  ),
 );

@@ -7,13 +7,14 @@ import {
 } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { Subject } from 'rxjs';
-import type { Mode } from '../models';
+
+import { Mode } from 'src/app/models';
 import {
   DARK_MODE_CLASS_NAME,
   LIGHT_MODE_CLASS_NAME,
   PREFERS_COLOR_SCHEME_DARK,
-} from '../constants';
-import { ModeStore } from '../store/mode.store';
+} from 'src/app/constants';
+import { ModeStore } from 'src/app/store/mode.store';
 
 @Component({
   selector: 'app-mode-toggle',

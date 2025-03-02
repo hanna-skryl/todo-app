@@ -1,4 +1,4 @@
-<form (submit)="onLogin($event)">
+<form (submit)="$event.preventDefault(); handleLogin($event)">
   <input
     type="text"
     name="username"

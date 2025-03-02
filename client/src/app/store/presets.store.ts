@@ -53,13 +53,10 @@ export const PresetsStore = signalStore(
       switchMap((preset: Pick<Preset, 'tasks' | 'title'>) =>
         presetsService.createPreset(preset).pipe(
           tapResponse({
-            next: res => {
-              if (res) {
-                const newPreset: Preset = { ...preset, _id: res.insertedId };
-                patchState(store, {
-                  presets: [...store.presets(), newPreset],
-                });
-              }
+            next: newPreset => {
+              patchState(store, {
+                presets: [...store.presets(), newPreset],
+              });
             },
             error: error => console.error('Failed to create a preset', error),
           }),

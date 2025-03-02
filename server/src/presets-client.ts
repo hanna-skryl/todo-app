@@ -14,9 +14,9 @@ export function createPresetsClient(db: Db) {
       return collection.findOne({ _id });
     },
 
-    async createPreset(preset: PresetModel): Promise<ObjectId> {
+    async createPreset(preset: Omit<PresetModel, '_id'>): Promise<PresetModel> {
       const result = await collection.insertOne(preset);
-      return result.insertedId;
+      return { _id: new ObjectId(result.insertedId), ...preset };
     },
 
     async updatePreset(preset: PresetModel): Promise<PresetModel | null> {

@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Preset } from '../../models';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
-import type { CreatePresetResponse } from '../../../../src/app/models';
 
 @Injectable({
   providedIn: 'root',
@@ -20,13 +19,8 @@ export class PresetService {
     return this.httpClient.get<Preset>(`${this.url}/presets/${id}`);
   }
 
-  createPreset(
-    preset: Pick<Preset, 'tasks' | 'title'>,
-  ): Observable<CreatePresetResponse> {
-    return this.httpClient.post<CreatePresetResponse>(
-      `${this.url}/presets`,
-      preset,
-    );
+  createPreset(preset: Pick<Preset, 'tasks' | 'title'>): Observable<Preset> {
+    return this.httpClient.post<Preset>(`${this.url}/presets`, preset);
   }
 
   updatePreset(preset: Preset): Observable<Preset> {

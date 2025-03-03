@@ -24,12 +24,6 @@
   margin-bottom: 1rem;
 }
 
-[type='button'] {
-  display: flex;
-  align-items: center;
-  column-gap: 0.25rem;
-}
-
 .activate-btn {
   grid-area: activate;
 }
@@ -37,6 +31,7 @@
 .edit-btn {
   grid-area: edit;
   text-decoration: none;
+  height: 2.5rem;
 }
 
 .delete-btn {

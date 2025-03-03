@@ -31,7 +31,7 @@ export async function createDbClient(uri: string) {
       password: { bsonType: 'string', description: "'password' is required" },
     },
   });
-  await applySchemaValidation(db, 'active_list', {
+  await applySchemaValidation(db, Collection.ActiveList, {
     bsonType: 'object',
     required: ['tasks'],
     additionalProperties: false,

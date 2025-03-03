@@ -34,7 +34,8 @@ export function createActiveListClient(db: Db) {
     ): Promise<ActiveListModel | null> {
       const updatedTasks = tasks.map(task => ({
         _id: task._id ? new ObjectId(task._id) : new ObjectId(),
-        ...task,
+        description: task.description,
+        done: !!task.done,
       }));
       const result = await collection.findOneAndUpdate(
         {},

@@ -13,10 +13,11 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { TodoStore } from '../../store/todo.store';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-new-task',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgOptimizedImage],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

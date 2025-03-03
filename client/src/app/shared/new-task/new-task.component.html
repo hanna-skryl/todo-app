@@ -1,14 +1,24 @@
-<label class="new-task-label" for="newTask">
+<label
+  class="new-task-label app-input"
+  for="newTask"
+  [class.has-checkbox]="hasCheckbox()"
+>
   @if (hasCheckbox()) {
     <span class="new-task-checkbox"></span>
   }
   <input
     type="text"
-    class="new-task-input app-input"
+    class="new-task-input"
     placeholder="Create a new task..."
     id="newTask"
     [formControl]="newTaskControl"
     (keyup.enter)="emitNewTask()"
-    [class.has-checkbox]="hasCheckbox()"
   />
 </label>
+<button
+  (click)="emitNewTask()"
+  class="new-task-btn app-btn-primary"
+  type="button"
+>
+  <img ngSrc="assets/images/add.svg" alt="Add task." width="12" height="12" />
+</button>

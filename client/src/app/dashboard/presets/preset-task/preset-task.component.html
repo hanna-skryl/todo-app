@@ -1,11 +1,11 @@
 <div cdkDrag [cdkDragStartDelay]="100" class="task app-input prevent-select">
   <span class="task-text">{{ task() }}</span>
-  <span class="remove-button" (click)="deleteTask()">
+  <button type="button" class="remove-button" (click)="deleteTask()">
     <img
       ngSrc="assets/images/icon-cross.svg"
       alt="Remove task."
       width="12"
       height="12"
     />
-  </span>
+  </button>
 </div>

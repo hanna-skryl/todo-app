@@ -36,17 +36,9 @@
 }
 
 <div class="demo-credentials">
-  <h2 class="info">
-    <img
-      class="info-icon"
-      ngSrc="assets/images/info.svg"
-      width="24"
-      height="24"
-    />
-    Demo Credentials
-  </h2>
-  <p>
-    <strong>Username:</strong> demo_user
+  <h2 class="info">Demo Credentials</h2>
+  <div class="demo-credentials-item">
+    <span><strong>Username:</strong> demo_user</span>
     <button type="button" class="app-btn-txt" (click)="copyText('username')">
       <img
         class="copy-icon"
@@ -60,9 +52,9 @@
     @if (showSuccessMessage().username) {
       <span class="success">Copied!</span>
     }
-  </p>
-  <p>
-    <strong>Password:</strong> password123
+  </div>
+  <div class="demo-credentials-item">
+    <span><strong>Password:</strong> password123</span>
     <button type="button" class="app-btn-txt" (click)="copyText('password')">
       <img
         class="copy-icon"
@@ -75,5 +67,5 @@
     @if (showSuccessMessage().password) {
       <span class="success">Copied!</span>
     }
-  </p>
+  </div>
 </div>

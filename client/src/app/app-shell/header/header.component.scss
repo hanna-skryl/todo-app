@@ -31,16 +31,12 @@
 }
 
 .nav-link {
-  font-size: 0.7rem;
+  font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
   text-decoration: none;
   letter-spacing: 0.05em;
   white-space: nowrap;
-
-  @media (min-width: 768px) {
-    font-size: 0.875rem;
-  }
 }
 
 .nav-item {

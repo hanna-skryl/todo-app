@@ -6,7 +6,7 @@
 .new-task-input {
   font-family: inherit;
   color: var(--content-primary);
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-sm);
   width: 100%;
   padding: 1rem 1.125rem;
   border: none;
@@ -34,13 +34,8 @@
 
 .new-task-input::placeholder,
 .new-task-input {
-  font-size: 0.75rem;
-  font-weight: 700;
-
-  @media (min-width: 768px) {
-    font-size: 1.125rem;
-    font-weight: 400;
-  }
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .new-task-label {

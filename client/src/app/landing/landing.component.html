@@ -39,9 +39,12 @@
   <h2 class="info">Demo Credentials</h2>
   <div class="demo-credentials-item">
     <span><strong>Username:</strong> demo_user</span>
-    <button type="button" class="app-btn-txt" (click)="copyText('username')">
+    <button
+      type="button"
+      class="copy-button app-btn-txt"
+      (click)="copyText('username')"
+    >
       <img
-        class="copy-icon"
         ngSrc="assets/images/copy.svg"
         width="20"
         height="20"
@@ -55,9 +58,12 @@
   </div>
   <div class="demo-credentials-item">
     <span><strong>Password:</strong> password123</span>
-    <button type="button" class="app-btn-txt" (click)="copyText('password')">
+    <button
+      type="button"
+      class="copy-button app-btn-txt"
+      (click)="copyText('password')"
+    >
       <img
-        class="copy-icon"
         ngSrc="assets/images/copy.svg"
         width="20"
         height="20"

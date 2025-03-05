@@ -87,8 +87,16 @@ export const PresetsStore = signalStore(
           .updatePreset({ _id: store.activePreset()?._id, ...preset })
           .pipe(
             tapResponse({
-              next: updatedPreset =>
-                patchState(store, { activePreset: updatedPreset }),
+              next: updatedPreset => {
+                patchState(store, {
+                  activePreset: updatedPreset,
+                  presets: store
+                    .presets()
+                    .map(preset =>
+                      preset._id === updatedPreset._id ? updatedPreset : preset,
+                    ),
+                });
+              },
               error: error => {
                 patchState(store, { activePreset: store.activePreset() });
                 console.error(

@@ -1,4 +1,9 @@
 .filter {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--content-muted);
+  background-color: var(--background-secondary);
+  border: none;
   cursor: pointer;
   transition: color 0.25s;
 
@@ -10,10 +15,25 @@
   &:hover {
     color: var(--content-primary);
   }
+
+  &:has(input:focus-visible) {
+    outline: 2px solid var(--background-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  &.selected-filter {
+    color: var(--content-accent);
+    pointer-events: none;
+  }
 }
 
 .filters-sm {
   display: block;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
 
   .filters {
     background-color: var(--background-secondary);
@@ -22,12 +42,6 @@
     justify-content: center;
     margin-bottom: 2.5rem;
     border-radius: var(--radius-sm);
-    font-size: 0.875rem;
-    font-weight: 700;
-  }
-
-  @media (min-width: 768px) {
-    display: none;
   }
 }
 
@@ -42,13 +56,13 @@
 .filters {
   display: flex;
   gap: 1rem;
-  color: var(--content-muted);
-  background-color: var(--background-secondary);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
 
-  .selected-filter {
-    color: var(--content-accent);
-    pointer-events: none;
-  }
+.clear-button {
+  border-radius: 2px;
 }
 
 .footer {

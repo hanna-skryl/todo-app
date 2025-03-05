@@ -29,7 +29,7 @@
           />
         </div>
 
-        <button type="button" class="app-btn-txt" (click)="clearCompleted()">
+        <button type="button" class="clear-button app-btn-txt" (click)="clearCompleted()">
           Clear Completed
         </button>
       </footer>
@@ -50,7 +50,7 @@
 </form>
 
 <ng-template #filtersTemplate let-filters let-idPrefix="idPrefix">
-  <div class="filters">
+  <fieldset class="filters">
     @for (filter of filters; track filter) {
       <label
         class="filter"
@@ -67,5 +67,5 @@
         {{ filter }}
       </label>
     }
-  </div>
+  </fieldset>
 </ng-template>

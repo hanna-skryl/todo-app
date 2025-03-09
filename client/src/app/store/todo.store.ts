@@ -4,6 +4,7 @@ import {
   patchState,
   signalStore,
   withComputed,
+  withHooks,
   withMethods,
   withState,
 } from '@ngrx/signals';
@@ -143,4 +144,10 @@ export const TodoStore = signalStore(
       },
     }),
   ),
+  withHooks(({ loadData, setLoading }) => ({
+    onInit: () => {
+      loadData();
+      setLoading(true);
+    },
+  })),
 );

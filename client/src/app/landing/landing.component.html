@@ -1,12 +1,15 @@
 <form (submit)="$event.preventDefault(); handleLogin($event)">
   <input
+    #usernameInput
     type="text"
     name="username"
     placeholder="Username"
     required
+    autocomplete="on"
     class="app-input"
   />
   <input
+    #passwordInput
     type="password"
     name="password"
     placeholder="Password"
@@ -28,7 +31,7 @@
         height="20"
       />
     }
-    <span>Login</span>
+    <span class="login-label">Login</span>
   </button>
 </form>
 @if (errorMessage(); as errorMessage) {
@@ -37,41 +40,39 @@
 
 <div class="demo-credentials">
   <h2 class="info">Demo Credentials</h2>
-  <div class="demo-credentials-item">
-    <span><strong>Username:</strong> demo_user</span>
-    <button
-      type="button"
-      class="copy-button app-btn-txt"
-      (click)="copyText('username')"
-    >
-      <img
-        ngSrc="assets/images/copy.svg"
-        width="20"
-        height="20"
+  <dl>
+    <div class="demo-credentials-item">
+      <dt><strong>Username:</strong></dt>
+      <dd>demo_user</dd>
+      <button
+        type="button"
+        appCopyButton
+        (copied)="handleCopiedUsername($event, usernameInput)"
         cdkCopyToClipboard="demo_user"
-      />
-    </button>
+        class="copy-button app-btn-txt"
+      >
+        <img ngSrc="assets/images/copy.svg" alt="Copy" width="20" height="20" />
+      </button>
+      @if (usernameCopied()) {
+        <span class="success">Copied!</span>
+      }
+    </div>
+    <div class="demo-credentials-item">
+      <dt><strong>Password:</strong></dt>
+      <dd>password123</dd>
 
-    @if (showSuccessMessage().username) {
-      <span class="success">Copied!</span>
-    }
-  </div>
-  <div class="demo-credentials-item">
-    <span><strong>Password:</strong> password123</span>
-    <button
-      type="button"
-      class="copy-button app-btn-txt"
-      (click)="copyText('password')"
-    >
-      <img
-        ngSrc="assets/images/copy.svg"
-        width="20"
-        height="20"
+      <button
+        type="button"
+        appCopyButton
+        (copied)="handleCopiedPassword($event, passwordInput)"
         cdkCopyToClipboard="password123"
-      />
-    </button>
-    @if (showSuccessMessage().password) {
-      <span class="success">Copied!</span>
-    }
-  </div>
+        class="copy-button app-btn-txt"
+      >
+        <img ngSrc="assets/images/copy.svg" alt="Copy" width="20" height="20" />
+      </button>
+      @if (passwordCopied()) {
+        <span class="success">Copied!</span>
+      }
+    </div>
+  </dl>
 </div>

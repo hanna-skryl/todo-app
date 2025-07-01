@@ -20,15 +20,20 @@ input {
 }
 
 .login-button {
-  column-gap: 0.3125rem;
   justify-content: center;
   padding: 0.75rem;
   margin-top: 1rem;
+  height: 2.875rem;
+}
+
+.login-label {
+  margin-right: 0.3125rem;
 }
 
 .copy-button {
   border-radius: 2px;
-  margin-left: 0.3125rem;
+  margin: 0 0 0 0.3125rem;
+  padding: 0;
 }
 
 .success {
@@ -71,6 +76,9 @@ input {
   border-right-color: var(--content-disabled);
   position: relative;
   animation: loading 1s infinite linear;
+  width: 18px;
+  max-height: 20px;
+  margin-right: 2px;
 }
 
 .spinner:before,

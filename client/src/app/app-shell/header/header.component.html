@@ -1,8 +1,8 @@
 <nav
   class="navbar app-container"
-  [style.justify-content]="isLoggedIn() ? 'space-between' : 'flex-end'"
+  [style.justify-content]="authenticated() ? 'space-between' : 'flex-end'"
 >
-  @if (isLoggedIn()) {
+  @if (authenticated()) {
     <ul class="nav-list">
       <li class="nav-item">
         <a
@@ -26,7 +26,7 @@
 
     <div class="nav-extra">
       <app-mode-toggle />
-      @if (isLoggedIn()) {
+      @if (authenticated()) {
         <button
           type="button"
           class="app-btn-primary logout-button"

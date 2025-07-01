@@ -24,14 +24,11 @@ export class AuthService {
   private readonly url = environment.apiUrl;
 
   private readonly loggedIn = signal(false);
-  readonly isInitialized = signal(false);
+  private readonly initialized = signal(false);
 
-  readonly isLoggedIn = computed(() => {
-    if (isPlatformBrowser(this.platformId)) {
-      return this.loggedIn() || localStorage.getItem('isLoggedIn') === 'true';
-    }
-    return this.loggedIn();
-  });
+  readonly authenticated = computed(
+    () => this.loggedIn() && this.initialized(),
+  );
 
   private readonly platformId = inject(PLATFORM_ID);
   private readonly httpClient = inject(HttpClient);
@@ -40,7 +37,7 @@ export class AuthService {
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
       this.loggedIn.set(localStorage.getItem('isLoggedIn') === 'true');
-      this.isInitialized.set(true);
+      this.initialized.set(true);
 
       effect(() => {
         if (this.loggedIn()) {
@@ -61,13 +58,19 @@ export class AuthService {
           password,
         })
         .pipe(
-          map(response => {
+          map(async response => {
             const success = response.message === 'Login successful';
-            this.loggedIn.set(success);
+            if (success) {
+              await this.router.navigate(['/dashboard/active-list']);
+              this.loggedIn.set(true);
+            } else {
+              this.loggedIn.set(false);
+            }
             return { success };
           }),
           catchError(error => {
             console.error('Login failed:', error);
+            this.loggedIn.set(false);
             return of({ success: false, error: 'Login request failed' });
           }),
         ),

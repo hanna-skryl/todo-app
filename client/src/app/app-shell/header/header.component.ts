@@ -17,6 +17,5 @@ import { AuthService } from 'src/app/landing/auth.service';
 })
 export class HeaderComponent {
   readonly authService = inject(AuthService);
-
-  readonly isLoggedIn = computed(() => this.authService.isLoggedIn());
+  readonly authenticated = computed(() => this.authService.authenticated());
 }

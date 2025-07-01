@@ -1,48 +1,35 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   inject,
   signal,
 } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { NgOptimizedImage } from '@angular/common';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { CopyButtonDirective } from './copy-button.directive';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-landing',
-  imports: [NgOptimizedImage, ClipboardModule],
+  imports: [NgOptimizedImage, ClipboardModule, CopyButtonDirective],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LandingComponent {
   readonly loading = signal(false);
-  readonly showSpinner = signal(false);
+  readonly passwordCopied = signal(false);
+  readonly usernameCopied = signal(false);
   readonly errorMessage = signal<string | null>(null);
-  readonly showSuccessMessage = signal<
-    Record<'username' | 'password', boolean>
-  >({
-    username: false,
-    password: false,
-  });
 
-  readonly authService = inject(AuthService);
-  readonly router = inject(Router);
+  readonly showSpinner = toSignal(
+    toObservable(this.loading).pipe(debounceTime(500)),
+    { initialValue: false },
+  );
 
-  private spinnerTimeout?: NodeJS.Timeout;
-
-  constructor() {
-    effect(() => {
-      if (this.loading()) {
-        this.spinnerTimeout = setTimeout(() => this.showSpinner.set(true), 500);
-      } else {
-        clearTimeout(this.spinnerTimeout);
-        this.showSpinner.set(false);
-      }
-    });
-  }
+  private readonly authService = inject(AuthService);
 
   async handleLogin(event: Event): Promise<void> {
     this.loading.set(true);
@@ -57,26 +44,24 @@ export class LandingComponent {
     const result = await this.authService.login(username, password);
 
     if (result.success) {
-      this.router.navigate(['/dashboard/active-list']);
+      this.loading.set(false);
     } else {
       this.errorMessage.set(result.error || 'Invalid username or password');
+      this.loading.set(false);
     }
-
-    this.loading.set(false);
-    clearTimeout(this.spinnerTimeout);
-    this.showSpinner.set(false);
   }
 
-  copyText(type: 'username' | 'password'): void {
-    this.showSuccessMessage.update(items => ({
-      ...items,
-      [type]: true,
-    }));
-    setTimeout(() => {
-      this.showSuccessMessage.set({
-        username: false,
-        password: false,
-      });
-    }, 1000);
+  handleCopiedUsername(copied: boolean, input: HTMLInputElement): void {
+    this.usernameCopied.set(copied);
+    if (copied) {
+      input.focus();
+    }
+  }
+
+  handleCopiedPassword(copied: boolean, input: HTMLInputElement): void {
+    this.passwordCopied.set(copied);
+    if (copied) {
+      input.focus();
+    }
   }
 }

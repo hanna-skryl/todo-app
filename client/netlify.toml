@@ -1,3 +1,6 @@
+[[plugins]]
+  package = "./plugins/wait-for-render"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

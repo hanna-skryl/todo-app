@@ -27,6 +27,7 @@
       <img
         class="login-icon"
         ngSrc="assets/images/login.svg"
+        alt="Login"
         width="20"
         height="20"
       />
@@ -43,36 +44,54 @@
   <dl>
     <div class="demo-credentials-item">
       <dt><strong>Username:</strong></dt>
-      <dd>demo_user</dd>
-      <button
-        type="button"
-        appCopyButton
-        (copied)="handleCopiedUsername($event, usernameInput)"
-        cdkCopyToClipboard="demo_user"
-        class="copy-button app-btn-txt"
-      >
-        <img ngSrc="assets/images/copy.svg" alt="Copy" width="20" height="20" />
-      </button>
-      @if (usernameCopied()) {
-        <span class="success">Copied!</span>
-      }
+      <dd class="demo-credentials-description">
+        demo_user
+
+        <button
+          type="button"
+          appCopyButton
+          (copied)="handleCopiedUsername($event, usernameInput)"
+          cdkCopyToClipboard="demo_user"
+          class="copy-button app-btn-txt"
+        >
+          <img
+            ngSrc="assets/images/copy.svg"
+            alt="Copy"
+            width="20"
+            height="20"
+          />
+        </button>
+
+        @if (usernameCopied()) {
+          <span class="success">Copied!</span>
+        }
+      </dd>
     </div>
+
     <div class="demo-credentials-item">
       <dt><strong>Password:</strong></dt>
-      <dd>password123</dd>
+      <dd class="demo-credentials-description">
+        password123
 
-      <button
-        type="button"
-        appCopyButton
-        (copied)="handleCopiedPassword($event, passwordInput)"
-        cdkCopyToClipboard="password123"
-        class="copy-button app-btn-txt"
-      >
-        <img ngSrc="assets/images/copy.svg" alt="Copy" width="20" height="20" />
-      </button>
-      @if (passwordCopied()) {
-        <span class="success">Copied!</span>
-      }
+        <button
+          type="button"
+          appCopyButton
+          (copied)="handleCopiedPassword($event, passwordInput)"
+          cdkCopyToClipboard="password123"
+          class="copy-button app-btn-txt"
+        >
+          <img
+            ngSrc="assets/images/copy.svg"
+            alt="Copy"
+            width="20"
+            height="20"
+          />
+        </button>
+
+        @if (passwordCopied()) {
+          <span class="success">Copied!</span>
+        }
+      </dd>
     </div>
   </dl>
 </div>

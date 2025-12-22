@@ -1,9 +1,17 @@
+# compiled output
+dist
+
+# dependencies
 node_modules
+
+# dotenv
+.env
+
 .angular
-*.env
 
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
 
-dist
+# Code PushUp reports
+.code-pushup

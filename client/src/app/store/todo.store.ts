@@ -48,8 +48,8 @@ export const TodoStore = signalStore(
       toastService = inject(ToastService),
     ) => ({
       loadData: rxMethod<void>(
-        switchMap(() => {
-          return activeListService.fetchActiveList().pipe(
+        switchMap(() =>
+          activeListService.fetchActiveList$().pipe(
             tapResponse({
               next: list =>
                 patchState(store, { tasks: list.tasks, loading: false }),
@@ -58,12 +58,12 @@ export const TodoStore = signalStore(
                 console.error('Failed to fetch an active list', error);
               },
             }),
-          );
-        }),
+          ),
+        ),
       ),
       addTask: rxMethod(
         switchMap((description: string) =>
-          activeListService.addTask(description).pipe(
+          activeListService.addTask$(description).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
               error: console.error,
@@ -73,7 +73,7 @@ export const TodoStore = signalStore(
       ),
       removeTask: rxMethod(
         switchMap((id: string) =>
-          activeListService.removeTask(id).pipe(
+          activeListService.removeTask$(id).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
               error: console.error,
@@ -84,7 +84,7 @@ export const TodoStore = signalStore(
       toggleTask: rxMethod(
         switchMap((id: string) =>
           activeListService
-            .updateActiveList(
+            .updateActiveList$(
               store
                 .tasks()
                 .map(task =>
@@ -101,7 +101,7 @@ export const TodoStore = signalStore(
       ),
       reorderTasks: rxMethod(
         switchMap((updatedTasks: Task[]) =>
-          activeListService.updateActiveList(updatedTasks).pipe(
+          activeListService.updateActiveList$(updatedTasks).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
               error: console.error,
@@ -112,7 +112,7 @@ export const TodoStore = signalStore(
       activatePreset: rxMethod(
         switchMap((tasks: string[]) =>
           activeListService
-            .updateActiveList(
+            .updateActiveList$(
               tasks.map(description => ({ description, done: false })),
             )
             .pipe(
@@ -128,7 +128,7 @@ export const TodoStore = signalStore(
       ),
       clearCompleted: rxMethod<void>(
         switchMap(() =>
-          activeListService.updateActiveList(store.tasksLeft()).pipe(
+          activeListService.updateActiveList$(store.tasksLeft()).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
               error: console.error,

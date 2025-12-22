@@ -2,6 +2,8 @@ import { Directive, effect, ElementRef, inject, output } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { exhaustMap, fromEvent, map, startWith, timer } from 'rxjs';
 
+const COPY_TIMEOUT = 2000;
+
 @Directive({
   selector: '[appCopyButton]',
 })
@@ -15,7 +17,7 @@ export class CopyButtonDirective {
   private readonly copiedState = toSignal(
     fromEvent(inject(ElementRef).nativeElement, 'click').pipe(
       exhaustMap(() =>
-        timer(2000).pipe(
+        timer(COPY_TIMEOUT).pipe(
           map(() => false),
           startWith(true),
         ),

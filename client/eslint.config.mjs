@@ -3,6 +3,9 @@ import angular from '@code-pushup/eslint-config/angular';
 import jest from '@code-pushup/eslint-config/jest';
 
 export default tseslint.config(
+  {
+    ignores: ['.angular/**', 'dist/**', '**/assets/**'],
+  },
   ...angular,
   ...jest,
   {
@@ -13,33 +16,43 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
-  },
-  {
     settings: {
       'import/resolver': {
         typescript: {
           alwaysTryTypes: true,
-          project: ['tsconfig.base.json', 'node_modules/rxjs/tsconfig.json'],
+          project: ['tsconfig.json'],
         },
       },
     },
-  },
-  {
-    files: ['*.html'],
-    parser: '@angular-eslint/template-parser',
-    plugins: ['@angular-eslint/template'],
     rules: {
-      '@angular-eslint/template/click-events-have-key-events': 'off',
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: 'property',
+          format: ['camelCase'],
+          filter: { regex: '^_id$', match: false },
+        },
+        {
+          selector: 'variable',
+          format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+        },
+      ],
     },
   },
   {
-    ignores: [
-      '.angular/**',
-      'dist/**',
-      '**/*.md',
-      '**/*.scss',
-      '**/assets/**',
-      '**/*.yml',
-    ],
+    files: ['**/*.store.ts'],
+    rules: {
+      '@typescript-eslint/naming-convention': 'off',
+      '@typescript-eslint/no-invalid-void-type': 'off',
+      'max-lines-per-function': 'off',
+    },
+  },
+  {
+    files: ['eslint.config.mjs'],
+    settings: {
+      'import/resolver': {
+        typescript: true,
+      },
+    },
   },
 );

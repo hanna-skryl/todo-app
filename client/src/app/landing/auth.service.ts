@@ -68,7 +68,7 @@ export class AuthService {
             }
             return { success };
           }),
-          catchError(error => {
+          catchError((error: unknown) => {
             console.error('Login failed:', error);
             this.loggedIn.set(false);
             return of({ success: false, error: 'Login request failed' });

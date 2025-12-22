@@ -10,7 +10,7 @@ import {
   selector: '[clickOutside]',
 })
 export class ClickOutsideDirective {
-  readonly clickOutside = output<void>();
+  readonly clickOutside = output();
 
   private elementRef = inject<ElementRef<HTMLDialogElement>>(ElementRef);
 

@@ -12,21 +12,21 @@ export class ActiveListService {
   private readonly url = environment.apiUrl;
   private readonly httpClient = inject(HttpClient);
 
-  fetchActiveList(): Observable<TodoState> {
+  fetchActiveList$(): Observable<TodoState> {
     return this.httpClient.get<TodoState>(`${this.url}/active-list`);
   }
 
-  addTask(description: string): Observable<TodoState> {
+  addTask$(description: string): Observable<TodoState> {
     return this.httpClient.post<TodoState>(`${this.url}/active-list`, {
       description,
     });
   }
 
-  removeTask(id: string): Observable<TodoState> {
+  removeTask$(id: string): Observable<TodoState> {
     return this.httpClient.delete<TodoState>(`${this.url}/active-list/${id}`);
   }
 
-  updateActiveList(tasks: Task[]): Observable<TodoState> {
+  updateActiveList$(tasks: Task[]): Observable<TodoState> {
     return this.httpClient.put<TodoState>(`${this.url}/active-list`, { tasks });
   }
 }

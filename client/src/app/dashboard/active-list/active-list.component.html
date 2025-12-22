@@ -29,7 +29,11 @@
           />
         </div>
 
-        <button type="button" class="clear-button app-btn-txt" (click)="clearCompleted()">
+        <button
+          type="button"
+          class="clear-button app-btn-txt"
+          (click)="clearCompleted()"
+        >
           Clear Completed
         </button>
       </footer>
@@ -56,13 +60,13 @@
         class="filter"
         [class.selected-filter]="filter === selectedFilter()"
         [for]="idPrefix + filter"
-        (click)="filterTasks(filter)"
       >
         <input
           type="radio"
           [formControl]="filterControl"
           [value]="filter"
           [id]="idPrefix + filter"
+          (change)="filterTasks(filter)"
         />
         {{ filter }}
       </label>

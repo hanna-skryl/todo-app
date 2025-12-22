@@ -1,9 +1,19 @@
-import jest from '@code-pushup/eslint-config/jest';
+import tseslint from 'typescript-eslint';
 import angular from '@code-pushup/eslint-config/angular';
+import jest from '@code-pushup/eslint-config/jest';
 
 export default tseslint.config(
   ...angular,
   ...jest,
+  {
+    files: ['**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
   {
     settings: {
       'import/resolver': {
@@ -15,7 +25,7 @@ export default tseslint.config(
     },
   },
   {
-    files: '*.html',
+    files: ['*.html'],
     parser: '@angular-eslint/template-parser',
     plugins: ['@angular-eslint/template'],
     rules: {
@@ -23,6 +33,13 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['/dist', '**/*.md', '**/*.scss', '**/assets', '**/*.yml'],
+    ignores: [
+      '.angular/**',
+      'dist/**',
+      '**/*.md',
+      '**/*.scss',
+      '**/assets/**',
+      '**/*.yml',
+    ],
   },
 );

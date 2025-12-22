@@ -4,8 +4,9 @@ import {
   computed,
   inject,
   PLATFORM_ID,
+  DOCUMENT,
 } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
+import { isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { Subject } from 'rxjs';
 
 import { Mode } from 'src/app/models';

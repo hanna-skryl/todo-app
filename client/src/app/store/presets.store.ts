@@ -24,7 +24,7 @@ export const PresetsStore = signalStore(
   withMethods((store, presetsService = inject(PresetService)) => ({
     fetchPresets: rxMethod<void>(
       switchMap(() =>
-        presetsService.fetchPresets().pipe(
+        presetsService.fetchPresets$().pipe(
           tapResponse({
             next: presets => patchState(store, { presets, loading: false }),
             error: error => {
@@ -37,7 +37,7 @@ export const PresetsStore = signalStore(
     ),
     loadPreset: rxMethod(
       switchMap((id: string) =>
-        presetsService.fetchPreset(id).pipe(
+        presetsService.fetchPreset$(id).pipe(
           tapResponse({
             next: preset =>
               patchState(store, { activePreset: preset, loading: false }),
@@ -51,7 +51,7 @@ export const PresetsStore = signalStore(
     ),
     createPreset: rxMethod(
       switchMap((preset: Pick<Preset, 'tasks' | 'title'>) =>
-        presetsService.createPreset(preset).pipe(
+        presetsService.createPreset$(preset).pipe(
           tapResponse({
             next: newPreset => {
               patchState(store, {
@@ -65,7 +65,7 @@ export const PresetsStore = signalStore(
     ),
     deletePreset: rxMethod(
       switchMap((id: string) =>
-        presetsService.deletePreset(id).pipe(
+        presetsService.deletePreset$(id).pipe(
           tapResponse({
             next: () =>
               patchState(store, {
@@ -84,7 +84,7 @@ export const PresetsStore = signalStore(
     updatePreset: rxMethod(
       switchMap((preset: Pick<Preset, 'title' | 'tasks'>) =>
         presetsService
-          .updatePreset({ _id: store.activePreset()?._id, ...preset })
+          .updatePreset$({ _id: store.activePreset()?._id, ...preset })
           .pipe(
             tapResponse({
               next: updatedPreset => {
@@ -92,8 +92,8 @@ export const PresetsStore = signalStore(
                   activePreset: updatedPreset,
                   presets: store
                     .presets()
-                    .map(preset =>
-                      preset._id === updatedPreset._id ? updatedPreset : preset,
+                    .map(p =>
+                      p._id === updatedPreset._id ? updatedPreset : p,
                     ),
                 });
               },

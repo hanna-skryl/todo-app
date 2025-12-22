@@ -49,7 +49,7 @@ export class TaskComponent implements ControlValueAccessor {
   private onTouched: (() => void) | undefined;
 
   writeValue(value: boolean | null): void {
-    if (value !== null) {
+    if (value != null) {
       this.taskControl.setValue(value, { emitEvent: false });
     }
   }

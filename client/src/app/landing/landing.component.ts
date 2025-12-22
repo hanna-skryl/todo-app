@@ -11,6 +11,8 @@ import { CopyButtonDirective } from './copy-button.directive';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs';
 
+const LOADING_DEBOUNCE = 500;
+
 @Component({
   selector: 'app-landing',
   imports: [NgOptimizedImage, ClipboardModule, CopyButtonDirective],
@@ -25,7 +27,7 @@ export class LandingComponent {
   readonly errorMessage = signal<string | null>(null);
 
   readonly showSpinner = toSignal(
-    toObservable(this.loading).pipe(debounceTime(500)),
+    toObservable(this.loading).pipe(debounceTime(LOADING_DEBOUNCE)),
     { initialValue: false },
   );
 

@@ -1,31 +1,28 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, startWith, switchMap, timer } from 'rxjs';
 import { ToastService } from './toast.service';
-import { animate, style, transition, trigger } from '@angular/animations';
+
+const TOAST_TIMEOUT = 3000;
 
 @Component({
   selector: 'app-toast',
   imports: [],
-  template: `@if (message(); as message) {
-    <div @fadeInOut class="toast">{{ message }}</div>
-  }`,
+  templateUrl: './toast.component.html',
   styleUrl: './toast.component.scss',
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('200ms ease-in', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [animate('200ms ease-out', style({ opacity: 0 }))]),
-    ]),
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToastComponent {
   private readonly toastService = inject(ToastService);
-  readonly message = computed(() => this.toastService.message());
+
+  readonly message = toSignal(
+    this.toastService.message$.pipe(
+      switchMap(message =>
+        timer(TOAST_TIMEOUT).pipe(
+          map(() => null),
+          startWith(message),
+        ),
+      ),
+    ),
+  );
 }

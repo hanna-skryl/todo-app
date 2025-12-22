@@ -7,4 +7,14 @@
   padding: 0.625rem 1.25rem;
   border-radius: 0.3125rem;
   opacity: 0.9;
+  transition: opacity 200ms ease-in;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 200ms ease-out;
 }

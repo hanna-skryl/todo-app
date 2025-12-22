@@ -1,15 +1,12 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
-  readonly message = signal<string | null>(null);
+  private readonly messageSubject$$ = new Subject<string>();
+  readonly message$ = this.messageSubject$$.asObservable();
 
   showMessage(message: string): void {
-    this.message.set(message);
-    setTimeout(() => this.clear(), 3000);
-  }
-
-  private clear(): void {
-    this.message.set(null);
+    this.messageSubject$$.next(message);
   }
 }

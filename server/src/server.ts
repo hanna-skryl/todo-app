@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { createDbClient } from './db-client';
+import { createDbClient } from './db-client.js';
 import express from 'express';
-import { createPresetsRouter } from './presets.routes';
-import { createUsersRouter } from './users.routes';
-import { createActiveListRouter } from './active-list.routes';
+import { createPresetsRouter } from './presets.routes.js';
+import { createUsersRouter } from './users.routes.js';
+import { createActiveListRouter } from './active-list.routes.js';
 
 // Load environment variables from the .env file
 dotenv.config();

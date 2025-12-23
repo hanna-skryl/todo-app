@@ -1,6 +1,6 @@
 import { type Db, ObjectId } from 'mongodb';
-import type { PresetModel } from './models';
-import { Collection } from './collections';
+import type { PresetModel } from './models.js';
+import { Collection } from './collections.js';
 
 export function createPresetsClient(db: Db) {
   const collection = db.collection<PresetModel>(Collection.Presets);

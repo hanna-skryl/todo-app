@@ -16,9 +16,10 @@ import {
 })
 export class PresetTaskComponent {
   readonly task = input.required<string>();
-  readonly taskDelete = output<string>();
+  readonly index = input.required<number>();
+  readonly taskDeleted = output<number>();
 
   deleteTask(): void {
-    this.taskDelete.emit(this.task());
+    this.taskDeleted.emit(this.index());
   }
 }

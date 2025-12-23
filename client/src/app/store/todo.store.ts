@@ -10,7 +10,7 @@ import {
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import { switchMap } from 'rxjs';
+import { pipe, switchMap, tap } from 'rxjs';
 import { ActiveListService } from '../dashboard/active-list/active-list.service';
 import { ToastService } from '../shared/toast/toast.service';
 
@@ -48,41 +48,42 @@ export const TodoStore = signalStore(
       toastService = inject(ToastService),
     ) => ({
       loadData: rxMethod<void>(
-        switchMap(() =>
-          activeListService.fetchActiveList$().pipe(
-            tapResponse({
-              next: list =>
-                patchState(store, { tasks: list.tasks, loading: false }),
-              error: error => {
-                patchState(store, { tasks: [], loading: false });
-                console.error('Failed to fetch an active list', error);
-              },
-            }),
+        pipe(
+          tap(() => patchState(store, { loading: true })),
+          switchMap(() =>
+            activeListService.fetchActiveList$().pipe(
+              tapResponse({
+                next: list => patchState(store, { tasks: list.tasks }),
+                error: error =>
+                  console.error('Failed to fetch active list', error),
+                finalize: () => patchState(store, { loading: false }),
+              }),
+            ),
           ),
         ),
       ),
-      addTask: rxMethod(
-        switchMap((description: string) =>
+      addTask: rxMethod<string>(
+        switchMap(description =>
           activeListService.addTask$(description).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
-              error: console.error,
+              error: error => console.error('Failed to add task', error),
             }),
           ),
         ),
       ),
-      removeTask: rxMethod(
-        switchMap((id: string) =>
+      removeTask: rxMethod<string>(
+        switchMap(id =>
           activeListService.removeTask$(id).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
-              error: console.error,
+              error: error => console.error('Failed to remove task', error),
             }),
           ),
         ),
       ),
-      toggleTask: rxMethod(
-        switchMap((id: string) =>
+      toggleTask: rxMethod<string>(
+        switchMap(id =>
           activeListService
             .updateActiveList$(
               store
@@ -94,23 +95,23 @@ export const TodoStore = signalStore(
             .pipe(
               tapResponse({
                 next: list => patchState(store, { tasks: list.tasks }),
-                error: console.error,
+                error: error => console.error('Failed to toggle task', error),
               }),
             ),
         ),
       ),
-      reorderTasks: rxMethod(
-        switchMap((updatedTasks: Task[]) =>
+      reorderTasks: rxMethod<Task[]>(
+        switchMap(updatedTasks =>
           activeListService.updateActiveList$(updatedTasks).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
-              error: console.error,
+              error: error => console.error('Failed to reorder tasks', error),
             }),
           ),
         ),
       ),
-      activatePreset: rxMethod(
-        switchMap((tasks: string[]) =>
+      activatePreset: rxMethod<string[]>(
+        switchMap(tasks =>
           activeListService
             .updateActiveList$(
               tasks.map(description => ({ description, done: false })),
@@ -121,7 +122,8 @@ export const TodoStore = signalStore(
                   patchState(store, { tasks: list.tasks });
                   toastService.showMessage('Preset activated successfully!');
                 },
-                error: console.error,
+                error: error =>
+                  console.error('Failed to activate preset', error),
               }),
             ),
         ),
@@ -131,7 +133,7 @@ export const TodoStore = signalStore(
           activeListService.updateActiveList$(store.tasksLeft()).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
-              error: console.error,
+              error: error => console.error('Failed to clear completed', error),
             }),
           ),
         ),
@@ -139,15 +141,9 @@ export const TodoStore = signalStore(
       filterTasks(option: FilterOption): void {
         patchState(store, { selectedFilter: option });
       },
-      setLoading(isLoading: boolean): void {
-        patchState(store, { loading: isLoading });
-      },
     }),
   ),
-  withHooks(({ loadData, setLoading }) => ({
-    onInit: () => {
-      loadData();
-      setLoading(true);
-    },
-  })),
+  withHooks({
+    onInit: store => store.loadData(),
+  }),
 );

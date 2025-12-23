@@ -25,7 +25,6 @@ export class PresetsComponent implements OnInit {
   readonly loading = computed(() => this.store.loading());
 
   ngOnInit(): void {
-    this.store.setLoading(true);
     this.store.fetchPresets();
   }
 

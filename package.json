@@ -1,6 +1,7 @@
 {
   "name": "todo-app",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "start": "npm run prepare && concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:server": "cd server && npm start",

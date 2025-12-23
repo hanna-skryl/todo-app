@@ -48,7 +48,10 @@ export class PresetComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
-    this.loadPreset();
+    const presetId = this.route.snapshot.paramMap.get('id');
+    if (presetId) {
+      this.store.fetchPreset(presetId);
+    }
   }
 
   ngOnDestroy(): void {
@@ -70,14 +73,6 @@ export class PresetComponent implements OnInit, OnDestroy {
         );
       });
       this.cdr.markForCheck();
-    }
-  }
-
-  private loadPreset(): void {
-    const presetId = this.route.snapshot.paramMap.get('id');
-    if (presetId) {
-      this.store.setLoading(true);
-      this.store.loadPreset(presetId);
     }
   }
 

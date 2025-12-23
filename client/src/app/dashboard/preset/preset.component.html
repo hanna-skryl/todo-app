@@ -17,19 +17,20 @@
 
     <h2 class="tasks-title">Tasks</h2>
     <div cdkDropList (cdkDropListDropped)="reorderTasks($event)" class="tasks">
-      @for (task of tasksForm.controls; track $index) {
+      @for (taskForm of tasksForm.controls; track $index) {
         <app-preset-task
-          (taskDelete)="deleteTask($event)"
-          [task]="task.value"
+          [index]="$index"
+          [task]="taskForm.getRawValue()"
+          (taskDeleted)="deleteTask($event)"
         />
       }
     </div>
 
     <app-new-task
       class="new-task"
-      (newTask)="addNewTask($event)"
       [hasCheckbox]="false"
       [formControl]="newTaskControl"
+      (taskAdded)="addTask($event)"
     />
 
     <div class="actions">

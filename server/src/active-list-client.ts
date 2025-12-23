@@ -1,6 +1,6 @@
 import { type Db, ObjectId } from 'mongodb';
-import type { ActiveListModel } from './models';
-import { Collection } from './collections';
+import type { ActiveListModel } from './models.js';
+import { Collection } from './collections.js';
 
 export function createActiveListClient(db: Db) {
   const collection = db.collection<ActiveListModel>(Collection.ActiveList);

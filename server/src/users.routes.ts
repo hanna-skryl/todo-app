@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { ObjectId } from 'mongodb';
-import { UsersClient } from './users-client';
+import { UsersClient } from './users-client.js';
 
 export function createUsersRouter(usersClient: UsersClient) {
   const router = express.Router();

@@ -1,6 +1,6 @@
 import * as mongodb from 'mongodb';
-import { UserModel } from './models';
-import { Collection } from './collections';
+import { UserModel } from './models.js';
+import { Collection } from './collections.js';
 
 export function createUsersClient(db: mongodb.Db) {
   const collection = db.collection<UserModel>(Collection.Users);

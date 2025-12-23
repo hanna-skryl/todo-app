@@ -21,6 +21,6 @@
     "url": "https://github.com/hanna-skryl/todo-app.git"
   },
   "devDependencies": {
-    "concurrently": "^7.1.0"
+    "concurrently": "^9.2.1"
   }
 }

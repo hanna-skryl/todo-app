@@ -1,8 +1,8 @@
 import * as mongodb from 'mongodb';
-import { Collection } from './collections';
-import { createUsersClient } from './users-client';
-import { createPresetsClient } from './presets-client';
-import { createActiveListClient } from './active-list-client';
+import { Collection } from './collections.js';
+import { createUsersClient } from './users-client.js';
+import { createPresetsClient } from './presets-client.js';
+import { createActiveListClient } from './active-list-client.js';
 
 export async function createDbClient(uri: string) {
   const mongoClient = new mongodb.MongoClient(uri);

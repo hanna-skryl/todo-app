@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { ObjectId } from 'mongodb';
-import { PresetsClient } from './presets-client';
+import { PresetsClient } from './presets-client.js';
 
 export function createPresetsRouter(presetsClient: PresetsClient) {
   const router = express.Router();

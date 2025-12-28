@@ -3,3 +3,8 @@
     {{ message }}
   </div>
 }
+@if (error(); as error) {
+  <div animate.leave="fade-out" class="toast error">
+    {{ error }}
+  </div>
+}

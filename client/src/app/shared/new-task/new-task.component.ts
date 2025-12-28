@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   forwardRef,
-  inject,
   input,
   output,
 } from '@angular/core';
@@ -12,7 +11,6 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { TodoStore } from '../../store/todo.store';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
@@ -30,10 +28,8 @@ import { NgOptimizedImage } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewTaskComponent implements ControlValueAccessor {
-  readonly store = inject(TodoStore);
-
   readonly hasCheckbox = input.required<boolean>();
-  readonly newTask = output<string>();
+  readonly taskAdded = output<string>();
 
   readonly newTaskControl = new FormControl<string>('', {
     nonNullable: true,
@@ -45,9 +41,11 @@ export class NewTaskComponent implements ControlValueAccessor {
   writeValue(value: string): void {
     this.newTaskControl.setValue(value, { emitEvent: false });
   }
+
   registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
+
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
@@ -57,7 +55,7 @@ export class NewTaskComponent implements ControlValueAccessor {
     if (task) {
       this.onChange?.(task);
       this.onTouched?.();
-      this.newTask.emit(task);
+      this.taskAdded.emit(task);
       this.newTaskControl.reset();
     }
   }

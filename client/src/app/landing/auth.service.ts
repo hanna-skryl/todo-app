@@ -7,9 +7,9 @@ import {
   Injectable,
   PLATFORM_ID,
   signal,
+  untracked,
 } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError, firstValueFrom, map, of } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
 
 type LoginResult = {
@@ -22,6 +22,8 @@ type LoginResult = {
 })
 export class AuthService {
   private readonly url = environment.apiUrl;
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly httpClient = inject(HttpClient);
 
   private readonly loggedIn = signal(false);
   private readonly initialized = signal(false);
@@ -30,51 +32,41 @@ export class AuthService {
     () => this.loggedIn() && this.initialized(),
   );
 
-  private readonly platformId = inject(PLATFORM_ID);
-  private readonly httpClient = inject(HttpClient);
-  private readonly router = inject(Router);
-
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
       this.loggedIn.set(localStorage.getItem('isLoggedIn') === 'true');
       this.initialized.set(true);
 
       effect(() => {
-        if (this.loggedIn()) {
-          localStorage.setItem('isLoggedIn', 'true');
-        } else {
-          localStorage.removeItem('isLoggedIn');
-          this.router.navigate(['/login']);
-        }
+        const isLoggedIn = this.loggedIn();
+        untracked(() => {
+          if (isLoggedIn) {
+            localStorage.setItem('isLoggedIn', 'true');
+          } else {
+            localStorage.removeItem('isLoggedIn');
+          }
+        });
       });
     }
   }
 
   async login(username: string, password: string): Promise<LoginResult> {
-    return firstValueFrom(
-      this.httpClient
-        .post<{ message: string }>(`${this.url}/users/login`, {
+    try {
+      const response = await firstValueFrom(
+        this.httpClient.post<{ message: string }>(`${this.url}/users/login`, {
           username,
           password,
-        })
-        .pipe(
-          map(async response => {
-            const success = response.message === 'Login successful';
-            if (success) {
-              await this.router.navigate(['/dashboard/active-list']);
-              this.loggedIn.set(true);
-            } else {
-              this.loggedIn.set(false);
-            }
-            return { success };
-          }),
-          catchError((error: unknown) => {
-            console.error('Login failed:', error);
-            this.loggedIn.set(false);
-            return of({ success: false, error: 'Login request failed' });
-          }),
-        ),
-    );
+        }),
+      );
+
+      const success = response.message === 'Login successful';
+      this.loggedIn.set(success);
+      return { success };
+    } catch (error) {
+      console.error('Login failed:', error);
+      this.loggedIn.set(false);
+      return { success: false, error: 'Login request failed' };
+    }
   }
 
   logout(): void {

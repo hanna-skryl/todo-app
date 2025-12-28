@@ -5,7 +5,7 @@ import {
   inject,
 } from '@angular/core';
 import { ModeToggleComponent } from '../mode-toggle/mode-toggle.component';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from 'src/app/landing/auth.service';
 
 @Component({
@@ -16,6 +16,13 @@ import { AuthService } from 'src/app/landing/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  readonly authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
   readonly authenticated = computed(() => this.authService.authenticated());
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

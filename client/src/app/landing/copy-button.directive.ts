@@ -6,6 +6,7 @@ const COPY_TIMEOUT = 2000;
 
 @Directive({
   selector: '[appCopyButton]',
+  exportAs: 'copyButton',
 })
 export class CopyButtonDirective {
   readonly copied = output<boolean>();
@@ -14,7 +15,7 @@ export class CopyButtonDirective {
     effect(() => this.copied.emit(this.copiedState()));
   }
 
-  private readonly copiedState = toSignal(
+  readonly copiedState = toSignal(
     fromEvent(inject(ElementRef).nativeElement, 'click').pipe(
       exhaustMap(() =>
         timer(COPY_TIMEOUT).pipe(

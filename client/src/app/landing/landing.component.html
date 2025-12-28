@@ -1,19 +1,18 @@
-<form (submit)="$event.preventDefault(); handleLogin($event)">
+<form [formGroup]="loginForm" (ngSubmit)="handleLogin()">
   <input
     #usernameInput
     type="text"
-    name="username"
+    formControlName="username"
     placeholder="Username"
-    required
-    autocomplete="on"
+    autocomplete="username"
     class="app-input"
   />
   <input
     #passwordInput
     type="password"
-    name="password"
+    formControlName="password"
     placeholder="Password"
-    required
+    autocomplete="current-password"
     class="app-input"
   />
   <button
@@ -48,9 +47,10 @@
         demo_user
 
         <button
+          #usernameCopyBtn="copyButton"
           type="button"
           appCopyButton
-          (copied)="handleCopiedUsername($event, usernameInput)"
+          (copied)="handleCopied($event, 'username')"
           cdkCopyToClipboard="demo_user"
           class="copy-button app-btn-txt"
         >
@@ -62,7 +62,7 @@
           />
         </button>
 
-        @if (usernameCopied()) {
+        @if (usernameCopyBtn.copiedState()) {
           <span class="success">Copied!</span>
         }
       </dd>
@@ -74,9 +74,10 @@
         password123
 
         <button
+          #passwordCopyBtn="copyButton"
           type="button"
           appCopyButton
-          (copied)="handleCopiedPassword($event, passwordInput)"
+          (copied)="handleCopied($event, 'password')"
           cdkCopyToClipboard="password123"
           class="copy-button app-btn-txt"
         >
@@ -88,7 +89,7 @@
           />
         </button>
 
-        @if (passwordCopied()) {
+        @if (passwordCopyBtn.copiedState()) {
           <span class="success">Copied!</span>
         }
       </dd>

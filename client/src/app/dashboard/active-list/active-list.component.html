@@ -1,19 +1,20 @@
 <form class="form" (submit)="$event.preventDefault()">
-  <h1 class="title">{{ title }}</h1>
+  <h1 class="title">TODO</h1>
 
   @if (!loading()) {
     <app-new-task
-      (newTask)="addTask(newTaskControl.value)"
-      [hasCheckbox]="true"
       [formControl]="newTaskControl"
+      [hasCheckbox]="true"
+      (taskAdded)="addTask($event)"
     />
 
     <div cdkDropList (cdkDropListDropped)="reorderTasks($event)" class="list">
       @for (taskForm of tasksForm.controls; track $index) {
         <app-task
-          (taskUpdate)="handleTaskUpdate($event, $index)"
           [formControl]="taskForm.controls.done"
           [task]="taskForm.getRawValue()"
+          (taskToggled)="toggleTask($event)"
+          (taskDeleted)="deleteTask($event, $index)"
         />
       }
       <footer class="footer">

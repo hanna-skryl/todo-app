@@ -2,11 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   forwardRef,
-  inject,
   input,
   output,
 } from '@angular/core';
-import { TodoStore } from '../../../store/todo.store';
 import { Task } from '../../../models';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import {
@@ -16,11 +14,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { NgOptimizedImage } from '@angular/common';
-
-export type TaskEvent = {
-  task: Task;
-  event: 'delete' | 'update';
-};
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-task',
@@ -37,40 +31,44 @@ export type TaskEvent = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskComponent implements ControlValueAccessor {
-  readonly store = inject(TodoStore);
-
-  readonly taskUpdate = output<TaskEvent>();
-
   readonly task = input.required<Task>();
+  readonly taskDeleted = output<Task>();
+  readonly taskToggled = output<Task>();
 
   readonly taskControl = new FormControl<boolean>(false, { nonNullable: true });
 
   private onChange: ((value: boolean) => void) | undefined;
   private onTouched: (() => void) | undefined;
 
-  writeValue(value: boolean | null): void {
-    if (value != null) {
-      this.taskControl.setValue(value, { emitEvent: false });
-    }
+  constructor() {
+    this.taskControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(value => {
+        this.onChange?.(value);
+        this.onTouched?.();
+      });
   }
+
+  writeValue(value: boolean | null): void {
+    if (value == null) {
+      return;
+    }
+    this.taskControl.setValue(value, { emitEvent: false });
+  }
+
   registerOnChange(fn: (value: boolean) => void): void {
     this.onChange = fn;
   }
+
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
   deleteTask(): void {
-    this.taskUpdate.emit({
-      task: { ...this.task(), done: this.taskControl.value },
-      event: 'delete',
-    });
+    this.taskDeleted.emit({ ...this.task(), done: this.taskControl.value });
   }
 
   toggleTask(): void {
-    this.taskUpdate.emit({
-      task: { ...this.task(), done: this.taskControl.value },
-      event: 'update',
-    });
+    this.taskToggled.emit({ ...this.task(), done: this.taskControl.value });
   }
 }

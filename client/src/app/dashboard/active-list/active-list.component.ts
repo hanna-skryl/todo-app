@@ -4,6 +4,7 @@ import {
   computed,
   effect,
   inject,
+  untracked,
 } from '@angular/core';
 import {
   FormArray,
@@ -11,21 +12,15 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import {
-  CdkDragDrop,
-  CdkDropList,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
+import { type CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgTemplateOutlet } from '@angular/common';
-import { type TaskEvent, TaskComponent } from './task/task.component';
+import { TaskComponent } from './task/task.component';
 import { TodoStore } from '../../store/todo.store';
 import { type FilterOption, FILTERS, type Task } from '../../models';
 import { NewTaskComponent } from '../../shared/new-task/new-task.component';
 
-type TaskFormGroup = FormGroup<{
-  _id: FormControl<string | undefined>;
-  description: FormControl<string>;
-  done: FormControl<boolean>;
+export type TasksFormGroup = FormGroup<{
+  [K in keyof Task]: FormControl<NonNullable<Task[K]>>;
 }>;
 
 @Component({
@@ -45,73 +40,58 @@ export class ActiveListComponent {
   private readonly store = inject(TodoStore);
 
   readonly loading = computed(() => this.store.loading());
-  readonly tasksLeft = computed(() => this.store.tasksLeft().length);
   readonly selectedFilter = computed(() => this.store.selectedFilter());
+  readonly tasksLeft = computed(() => this.store.tasksLeft().length);
 
-  readonly title = 'TODO';
   readonly filters = FILTERS;
 
-  readonly tasksForm = new FormArray<TaskFormGroup>([]);
-  readonly newTaskControl = new FormControl<string>('', { nonNullable: true });
   readonly filterControl = new FormControl<FilterOption>(
-    this.store.selectedFilter(),
+    this.selectedFilter(),
     { nonNullable: true },
   );
 
+  readonly newTaskControl = new FormControl<string>('', { nonNullable: true });
+  readonly tasksForm = new FormArray<TasksFormGroup>([]);
+
   constructor() {
-    effect(() => this.syncFormWithStore());
-  }
+    effect(() => {
+      this.selectedFilter();
 
-  private syncFormWithStore(): void {
-    const filteredTasks = this.store.filteredTasks();
-    const newControls = filteredTasks.map(task =>
-      this.createTaskFormGroup(task),
-    );
-    this.tasksForm.clear();
-    newControls.forEach(control => this.tasksForm.push(control));
-  }
-
-  private createTaskFormGroup(task: Task): TaskFormGroup {
-    return new FormGroup({
-      _id: new FormControl(task._id, { nonNullable: true }),
-      description: new FormControl(task.description, { nonNullable: true }),
-      done: new FormControl(task.done, { nonNullable: true }),
+      if (!this.loading()) {
+        const tasks = untracked(() => this.store.filteredTasks());
+        this.initForm(tasks);
+      }
     });
   }
 
   addTask(description: string): void {
-    if (!description.trim()) {
-      return;
-    }
-    this.tasksForm.push(this.createTaskFormGroup({ description, done: false }));
+    this.tasksForm.push(
+      this.createTasksFormGroup({ description, done: false }),
+    );
     this.store.addTask(description);
   }
 
-  handleTaskUpdate({ task, event }: TaskEvent, index: number): void {
-    if (task._id) {
-      switch (event) {
-        case 'delete':
-          this.tasksForm.removeAt(index);
-          this.store.removeTask(task._id);
-          break;
-
-        case 'update':
-          this.store.toggleTask(task._id);
-          break;
-      }
+  deleteTask(task: Task, index: number): void {
+    if (!task._id) {
+      return;
     }
+    this.tasksForm.removeAt(index);
+    this.store.removeTask(task._id);
+  }
+
+  toggleTask(task: Task): void {
+    if (!task._id) {
+      return;
+    }
+    this.store.toggleTask(task._id);
   }
 
   reorderTasks(event: CdkDragDrop<Task[]>): void {
-    moveItemInArray(
-      this.tasksForm.controls,
-      event.previousIndex,
-      event.currentIndex,
-    );
-    const updatedTasks = this.tasksForm.controls.map(control =>
-      control.getRawValue(),
-    );
-    this.store.reorderTasks(updatedTasks);
+    const { previousIndex, currentIndex } = event;
+    const control = this.tasksForm.at(previousIndex);
+    this.tasksForm.removeAt(previousIndex);
+    this.tasksForm.insert(currentIndex, control);
+    this.store.reorderTasks(this.tasksForm.getRawValue());
   }
 
   clearCompleted(): void {
@@ -120,5 +100,23 @@ export class ActiveListComponent {
 
   filterTasks(filter: FilterOption): void {
     this.store.filterTasks(filter);
+  }
+
+  private initForm(tasks: Task[]): void {
+    this.tasksForm.clear();
+
+    tasks.forEach(task => {
+      this.tasksForm.push(this.createTasksFormGroup(task));
+    });
+  }
+
+  private createTasksFormGroup(task: Task): TasksFormGroup {
+    const { _id: id, description, done } = task;
+
+    return new FormGroup({
+      ...(id && { _id: new FormControl(id, { nonNullable: true }) }),
+      description: new FormControl(description, { nonNullable: true }),
+      done: new FormControl(done, { nonNullable: true }),
+    });
   }
 }

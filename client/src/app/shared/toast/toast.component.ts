@@ -25,4 +25,15 @@ export class ToastComponent {
       ),
     ),
   );
+
+  readonly error = toSignal(
+    this.toastService.error$.pipe(
+      switchMap(error =>
+        timer(TOAST_TIMEOUT).pipe(
+          map(() => null),
+          startWith(error),
+        ),
+      ),
+    ),
+  );
 }

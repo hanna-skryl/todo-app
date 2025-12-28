@@ -54,8 +54,10 @@ export const TodoStore = signalStore(
             activeListService.fetchActiveList$().pipe(
               tapResponse({
                 next: list => patchState(store, { tasks: list.tasks }),
-                error: error =>
-                  console.error('Failed to fetch active list', error),
+                error: error => {
+                  toastService.showError('Failed to fetch active list');
+                  console.error(error);
+                },
                 finalize: () => patchState(store, { loading: false }),
               }),
             ),
@@ -67,7 +69,10 @@ export const TodoStore = signalStore(
           activeListService.addTask$(description).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
-              error: error => console.error('Failed to add task', error),
+              error: error => {
+                toastService.showError('Failed to add task');
+                console.error(error);
+              },
             }),
           ),
         ),
@@ -77,7 +82,10 @@ export const TodoStore = signalStore(
           activeListService.removeTask$(id).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
-              error: error => console.error('Failed to remove task', error),
+              error: error => {
+                toastService.showError('Failed to remove task');
+                console.error(error);
+              },
             }),
           ),
         ),
@@ -95,7 +103,10 @@ export const TodoStore = signalStore(
             .pipe(
               tapResponse({
                 next: list => patchState(store, { tasks: list.tasks }),
-                error: error => console.error('Failed to toggle task', error),
+                error: error => {
+                  toastService.showError('Failed to toggle task');
+                  console.error(error);
+                },
               }),
             ),
         ),
@@ -105,7 +116,10 @@ export const TodoStore = signalStore(
           activeListService.updateActiveList$(updatedTasks).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
-              error: error => console.error('Failed to reorder tasks', error),
+              error: error => {
+                toastService.showError('Failed to reorder tasks');
+                console.error(error);
+              },
             }),
           ),
         ),
@@ -122,8 +136,10 @@ export const TodoStore = signalStore(
                   patchState(store, { tasks: list.tasks });
                   toastService.showMessage('Preset activated successfully!');
                 },
-                error: error =>
-                  console.error('Failed to activate preset', error),
+                error: error => {
+                  toastService.showError('Failed to activate preset');
+                  console.error(error);
+                },
               }),
             ),
         ),
@@ -133,7 +149,10 @@ export const TodoStore = signalStore(
           activeListService.updateActiveList$(store.tasksLeft()).pipe(
             tapResponse({
               next: list => patchState(store, { tasks: list.tasks }),
-              error: error => console.error('Failed to clear completed', error),
+              error: error => {
+                toastService.showError('Failed to clear completed');
+                console.error(error);
+              },
             }),
           ),
         ),

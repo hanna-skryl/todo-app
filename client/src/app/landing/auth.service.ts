@@ -7,7 +7,6 @@ import {
   Injectable,
   PLATFORM_ID,
   signal,
-  untracked,
 } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
@@ -24,30 +23,26 @@ export class AuthService {
   private readonly url = environment.apiUrl;
   private readonly platformId = inject(PLATFORM_ID);
   private readonly httpClient = inject(HttpClient);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
 
-  private readonly loggedIn = signal(false);
-  private readonly initialized = signal(false);
+  private readonly loggedIn = signal(this.getStoredLoginState());
 
-  readonly authenticated = computed(
-    () => this.loggedIn() && this.initialized(),
-  );
+  readonly authenticated = computed(() => this.loggedIn());
 
   constructor() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.loggedIn.set(localStorage.getItem('isLoggedIn') === 'true');
-      this.initialized.set(true);
-
+    if (this.isBrowser) {
       effect(() => {
-        const isLoggedIn = this.loggedIn();
-        untracked(() => {
-          if (isLoggedIn) {
-            localStorage.setItem('isLoggedIn', 'true');
-          } else {
-            localStorage.removeItem('isLoggedIn');
-          }
-        });
+        if (this.loggedIn()) {
+          localStorage.setItem('isLoggedIn', 'true');
+        } else {
+          localStorage.removeItem('isLoggedIn');
+        }
       });
     }
+  }
+
+  private getStoredLoginState(): boolean {
+    return this.isBrowser && localStorage.getItem('isLoggedIn') === 'true';
   }
 
   async login(username: string, password: string): Promise<LoginResult> {
